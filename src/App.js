@@ -7,7 +7,7 @@ class App extends React.Component {
     return(
       <div> 
       <ButtonAppBar />
-      <h1> THIS IS THE HOME PAGE </h1>
+      <h1>  HOME PAGE </h1>
       </div> 
     )
   } ;

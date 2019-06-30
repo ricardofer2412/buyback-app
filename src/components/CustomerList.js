@@ -17,6 +17,7 @@ import Navbar from './NavBar.js'
 import { makeStyles } from "@material-ui/core";
 
 
+
 const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
@@ -24,7 +25,14 @@ const useStyles = makeStyles(theme => ({
   extendedIcon: {
     marginLeft: theme.spacing(1),
   },
+  
+  container: {
+    marginTop: 64,
+  }
+ ,
 }));
+
+
 
 class CustomerList extends React.Component {
   constructor(props) {
@@ -79,13 +87,11 @@ class CustomerList extends React.Component {
 
   render() {
     const classes = useStyles
-    return (
+    return (   
      
-              
-      <Container fixed> 
-        <Navbar />
-        <Container fixed>
-        <Container>
+      <Container
+        style={{ marginTop: 68 }}
+       >
         <Fab
                   variant="extended"
                   component={ Link } to="/Create"
@@ -95,7 +101,7 @@ class CustomerList extends React.Component {
                 >
                   <AddIcon className={classes.extendedIcon} />
                </Fab>
-        </Container>
+               <Navbar />
        <Paper >
         <Table >
          <TableHead>
@@ -135,14 +141,7 @@ class CustomerList extends React.Component {
                     </TableBody>
             </Table>
           </Paper>
-          </Container>
-         
-     </Container>
-
-       
-    
-
-
+      </Container>
     );
   }
 }

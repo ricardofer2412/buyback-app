@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import firebase from "./firebase/Firebase";
 import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+
 
 
 
@@ -113,6 +115,14 @@ class Create extends Component {
               <button type="submit" className="btn btn-success">
                 Submit
               </button>
+              <div>
+              <Button 
+              variant="contained" 
+              color="secondary"
+              component={ Link } to="/Vendors/">
+               Back
+              </Button>
+              </div>
             </form>
           </div>
         </div>

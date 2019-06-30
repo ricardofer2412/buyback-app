@@ -23,8 +23,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import Home from '@material-ui/icons/Home'
+
 
 
 const drawerWidth = 240; 
@@ -110,9 +110,10 @@ export default function ButtonAppBar() {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root}  >
       <CssBaseline />
       <AppBar 
+      
          position="fixed"
          className={clsx(classes.appBar, {
            [classes.appBarShift]: open,
@@ -155,7 +156,12 @@ export default function ButtonAppBar() {
         </div>
         <Divider />
           <List component="nav" aria-label="Main mailbox folders">
-         
+          <ListItem button  component={Link} to="/">
+          <ListItemIcon>
+            <Home />
+            <ListItemText primary="Home" />
+          </ListItemIcon>
+          </ListItem>
           <ListItem button  component={Link} to="/Vendors">
           <ListItemIcon>
             <People />
