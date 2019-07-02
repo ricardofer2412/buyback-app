@@ -2,23 +2,28 @@ import React, { Component } from "react";
 import firebase from "./firebase/Firebase";
 import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-
-
-
+import {
+	withRouter
+} from 'react-router-dom';
 
 const uuid = require("uuid");
 
 class Create extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    
     this.ref = firebase.firestore().collection("customers");
     this.state = {
       firstName: "",
       lastName: "",
       phoneNumber: "",
       email: ""
+      
+
     };
+   
   }
+  
   onChange = e => {
     const state = this.state;
     state[e.target.name] = e.target.value;
@@ -27,6 +32,8 @@ class Create extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    
+  
 
     const { firstName, lastName, phoneNumber, email } = this.state;
     const customerId = uuid();
@@ -48,7 +55,7 @@ class Create extends Component {
           phoneNumber: "",
           emai: ""
         });
-        this.props.history.push("/");
+        this.props.history.push('/vendors');
       })
       .catch(error => {
         console.error("Error adding document: ", error);
@@ -67,7 +74,7 @@ class Create extends Component {
             <h4>
               <Link to="/" className="btn btn-primary" />
             </h4>
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit.bind(this)}>
               <div className="form-group">
                 <label htmlFor="title">First Name:</label>
                 <input
@@ -112,7 +119,7 @@ class Create extends Component {
                   placeholder="E-Mail"
                 />
               </div>
-              <button type="submit" className="btn btn-success">
+              <button onClick={this.return} type="submit" className="btn btn-success">
                 Submit
               </button>
               <div>
@@ -131,4 +138,4 @@ class Create extends Component {
   }
 }
 
-export default Create;
+export default withRouter(Create);

@@ -78,7 +78,7 @@ class CustomerList extends React.Component {
       .delete()
       .then(() => {
         console.log("Customer Deleted");
-        this.props.history.push("/");
+        this.props.history.push("/vendors");
       })
       .catch(error => {
         console.error("Error deleting customer: ", error);
@@ -88,11 +88,10 @@ class CustomerList extends React.Component {
   render() {
     const classes = useStyles
     return (   
-     
       <Container
         style={{ marginTop: 68 }}
-       >
-        <Fab
+             >
+               <Fab
                   variant="extended"
                   component={ Link } to="/Create"
                   color="secondary"

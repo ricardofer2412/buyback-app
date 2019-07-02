@@ -162,16 +162,16 @@ export default function ButtonAppBar() {
             <ListItemText primary="Home" />
           </ListItemIcon>
           </ListItem>
-          <ListItem button  component={Link} to="/Vendors">
+          <ListItem button  component={Link} to="/vendors">
           <ListItemIcon>
             <People />
             <ListItemText primary="Vendors" />
           </ListItemIcon>
           </ListItem>
-          <ListItem button >
+          <ListItem button  component={Link} to="/purchaseorders">
           <ListItemIcon>
-            <ShoppingCart />
-            <ListItemText primary="Purchase Orders" />
+          <ShoppingCart />
+          <ListItemText primary="Purchase Orders" />
           </ListItemIcon>
           </ListItem>
           <ListItem button >
@@ -182,8 +182,6 @@ export default function ButtonAppBar() {
           </ListItem>
         </List>
         </Drawer>
-     
-      >
     </div>
   );
 }
