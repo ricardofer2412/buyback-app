@@ -60,10 +60,10 @@ export class PurchaseOrders extends React.Component {
             doc ,
             deductionAmount,
             deviceTotal, 
-          poData, 
-           poNumber, 
-         poTotal, 
-          quantity
+            poData, 
+            poNumber, 
+            poTotal, 
+            quantity
         });
     }); 
 
