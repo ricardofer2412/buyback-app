@@ -27,17 +27,18 @@ import Home from '@material-ui/icons/Home'
 
 
 
-const drawerWidth = 240; 
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     display: 'flex',
   },
-  appBar: { 
+  appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp, 
-      duration: theme.transitions.duration.leavingScreen, 
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
     }),
   },
 
@@ -53,8 +54,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: 'none', 
-  }, 
+    display: 'none',
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -112,26 +113,26 @@ export default function ButtonAppBar() {
   return (
     <div className={classes.root}  >
       <CssBaseline />
-      <AppBar 
-      
-         position="fixed"
-         className={clsx(classes.appBar, {
-           [classes.appBarShift]: open,
-         })}
+      <AppBar
+
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
       >
         <Toolbar>
-        <IconButton
+          <IconButton
             color="inherit"
             aria-label="Open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
           >
-          <MenuIcon />
+            <MenuIcon />
           </IconButton>
-       
+
           <Typography variant="h6" className={classes.title}>
-         MOBILESOURCE
+            MOBILESOURCE
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
@@ -143,11 +144,11 @@ export default function ButtonAppBar() {
         anchor="left"
         open={open}
         classes={{
-        paper: classes.drawerPaper,
+          paper: classes.drawerPaper,
         }}
-        >
+      >
         <div className={classes.drawerHeader}>
-        <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             BUYBACK APP
           </Typography>
           <IconButton onClick={handleDrawerClose}>
@@ -155,33 +156,35 @@ export default function ButtonAppBar() {
           </IconButton>
         </div>
         <Divider />
-          <List component="nav" aria-label="Main mailbox folders">
-          <ListItem button  component={Link} to="/">
-          <ListItemIcon>
-            <Home />
-            <ListItemText primary="Home" />
-          </ListItemIcon>
+        <List component="nav" aria-label="Main mailbox folders">
+          <ListItem button component={Link} to="/">
+            <ListItemIcon>
+              <Home />
+              <ListItemText primary="Home" />
+            </ListItemIcon>
           </ListItem>
-          <ListItem button  component={Link} to="/vendors">
-          <ListItemIcon>
-            <People />
-            <ListItemText primary="Vendors" />
-          </ListItemIcon>
+          <ListItem button component={Link} to="/vendors">
+            <ListItemIcon>
+              <People />
+              <ListItemText primary="Vendors" />
+            </ListItemIcon>
           </ListItem>
-          <ListItem button  component={Link} to="/purchaseorders">
-          <ListItemIcon>
-          <ShoppingCart />
-          <ListItemText primary="Purchase Orders" />
-          </ListItemIcon>
+
+          <ListItem button component={Link} to="/purchaseorders">
+            <ListItemIcon>
+              <ShoppingCart />
+              <ListItemText primary="Purchase Orders" />
+            </ListItemIcon>
           </ListItem>
-          <ListItem button >
-          <ListItemIcon>
-            <StayCurrentPortrait />
-            <ListItemText primary="Devices" />
-          </ListItemIcon>
+          <ListItem button component={Link} to="/devicelist">
+            <ListItemIcon>
+              <StayCurrentPortrait />
+              <ListItemText primary="Devices" />
+            </ListItemIcon>
           </ListItem>
+
         </List>
-        </Drawer>
+      </Drawer>
     </div>
   );
 }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './firebase/Firebase';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-
 
 class Edit extends Component {
 
@@ -96,12 +94,6 @@ class Edit extends Component {
                 <input type="text" class="form-control" name="email" value={this.state.email} onChange={this.onChange} placeholder="E-mail" />
               </div>
               <button type="submit" class="btn btn-success">Submit</button>
-              <Button 
-              variant="contained" 
-              color="secondary"
-              component={ Link } to="/purchaseorder/New">
-               Back
-              </Button>
             </form>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import firebase from "../components/firebase/Firebase.js";
+import firebase from "../firebase/Firebase.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,8 +13,9 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { Create, Visibility } from '@material-ui/icons'
 import Container from '@material-ui/core/Container'
-import Navbar from './NavBar.js'
+import Navbar from '../NavBar.js'
 import { makeStyles } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +25,14 @@ const useStyles = makeStyles(theme => ({
   extendedIcon: {
     marginLeft: theme.spacing(1),
   },
+
+  container: {
+    marginTop: 64,
+  }
+  ,
 }));
+
+
 
 class CustomerList extends React.Component {
   constructor(props) {
@@ -70,7 +78,7 @@ class CustomerList extends React.Component {
       .delete()
       .then(() => {
         console.log("Customer Deleted");
-        this.props.history.push("/");
+        this.props.history.push("/vendors");
       })
       .catch(error => {
         console.error("Error deleting customer: ", error);
@@ -80,69 +88,59 @@ class CustomerList extends React.Component {
   render() {
     const classes = useStyles
     return (
-     
-              
-      <Container fixed> 
-        <Navbar />
-        <Container fixed>
-        <Container>
+      <Container
+        style={{ marginTop: 68 }}
+      >
         <Fab
-                  variant="extended"
-                  component={ Link } to="/Create"
-                  color="secondary"
-                  aria-label="Add" 
-                  className={classes.fab}
-                >
-                  <AddIcon className={classes.extendedIcon} />
-               </Fab>
-        </Container>
-       <Paper >
-        <Table >
-         <TableHead>
-          <TableRow>
-            <TableCell>First Name</TableCell>
-            <TableCell> Last Name </TableCell>
-            <TableCell> Phone Number</TableCell>
-            <TableCell>Phone Number</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-         </TableHead>
-         <TableBody>
-                {this.state.customers.map(customer => (
-                  <TableRow>
-                    <TableCell>{customer.firstName}</TableCell>
-                    <TableCell>{customer.lastName}</TableCell>
-                    <TableCell>{customer.phoneNumber}</TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>
-                    <IconButton    onClick={() => this.delete(customer)} aria-label="Delete" >
-                        <DeleteIcon fontSize="small" />
-                     </IconButton>
-                    <IconButton 
-                     component={ Link }to={`/edit/${customer.customerId}`}
-                 
-                    >
-                    <Create />
+          variant="extended"
+          component={Link} to="/Create"
+          color="secondary"
+          aria-label="Add"
+          className={classes.fab}
+        >
+          <AddIcon className={classes.extendedIcon} />
+        </Fab>
+        <Navbar />
+        <Paper >
+          <Table >
+            <TableHead>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+                <TableCell> Last Name </TableCell>
+                <TableCell> Phone Number</TableCell>
+                <TableCell>Phone Number</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.customers.map(customer => (
+                <TableRow>
+                  <TableCell>{customer.firstName}</TableCell>
+                  <TableCell>{customer.lastName}</TableCell>
+                  <TableCell>{customer.phoneNumber}</TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => this.delete(customer)} aria-label="Delete" >
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
-                    <IconButton 
-                         component={ Link } to={`/show/${customer.customerId}`}
-                      >
+                    <IconButton
+                      component={Link} to={`/edit/${customer.customerId}`}
+
+                    >
+                      <Create />
+                    </IconButton>
+                    <IconButton
+                      component={Link} to={`/show/${customer.customerId}`}
+                    >
                       <Visibility />
                     </IconButton>
-                    </TableCell>
-                    </TableRow>
-                       ))}
-                    </TableBody>
-            </Table>
-          </Paper>
-          </Container>
-         
-     </Container>
-
-       
-    
-
-
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Container>
     );
   }
 }
