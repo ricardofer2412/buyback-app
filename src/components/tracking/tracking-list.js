@@ -15,6 +15,9 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import firebase from '../firebase/Firebase';
+import { track } from "../../fedexservice";
+
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,23 +34,39 @@ class TrackingList extends React.Component {
     super(props);
     this.ref = firebase.firestore().collection('trackings');
     this.unsubscribe = null;
+
+
+
     this.state = {
-      trackings: []
+      trackings: [],
+      trackingStatuses: []
     };
+  }
+
+  getTrackingStatus = async (trackingNums) => {
+    const promises = []
+    trackingNums.forEach(number => {
+      promises.push(track(number))
+    })
+    const response = await Promise.all(promises);
+    this.setState({ trackingStatuses: response })
   }
 
   onCollectionUpdate = (querySnapshot) => {
     const trackings = [];
-    querySnapshot.forEach((doc) => {
-      const { trackingNum, vendorName, trackingStatus } = doc.data();
+    const trackingNumbers = [];
+    querySnapshot.forEach(async (doc) => {
+      const { trackingNum, vendorName, } = doc.data();
+      trackingNumbers.push(trackingNum)
       trackings.push({
         trackingId: doc.id,
         doc,
         trackingNum,
         vendorName,
-        trackingStatus,
+
       });
     });
+    this.getTrackingStatus(trackingNumbers)
     this.setState({
       trackings
     });
@@ -72,6 +91,7 @@ class TrackingList extends React.Component {
       });
   }
   render() {
+    console.log(this.state.trackingStatuses)
     const classes = useStyles
     return (
       <Container fixed>
@@ -106,15 +126,17 @@ class TrackingList extends React.Component {
                   <TableCell>Tracking Number</TableCell>
                   <TableCell>Vendor</TableCell>
                   <TableCell> Status</TableCell>
+
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.trackings.map(tracking =>
+                {this.state.trackings.map((tracking, idx) =>
                   <tr>
                     <td>{tracking.trackingNum} </td>
                     <td>{tracking.vendorName}</td>
-                    <td>{tracking.trackingStatus}</td>
+                    <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].status}</td>
+                    <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].carrierDesc}</td>
                     <td>  <IconButton onClick={() => this.delete(tracking)} aria-label="Delete" >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
