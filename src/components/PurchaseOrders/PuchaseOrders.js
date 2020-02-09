@@ -14,7 +14,6 @@ import {
     IconButton,
     makeStyles
 } from "@material-ui/core"
-import Navbar from '../NavBar.js'
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -107,7 +106,6 @@ export default class PurchaseOrders extends React.Component {
                 >
                     <AddIcon className={classes.extendedIcon} />
                 </Fab>
-                <Navbar />
                 <Paper>
 
                     <Table>

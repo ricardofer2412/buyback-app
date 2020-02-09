@@ -7,11 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
-import DeleteIcon from '@material-ui/icons/Delete';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import { Link } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -132,7 +127,7 @@ export default function ButtonAppBar() {
           </IconButton>
 
           <Typography variant="h6" className={classes.title}>
-            MOBILESOURCE
+            BUY-BACK APP
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
@@ -176,13 +171,12 @@ export default function ButtonAppBar() {
               <ListItemText primary="Purchase Orders" />
             </ListItemIcon>
           </ListItem>
-          <ListItem button component={Link} to="/devicelist">
+          <ListItem button component={Link} to="/tracking">
             <ListItemIcon>
               <StayCurrentPortrait />
-              <ListItemText primary="Devices" />
+              <ListItemText primary="Tracking" />
             </ListItemIcon>
           </ListItem>
-
         </List>
       </Drawer>
     </div>

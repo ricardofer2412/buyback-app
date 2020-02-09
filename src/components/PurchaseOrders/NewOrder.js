@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import firebase from "../firebase/Firebase.js";
-import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {
     withRouter
 } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField"
 import { Typography } from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
-import NewDevice from '../Devices/NewDevice.js'
 
 const uuid = require("uuid");
 
@@ -69,7 +66,7 @@ class NewOrder extends Component {
         const state = this.state;
         state[e.target.name] = e.target.value;
         this.setState(state);
-    };
+    }
     onSubmit = e => {
         e.preventDefault();
 
@@ -133,16 +130,7 @@ class NewOrder extends Component {
 
         const {
             company,
-            deviceTotal,
-            poDate,
-            poNumber,
-            poTotal,
-            quantity,
-            email,
-            address,
-            expectDeliver,
-            status,
-            typePayment
+
         } = this.state;
         const { classes } = this.props;
         return (
@@ -158,56 +146,22 @@ class NewOrder extends Component {
                             <TextField
                                 required
                                 label="Company"
+                                InputProps={{ name: 'company' }}
                                 className={classes.textField}
-                                onChange={this.state.onChange}
+                                onChange={this.onChange}
                                 value={company}
                                 variant="outlined"
                             />
                             <Divider variant="middle" />
 
                         </div>
-                        <div>
 
-                            <TextField
-                                required
-                                id="firstName"
-                                label="First Name"
-                                className={classes.textField}
-                                onChange={this.onChange}
-                                variant="outlined"
-                            />
-                            <TextField
-                                required
-                                id="lastName"
-                                label="Last Name"
-                                className={classes.textField}
-                                onChange={this.onChange}
-                                variant="outlined"
-                            />
-                            <TextField
-                                required
-                                id="phoneNumber"
-                                label="Phone NUmber"
-                                className={classes.textField}
-                                onChange={this.onChange}
-                                variant="outlined"
-                            />
-                            <TextField
-                                required
-                                id="email"
-                                label="email"
-                                className={classes.textField}
-                                onChange={this.onChange}
-                                variant="outlined"
-                            />
-                        </div>
 
                         <Divider />
 
                         <div>
                             <Table className={classes.table}>
                                 <TableHead>
-                                    <NewDevice />
                                     <TableRow>
                                         <TableCell>QTY</TableCell>
                                         <TableCell>Carrier</TableCell>

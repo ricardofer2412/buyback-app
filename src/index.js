@@ -10,12 +10,17 @@ import Show from "./components//Vendors/Show";
 import CustomerList from "./components/Vendors/CustomerList";
 import PurchaseOrders from "./components/PurchaseOrders/PuchaseOrders";
 import NewOrder from "./components/PurchaseOrders/NewOrder.js"
-import DeviceList from "./components/Devices/DeviceList.js"
-
+import TrackingList from "./components/tracking/tracking-list";
+import NewTracking from './components/tracking/new-tracking'
+import NavBar from './components/NavBar/NavBar'
+import EditTracking from './components/tracking/edit-tracking'
 
 ReactDOM.render(
   <Router>
     <div>
+      <div className="container">
+        <NavBar />
+      </div>
       <Route exact path="/" component={App} />
       <Route exact path="/vendors" component={CustomerList} />
       <Route exact path="/edit/:id" component={Edit} />
@@ -23,7 +28,10 @@ ReactDOM.render(
       <Route exact path="/show/:id" component={Show} />
       <Route exact path="/purchaseorders" component={PurchaseOrders} />
       <Route exact path="/neworder" component={NewOrder} />
-      <Route exact path="/devicelist" component={DeviceList} />
+      <Route exact path="/tracking" component={TrackingList} />
+      <Route exact path='/new-tracking' component={NewTracking} />
+      <Route exact path='/edit-tracking' component={EditTracking} />
+
     </div>
   </Router>,
   document.getElementById("root")

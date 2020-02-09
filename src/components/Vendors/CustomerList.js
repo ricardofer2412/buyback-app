@@ -13,7 +13,6 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { Create, Visibility } from '@material-ui/icons'
 import Container from '@material-ui/core/Container'
-import Navbar from '../NavBar.js'
 import { makeStyles } from "@material-ui/core";
 
 
@@ -100,7 +99,6 @@ class CustomerList extends React.Component {
         >
           <AddIcon className={classes.extendedIcon} />
         </Fab>
-        <Navbar />
         <Paper >
           <Table >
             <TableHead>
