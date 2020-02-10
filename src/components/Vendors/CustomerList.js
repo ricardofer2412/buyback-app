@@ -47,10 +47,11 @@ class CustomerList extends React.Component {
   onCollectionUpdate = querySnapshot => {
     const customers = [];
     querySnapshot.forEach(doc => {
-      const { firstName, lastName, phoneNumber, email } = doc.data();
+      const { vendorName, firstName, lastName, phoneNumber, email } = doc.data();
       customers.push({
         customerId: doc.id,
         doc,
+        vendorName,
         firstName,
         lastName,
         phoneNumber,
@@ -103,8 +104,7 @@ class CustomerList extends React.Component {
           <Table >
             <TableHead>
               <TableRow>
-                <TableCell>First Name</TableCell>
-                <TableCell> Last Name </TableCell>
+                <TableCell>Vendor Name</TableCell>
                 <TableCell> Phone Number</TableCell>
                 <TableCell>Phone Number</TableCell>
                 <TableCell>Actions</TableCell>
@@ -113,8 +113,7 @@ class CustomerList extends React.Component {
             <TableBody>
               {this.state.customers.map(customer => (
                 <TableRow>
-                  <TableCell>{customer.firstName}</TableCell>
-                  <TableCell>{customer.lastName}</TableCell>
+                  <TableCell>{customer.vendorName}</TableCell>
                   <TableCell>{customer.phoneNumber}</TableCell>
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>

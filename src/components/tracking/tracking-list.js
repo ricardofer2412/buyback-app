@@ -97,15 +97,7 @@ class TrackingList extends React.Component {
       <Container fixed>
         <Container fixed>
           <Container>
-            <Fab
-              variant="extended"
-              component={Link} to="/new-tracking"
-              color="secondary"
-              aria-label="Add"
-              className={classes.fab}
-            >
-              <AddIcon className={classes.extendedIcon} />
-            </Fab>
+
 
             <h3>Tracking Orders</h3>
             <Fab
@@ -126,6 +118,7 @@ class TrackingList extends React.Component {
                   <TableCell>Tracking Number</TableCell>
                   <TableCell>Vendor</TableCell>
                   <TableCell> Status</TableCell>
+                  <TableCell>Method</TableCell>
 
                   <TableCell>Action</TableCell>
                 </TableRow>

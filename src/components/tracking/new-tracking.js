@@ -1,6 +1,11 @@
 import React, { Component } from "react"
 import firebase from '../firebase/Firebase';
 import { Link } from 'react-router-dom';
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Create from '../Vendors/Create'
 
 
 const uuid = require("uuid");
@@ -25,11 +30,22 @@ class NewTracking extends Component {
 
       customers: [],
 
-      currentCustomer: false
+      currentCustomer: false,
+
+      open: false
 
     };
 
   }
+
+
+  openDialog() {
+    this.setState({ open: true });
+  };
+  closeDialog() {
+    this.setState({ open: false });
+  }
+
   componentDidMount() {
     this.unsubscribe = this.customerRef.onSnapshot(this.onCollectionUpdate);
 
@@ -37,20 +53,20 @@ class NewTracking extends Component {
   onCollectionUpdate = querySnapshot => {
     const customers = [];
     querySnapshot.forEach(doc => {
-      const { firstName, lastName, phoneNumber, email } = doc.data();
+      const { firstName, lastName, phoneNumber, vendorName } = doc.data();
       customers.push({
         customerId: doc.id,
         doc,
         firstName,
         lastName,
         phoneNumber,
-        email
+        vendorName
       });
     });
 
     this.setState({
       customers,
-      currentCustomer: customers[0].email
+      currentCustomer: customers[0].vendorName
     });
   };
   onChange = (e) => {
@@ -70,7 +86,7 @@ class NewTracking extends Component {
 
     const trackingId = uuid();
 
-    const customer = this.state.customers.find(item => item.email === this.state.currentCustomer);
+    const customer = this.state.customers.find(item => item.vendorName === this.state.currentCustomer);
 
     const { customerId } = customer;
 
@@ -140,7 +156,7 @@ class NewTracking extends Component {
 
             <h3 class="panel-title">
 
-              ADD BOARD
+              Add Tracking
 
             </h3>
 
@@ -159,14 +175,27 @@ class NewTracking extends Component {
                 <input type="text" class="form-control" name="trackingNum" value={trackingNum} onChange={this.onChange} placeholder="Tracking" />
 
               </div>
+              <div>
 
-              <label for="title">Vendors:</label>
-              <select onChange={this.handleCustomerChange} value={this.state.currentCustomer}>
-                {this.state.customers.map(customer => (
-                  <option value={customer.email}>{customer.email}</option>
-                ))}
-              </select>
+              </div>
 
+              <label for="title">Select Vendor:</label>
+              <div>
+                <Button onClick={this.openDialog.bind(this)}>Add New Vendor</Button>
+                <Dialog open={this.state.open} onClose={this.state.open} onEnter={console.log("Hey.")}>
+                  <Create />
+                  <Button onClick={this.closeDialog.bind(this)} color="primary">
+                    Cancel
+            </Button>
+                </Dialog>
+              </div>
+              <div>
+                <select onChange={this.handleCustomerChange} value={this.state.currentCustomer}>
+                  {this.state.customers.map(customer => (
+                    <option value={customer.vendorName}>{customer.vendorName}</option>
+                  ))}
+                </select>
+              </div>
               {/* <div class="form-group">
 
                 <label for="author">Vendor:</label>

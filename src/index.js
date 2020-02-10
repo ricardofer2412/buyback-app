@@ -18,8 +18,9 @@ import EditTracking from './components/tracking/edit-tracking'
 ReactDOM.render(
   <Router>
     <div>
+      <NavBar />
       <div className="container">
-        <NavBar />
+
       </div>
       <Route exact path="/" component={App} />
       <Route exact path="/vendors" component={CustomerList} />

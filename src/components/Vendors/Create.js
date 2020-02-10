@@ -14,6 +14,7 @@ class Create extends Component {
 
     this.ref = firebase.firestore().collection("customers");
     this.state = {
+      vendorName: '',
       firstName: "",
       lastName: "",
       phoneNumber: "",
@@ -38,13 +39,14 @@ class Create extends Component {
 
 
 
-    const { firstName, lastName, phoneNumber, email, company, address, referredBy } = this.state;
+    const { vendorName, firstName, lastName, phoneNumber, email, company, address, referredBy } = this.state;
     const customerId = uuid();
 
     console.log("customerId: ", customerId);
     this.ref
       .doc(customerId)
       .set({
+        vendorName,
         firstName,
         lastName,
         phoneNumber,
@@ -57,6 +59,7 @@ class Create extends Component {
       })
       .then(() => {
         this.setState({
+          vendorName: '',
           firstName: "",
           lastName: "",
           phoneNumber: "",
@@ -73,7 +76,7 @@ class Create extends Component {
   };
 
   render() {
-    const { firstName, lastName, phoneNumber, email, company, address, referredBy } = this.state;
+    const { vendorName, firstName, lastName, phoneNumber, email, company, address, referredBy } = this.state;
     return (
       <div className="container">
         <div className="panel panel-default">
@@ -86,6 +89,17 @@ class Create extends Component {
             </h4>
             <form onSubmit={this.onSubmit.bind(this)}>
               <div className="form-group">
+                <label htmlFor="title">Vendor Name:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="vendorName"
+                  value={vendorName}
+                  onChange={this.onChange}
+                  placeholder="Vendor Name"
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="title">Company:</label>
                 <input
                   type="text"
@@ -94,28 +108,6 @@ class Create extends Component {
                   value={company}
                   onChange={this.onChange}
                   placeholder="Company"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">First Name:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="firstName"
-                  value={firstName}
-                  onChange={this.onChange}
-                  placeholder="First Name"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Last Name:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lastName"
-                  value={lastName}
-                  onChange={this.onChange}
-                  placeholder="Last Name"
                 />
               </div>
               <div className="form-group">
