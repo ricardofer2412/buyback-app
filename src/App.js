@@ -7,7 +7,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <NavBar />
 
 
         <h1>  MobileSource BB </h1>

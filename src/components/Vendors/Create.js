@@ -5,12 +5,72 @@ import Button from '@material-ui/core/Button';
 import {
   withRouter
 } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Person from '@material-ui/icons/Person';
+
+import Container from '@material-ui/core/Container';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
+const referreds = [
+  {
+    value: 'Verizon',
+    label: 'Verizon'
+  },
+  {
+    value: 'Sprint',
+    label: 'Sprint',
+  }, {
+    value: 'T-Mobile',
+    label: 'T-Mobile',
+  },
+  {
+    value: 'AT&T',
+    label: 'AT&T',
+  },
+
+]
 
 const uuid = require("uuid");
+
+const styles = theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  menu: {
+    width: 200,
+  },
+});
 
 class Create extends Component {
   constructor(props) {
     super(props);
+
+
+
 
     this.ref = firebase.firestore().collection("customers");
     this.state = {
@@ -76,103 +136,133 @@ class Create extends Component {
   };
 
   render() {
-    const { vendorName, firstName, lastName, phoneNumber, email, company, address, referredBy } = this.state;
+    const { classes } = this.props;
+
+    const { vendorName, phoneNumber, email, company, address, referredBy } = this.state;
     return (
-      <div className="container">
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">New Vendor</h3>
-          </div>
-          <div className="panel-body">
-            <h4>
-              <Link to="/" className="btn btn-primary" />
-            </h4>
-            <form onSubmit={this.onSubmit.bind(this)}>
-              <div className="form-group">
-                <label htmlFor="title">Vendor Name:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="vendorName"
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <Person />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Add New Vendor
+        </Typography>
+          <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  label="Vendor Name"
+                  InputProps={{ name: 'vendorName' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
                   value={vendorName}
-                  onChange={this.onChange}
-                  placeholder="Vendor Name"
+                  variant="outlined"
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Company:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="company"
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  label="Company"
+                  InputProps={{ name: 'phoneNumber' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
                   value={company}
-                  onChange={this.onChange}
-                  placeholder="Company"
+                  variant="outlined"
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Phone Number:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="phoneNumber"
-                  value={phoneNumber}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  label="Email"
+                  InputProps={{ name: 'email' }}
+                  className={classes.textField}
                   onChange={this.onChange}
-                  placeholder="Phone Number"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Email:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="email"
                   value={email}
-                  onChange={this.onChange}
-                  placeholder="E-Mail"
+                  variant="outlined"
+                  fullWidth
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Address:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="address"
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  label="Phone Number"
+                  InputProps={{ name: 'phoneNumber' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
+                  value={phoneNumber}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="outlined-multiline-flexible"
+                  multiline
+                  rowsMax="4"
+                  label="Address"
+                  InputProps={{ name: 'address' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
                   value={address}
-                  onChange={this.onChange}
-                  placeholder="Address"
+                  variant="outlined"
+
+                  fullWidth
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="title">Referred By</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="referredBy"
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  select
+                  label="Referred By"
+                  InputProps={{ name: 'referredBy' }}
+                  className={classes.textField}
                   value={referredBy}
                   onChange={this.onChange}
-                  placeholder="Referred By"
-                />
-              </div>
+                  fullWidth
+                  SelectProps={{
+                    MenuProps: {
+                      className: classes.menu,
+                    },
+                  }}
+                  helperText="Please select "
+                  margin="normal"
+                  variant="outlined"
+                >
+                  {referreds.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.return}
 
-              <button onClick={this.return} type="submit" className="btn btn-success">
-                Submit
-              </button>
-              <div>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  component={Link} to="/Vendors/">
-                  Back
-              </Button>
-              </div>
-            </form>
-          </div>
+            >
+              Add New
+               </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/vendors" variant="body2">
+                  Cancel
+              </Link>
+              </Grid>
+            </Grid>
+          </form>
         </div>
-      </div>
+
+      </Container>
+
     );
   }
 }
 
-export default withRouter(Create);
+export default withStyles(styles)(withRouter(Create));

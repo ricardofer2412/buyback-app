@@ -19,6 +19,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Home from '@material-ui/icons/Home'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 
 
 
@@ -105,80 +107,85 @@ export default function ButtonAppBar() {
     setOpen(false)
   }
 
+
   return (
-    <div className={classes.root}  >
-      <CssBaseline />
-      <AppBar
-        style={{ background: '#2E3B55' }}
-        position="static"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
+    <ClickAwayListener onClickAway={handleDrawerClose}>
 
-          <Typography variant="h6" className={classes.title}>
-            BUY-BACK APP
+      <div className={classes.root}  >
+
+        <CssBaseline />
+        <AppBar
+          style={{ background: '#2E3B55' }}
+          position="static"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Typography variant="h6" className={classes.title}>
+              BUY-BACK APP
           </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <Typography variant="h6" className={classes.title}>
-            BUYBACK APP
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          onClick={handleDrawerClose}
+          className={classes.drawer}
+          variant="persistent"
+          anchor="left"
+          open={open}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div className={classes.drawerHeader}>
+            <Typography variant="h6" className={classes.title}>
+              BUYBACK APP
           </Typography>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List component="nav" aria-label="Main mailbox folders">
-          <ListItem button component={Link} to="/">
-            <ListItemIcon>
-              <Home />
-              <ListItemText primary="Home" />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem button component={Link} to="/vendors">
-            <ListItemIcon>
-              <People />
-              <ListItemText primary="Vendors" />
-            </ListItemIcon>
-          </ListItem>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List component="nav" aria-label="Main mailbox folders">
+            <ListItem button component={Link} to="/">
+              <ListItemIcon>
+                <Home />
+                <ListItemText primary="Home" />
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button component={Link} to="/vendors">
+              <ListItemIcon>
+                <People />
+                <ListItemText primary="Vendors" />
+              </ListItemIcon>
+            </ListItem>
 
-          <ListItem button component={Link} to="/purchaseorders">
-            <ListItemIcon>
-              <ShoppingCart />
-              <ListItemText primary="Purchase Orders" />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem button component={Link} to="/tracking">
-            <ListItemIcon>
-              <StayCurrentPortrait />
-              <ListItemText primary="Tracking" />
-            </ListItemIcon>
-          </ListItem>
-        </List>
-      </Drawer>
-    </div>
+            <ListItem button component={Link} to="/purchaseorders">
+              <ListItemIcon>
+                <ShoppingCart />
+                <ListItemText primary="Purchase Orders" />
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button component={Link} to="/tracking">
+              <ListItemIcon>
+                <StayCurrentPortrait />
+                <ListItemText primary="Tracking" />
+              </ListItemIcon>
+            </ListItem>
+          </List>
+        </Drawer>
+      </div>
+    </ClickAwayListener>
   );
 }
