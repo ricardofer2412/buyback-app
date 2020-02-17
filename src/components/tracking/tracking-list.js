@@ -32,12 +32,14 @@ const useStyles = makeStyles(theme => ({
 class TrackingList extends React.Component {
   constructor(props) {
     super(props);
+    this.customerRef = firebase.firestore().collection('customers');
     this.ref = firebase.firestore().collection('trackings');
     this.unsubscribe = null;
 
 
 
     this.state = {
+      poNumber: '',
       trackings: [],
       trackingStatuses: []
     };
@@ -56,13 +58,14 @@ class TrackingList extends React.Component {
     const trackings = [];
     const trackingNumbers = [];
     querySnapshot.forEach(async (doc) => {
-      const { trackingNum, vendorName, } = doc.data();
+      const { poNumber, trackingNum, currentCustomer, } = doc.data();
       trackingNumbers.push(trackingNum)
       trackings.push({
         trackingId: doc.id,
         doc,
         trackingNum,
-        vendorName,
+        currentCustomer,
+        poNumber
 
       });
     });
@@ -116,10 +119,11 @@ class TrackingList extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell>Tracking Number</TableCell>
+                  <TableCell>PO#</TableCell>
                   <TableCell>Vendor</TableCell>
                   <TableCell> Status</TableCell>
                   <TableCell>Method</TableCell>
-
+                  
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -127,7 +131,8 @@ class TrackingList extends React.Component {
                 {this.state.trackings.map((tracking, idx) =>
                   <tr>
                     <td>{tracking.trackingNum} </td>
-                    <td>{tracking.vendorName}</td>
+                    <td>{tracking.poNumber}</td>
+                    <td>{tracking.currentCustomer}</td>
                     <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].status}</td>
                     <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].carrierDesc}</td>
                     <td>  <IconButton onClick={() => this.delete(tracking)} aria-label="Delete" >
