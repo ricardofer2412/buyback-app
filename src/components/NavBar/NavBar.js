@@ -133,7 +133,7 @@ export default function ButtonAppBar() {
             </IconButton>
 
             <Typography variant="h6" className={classes.title}>
-              BUY-BACK APP
+              BUY-BACK APP - MS
           </Typography>
             <Button color="inherit">Login</Button>
           </Toolbar>
