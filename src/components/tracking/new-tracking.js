@@ -137,7 +137,7 @@ class NewTracking extends Component {
 
       trackingNum,
       vendorName,
-      trackingStatus, 
+      trackingStatus,
       poNumber
 
     } = this.state;
@@ -158,8 +158,8 @@ class NewTracking extends Component {
 
         trackingNum: '',
         vendorName: '',
-        trackingStatus: '', 
-        poNumber: ''
+        trackingStatus: '',
+        poNumber: '',
 
       });
 
@@ -188,65 +188,64 @@ class NewTracking extends Component {
     const {
       trackingNum,
       vendorName,
-      trackingStatus, 
-    poNumber } = this.state;
+      trackingStatus,
+      poNumber } = this.state;
 
     console.log('this.state.customer:', this.state.customers);
 
     return (
 
       <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LocalShippingIcon/>
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Add Tracking
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LocalShippingIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Add Tracking
       </Typography>
-        <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
-          <Grid container spacing={2}>
-            
-            <Grid item xs={12}>
-              <TextField
-                required
-                label="Tracking Number"
-                InputProps={{ name: 'trackingNum' }}
-                className={classes.textField}
-                onChange={this.onChange}
-                value={trackingNum}
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                label="PO Number"
-                InputProps={{ name: 'poNumber' }}
-                className={classes.textField}
-                onChange={this.onChange}
-                value={poNumber}
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-            <Button onClick={this.openDialog.bind(this)}>New Vendor</Button>
+          <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
+            <Grid container spacing={2}>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  label="Tracking Number"
+                  InputProps={{ name: 'trackingNum' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
+                  value={trackingNum}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  label="PO Number"
+                  InputProps={{ name: 'poNumber' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
+                  value={poNumber}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button onClick={this.openDialog.bind(this)}>New Vendor</Button>
                 <Dialog open={this.state.open} onClose={this.state.open} onEnter={console.log("Hey.")}>
                   <Create />
                   <Button onClick={this.closeDialog.bind(this)} color="primary">
                     Cancel
             </Button>
                 </Dialog>
-            </Grid>
-            <Grid item xs={12}>   
-            <TextField
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
                   select
                   label="Vendor"
-                  InputProps={{ name: 'currentCustomer' }}
-                  className={classes.textField}
                   value={this.state.currentCustomer}
+                  className={classes.textField}
                   onChange={this.handleCustomerChange}
                   fullWidth
                   SelectProps={{
@@ -264,36 +263,36 @@ class NewTracking extends Component {
                     </MenuItem>
                   ))}
                 </TextField>
-  
-              
-            </Grid>
-           
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={this.return}
 
-          >
-            Add New
+
+              </Grid>
+
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.return}
+
+            >
+              Add New
              </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/tracking-list" variant="body2">
-                Cancel
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/tracking-list" variant="body2">
+                  Cancel
             </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
+          </form>
+        </div>
 
-    </Container>
+      </Container>
 
-  );
-}
+    );
+  }
 }
 
 

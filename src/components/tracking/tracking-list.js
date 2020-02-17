@@ -41,7 +41,8 @@ class TrackingList extends React.Component {
     this.state = {
       poNumber: '',
       trackings: [],
-      trackingStatuses: []
+      trackingStatuses: [],
+      customerId: ''
     };
   }
 
@@ -58,14 +59,16 @@ class TrackingList extends React.Component {
     const trackings = [];
     const trackingNumbers = [];
     querySnapshot.forEach(async (doc) => {
-      const { poNumber, trackingNum, currentCustomer, } = doc.data();
+      const { customerId, poNumber, trackingNum, currentCustomer, } = doc.data();
       trackingNumbers.push(trackingNum)
       trackings.push({
         trackingId: doc.id,
         doc,
         trackingNum,
         currentCustomer,
-        poNumber
+        poNumber,
+        customerId,
+
 
       });
     });
@@ -123,7 +126,7 @@ class TrackingList extends React.Component {
                   <TableCell>Vendor</TableCell>
                   <TableCell> Status</TableCell>
                   <TableCell>Method</TableCell>
-                  
+
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -132,7 +135,7 @@ class TrackingList extends React.Component {
                   <tr>
                     <td>{tracking.trackingNum} </td>
                     <td>{tracking.poNumber}</td>
-                    <td>{tracking.currentCustomer}</td>
+                    <td>{tracking.customerId}</td>
                     <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].status}</td>
                     <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].carrierDesc}</td>
                     <td>  <IconButton onClick={() => this.delete(tracking)} aria-label="Delete" >
