@@ -34,12 +34,12 @@ const useStyles = makeStyles(theme => ({
 }));
 export default class PurchaseOrders extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.ref = firebase.firestore().collection("purchase_orders");
         this.unsubscribe = null;
         this.state = {
-            purhase_orders: [],
+            purchase_orders: [],
             key: false
         };
     }
@@ -52,7 +52,8 @@ export default class PurchaseOrders extends React.Component {
                 poData,
                 poNumber,
                 poTotal,
-                quantity
+                quantity, 
+                company,
             } = doc.data();
             purchase_orders.push({
                 purchase_orderId: doc.id,
@@ -62,7 +63,8 @@ export default class PurchaseOrders extends React.Component {
                 poData,
                 poNumber,
                 poTotal,
-                quantity
+                quantity, 
+                company
             });
         });
 
@@ -80,7 +82,7 @@ export default class PurchaseOrders extends React.Component {
         console.log("key", purchase_orderId, "purchase_order", purchase_order);
         firebase
             .firestore()
-            .collection("purchase_order")
+            .collection("purchase_orders")
             .doc(purchase_orderId)
             .delete()
             .then(() => {
@@ -118,17 +120,17 @@ export default class PurchaseOrders extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.purhase_orders.map(purchase_order => (
+                            {this.state.purchase_orders.map((purchase_order, idx) => 
                                 <TableRow>
                                     <TableCell>{purchase_order.poNumber}</TableCell>
-                                    <TableCell>{purchase_order.poDate}</TableCell>
+                                    <TableCell>{purchase_order.company}</TableCell>
                                     <TableCell>
                                         <IconButton onClick={() => this.delete(purchase_order)} aria-label="Delete" >
                                             <DeleteIcon fontSize="small" />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )}
                         </TableBody>
 
                     </Table>

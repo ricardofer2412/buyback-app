@@ -115,7 +115,7 @@ export default function ButtonAppBar() {
 
         <CssBaseline />
         <AppBar
-          style={{ background: '#2E3B55' }}
+          style={{ background: '#0B2545' }}
           position="static"
           className={clsx(classes.appBar, {
             [classes.appBarShift]: open,

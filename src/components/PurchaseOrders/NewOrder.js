@@ -106,24 +106,11 @@ class NewOrder extends Component {
             deviceCarrier: '',
             deviceModel: '', 
             deviceImei: '', 
-            deviceForm: [{ quantity: '', deviceCarrier: '', deviceModel: '', deviceImei: '', devicePrice: '', deviceTotal: ''}]
 
         };
     }
 
-    handleDeviceChange = idx => evt => {
-        const newDeviceForm = this.state.deviceForm.map((deviceForm, sidx) => {
-          if (idx !== sidx) return deviceForm;
-          return { ...deviceForm, name: evt.target.value };
-        });
-    
-        this.setState({ deviceForm: newDeviceForm });
-      };
-      handleAddDevice = () => {
-        this.setState({
-          deviceForm: this.state.deviceForm.concat([{ quantity: '', deviceCarrier: '', deviceModel: '', deviceImei: '', devicePrice: '', deviceTotal: ''}])
-        });
-      };
+
 
     handleDateChange = date => {
         this.setState({ poDate: date });
@@ -153,7 +140,7 @@ class NewOrder extends Component {
             devicePrice, 
             deviceCarrier, 
             deviceModel, 
-            deviceImei
+            deviceImei, 
         } = this.state;
         const purchase_orderId = uuid();
 
@@ -177,7 +164,7 @@ class NewOrder extends Component {
                 devicePrice, 
                 deviceCarrier, 
                 deviceModel, 
-                deviceImei
+                deviceImei, 
             })
             .then(() => {
                 this.setState({
@@ -196,7 +183,8 @@ class NewOrder extends Component {
                     devicePrice: "", 
                     deviceCarrier: "", 
                     deviceModel: '', 
-                    deviceImei: ''
+                    deviceImei: '', 
+                    deviceList: ""
                 });
                 this.props.history.push('/puchaseorders');
             })
@@ -224,7 +212,7 @@ class NewOrder extends Component {
 
                 <Typography
                     component="h2" m variant="display4">
-                    Purchase Order - {poNumber}
+                    Purchase Order: {poNumber}
                 </Typography>
                 <Paper className={classes.paper}>
                     <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
@@ -393,8 +381,8 @@ class NewOrder extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
+                                 
                                     <TableRow>
-
                                         <TableCell>
                                             <TextField
                                                 InputProps={{ name: 'quantity' }}
@@ -443,6 +431,7 @@ class NewOrder extends Component {
                                             />
                                         </TableCell>
                                         <TableCell>
+
                                         <Typography variant="h6" gutterBottom
                                         >   
                                                ${deviceTotal}
@@ -452,13 +441,16 @@ class NewOrder extends Component {
                                         <button
                                      className="btn btn-link"
                                     type="button"
-                                    onClick={this.handleAddDevice}
+                                    onClick={this.addDevice}
                 >
                                              +
                                                </button>
                                                </TableCell>
                                     </TableRow>
-                                </TableBody>
+                              
+                                  
+                              
+                              </TableBody>    
                             </Table>
                             </Grid>  
                       
