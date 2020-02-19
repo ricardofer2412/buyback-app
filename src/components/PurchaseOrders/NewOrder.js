@@ -74,7 +74,6 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 400,
         marginBottom: 20
     },
     inputContainer: {
@@ -91,24 +90,45 @@ class NewOrder extends Component {
         this.ref = firebase.firestore().collection("purchase_orders")
         this.state = {
             company: "",
-            deviceTotal: "",
+            deviceTotal: 0.00,
             poDate: new Date(),
             poNumber: "",
             poTotal: "",
-            quantity: "",
+            quantity: 1,
             email: "",
             address: "",
             expectDeliver: "",
             status: "",
             typePayment: '',
             phoneNumber: "",
-            carrier: ''
+            carrier: '',
+            devicePrice: 0.00, 
+            deviceCarrier: '',
+            deviceModel: '', 
+            deviceImei: '', 
+            deviceForm: [{ quantity: '', deviceCarrier: '', deviceModel: '', deviceImei: '', devicePrice: '', deviceTotal: ''}]
 
         };
     }
+
+    handleDeviceChange = idx => evt => {
+        const newDeviceForm = this.state.deviceForm.map((deviceForm, sidx) => {
+          if (idx !== sidx) return deviceForm;
+          return { ...deviceForm, name: evt.target.value };
+        });
+    
+        this.setState({ deviceForm: newDeviceForm });
+      };
+      handleAddDevice = () => {
+        this.setState({
+          deviceForm: this.state.deviceForm.concat([{ quantity: '', deviceCarrier: '', deviceModel: '', deviceImei: '', devicePrice: '', deviceTotal: ''}])
+        });
+      };
+
     handleDateChange = date => {
         this.setState({ poDate: date });
     };
+  
     onChange = e => {
         const state = this.state;
         state[e.target.name] = e.target.value;
@@ -130,6 +150,10 @@ class NewOrder extends Component {
             status,
             typePayment,
             phoneNumber,
+            devicePrice, 
+            deviceCarrier, 
+            deviceModel, 
+            deviceImei
         } = this.state;
         const purchase_orderId = uuid();
 
@@ -150,6 +174,10 @@ class NewOrder extends Component {
                 status,
                 typePayment,
                 phoneNumber,
+                devicePrice, 
+                deviceCarrier, 
+                deviceModel, 
+                deviceImei
             })
             .then(() => {
                 this.setState({
@@ -165,6 +193,10 @@ class NewOrder extends Component {
                     status: "",
                     typePayment: "",
                     phoneNumber: "",
+                    devicePrice: "", 
+                    deviceCarrier: "", 
+                    deviceModel: '', 
+                    deviceImei: ''
                 });
                 this.props.history.push('/puchaseorders');
             })
@@ -179,11 +211,13 @@ class NewOrder extends Component {
     render() {
 
         const {
-            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate,
-            quantity
+            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate, devicePrice,
+            quantity, deviceCarrier, deviceModel, deviceImei
 
         } = this.state;
         const { classes } = this.props;
+
+        const deviceTotal =  devicePrice * quantity;
         return (
 
             <div className={classes.root}>
@@ -204,7 +238,7 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={company}
                                     variant="outlined"
-                                    fullWidth
+                                    width={400}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -216,7 +250,7 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={vendorName}
                                     variant="outlined"
-                                    fullWidth
+                                    width={400}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -228,7 +262,7 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={poNumber}
                                     variant="outlined"
-                                    fullWidth
+                                    width={400}
                                 />
                             </Grid>
                         </Grid>
@@ -242,7 +276,8 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={email}
                                     variant="outlined"
-                                    fullWidth
+                                    
+                                    width={400}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -254,7 +289,8 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={phoneNumber}
                                     variant="outlined"
-                                    fullWidth
+                                    
+                                    width={400}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -266,7 +302,8 @@ class NewOrder extends Component {
                                     value={status}
                                     defaultValue={poDate}
                                     onChange={this.onChange}
-                                    fullWidth
+                                    
+                                    width={400}
                                     SelectProps={{
                                         MenuProps: {
                                             className: classes.menu,
@@ -302,6 +339,7 @@ class NewOrder extends Component {
                                     value={poDate}
                                     variant="outlined"
                                     onChange={this.onChange}
+                                    width={400}
                                 />
                             </Grid>
 
@@ -316,7 +354,8 @@ class NewOrder extends Component {
                                     className={classes.textField}
                                     value={typePayment}
                                     onChange={this.onChange}
-                                    fullWidth
+                                    
+                                    width={400}
                                     SelectProps={{
                                         MenuProps: {
                                             className: classes.menu,
@@ -339,8 +378,8 @@ class NewOrder extends Component {
 
 
                         <Divider />
+                        <Grid container spacing={12}>
 
-                        <div>
                             <Table className={classes.table}>
                                 <TableHead>
                                     <TableRow>
@@ -350,6 +389,7 @@ class NewOrder extends Component {
                                         <TableCell>IMEI</TableCell>
                                         <TableCell>Cost</TableCell>
                                         <TableCell>Total</TableCell>
+                                        <TableCell>Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -362,57 +402,66 @@ class NewOrder extends Component {
                                                 onChange={this.onChange}
                                                 value={quantity}
                                                 variant="outlined"
+                                                width="25%"  
+                                                
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'quantity' }}
+                                                InputProps={{ name: 'deviceCarrier' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={quantity}
+                                                value={deviceCarrier}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'quantity' }}
+                                                InputProps={{ name: 'deviceModel' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={quantity}
+                                                value={deviceModel}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'quantity' }}
+                                                InputProps={{ name: 'deviceImei' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={quantity}
+                                                value={deviceImei}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'quantity' }}
+                                                InputProps={{ name: 'devicePrice' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={quantity}
+                                                value={devicePrice}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'quantity' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={quantity}
-                                                variant="outlined"
-                                            />
+                                        <Typography variant="h6" gutterBottom
+                                        >   
+                                               ${deviceTotal}
+                                            </Typography>
                                         </TableCell>
+                                        <TableCell>
+                                        <button
+                                     className="btn btn-link"
+                                    type="button"
+                                    onClick={this.handleAddDevice}
+                >
+                                             +
+                                               </button>
+                                               </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                        </div>
+                            </Grid>  
+                      
 
                         <div className={classes.inputContainer}>
                             <Button
@@ -426,7 +475,7 @@ class NewOrder extends Component {
                         </div>
                     </form>
                 </Paper>
-
+                                            
 
 
             </div>
