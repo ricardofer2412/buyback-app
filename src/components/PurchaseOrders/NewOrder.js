@@ -10,8 +10,51 @@ import TextField from "@material-ui/core/TextField"
 import { Typography } from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
+
 
 const uuid = require("uuid");
+const payment = [
+    {
+        value: 'Cash',
+        label: 'Cash'
+    },
+    {
+        value: 'Check',
+        label: 'Check'
+    },
+    {
+        value: 'Paypal',
+        label: 'Paypal'
+    }
+]
+const statusList = [
+    {
+        value: 'Pending',
+        label: 'Pending'
+    },
+    {
+        value: 'Completed',
+        label: 'Completed'
+    },
+    {
+        value: 'Tested',
+        label: 'Tested'
+    },
+    {
+        value: 'Paid',
+        label: 'Paid'
+    },
+    {
+        value: 'Entered',
+        label: 'Entered'
+    }
+]
+
+
 
 const styles = theme => ({
     root: {
@@ -31,7 +74,7 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
+        width: 400,
         marginBottom: 20
     },
     inputContainer: {
@@ -49,7 +92,7 @@ class NewOrder extends Component {
         this.state = {
             company: "",
             deviceTotal: "",
-            poDate: "",
+            poDate: new Date(),
             poNumber: "",
             poTotal: "",
             quantity: "",
@@ -57,11 +100,15 @@ class NewOrder extends Component {
             address: "",
             expectDeliver: "",
             status: "",
-            typePayment: ""
-
+            typePayment: '',
+            phoneNumber: "",
+            carrier: ''
 
         };
     }
+    handleDateChange = date => {
+        this.setState({ poDate: date });
+    };
     onChange = e => {
         const state = this.state;
         state[e.target.name] = e.target.value;
@@ -81,7 +128,8 @@ class NewOrder extends Component {
             address,
             expectDeliver,
             status,
-            typePayment
+            typePayment,
+            phoneNumber,
         } = this.state;
         const purchase_orderId = uuid();
 
@@ -100,7 +148,8 @@ class NewOrder extends Component {
                 address,
                 expectDeliver,
                 status,
-                typePayment
+                typePayment,
+                phoneNumber,
             })
             .then(() => {
                 this.setState({
@@ -114,9 +163,10 @@ class NewOrder extends Component {
                     address: "",
                     expectDeliver: "",
                     status: "",
-                    typePayment: ""
+                    typePayment: "",
+                    phoneNumber: "",
                 });
-                this.props.histotry.push('/puchase_orders');
+                this.props.history.push('/puchaseorders');
             })
             .catch(error => {
                 console.error("Error adding document:", error)
@@ -129,32 +179,163 @@ class NewOrder extends Component {
     render() {
 
         const {
-            company,
+            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate,
+            quantity
 
         } = this.state;
         const { classes } = this.props;
         return (
 
             <div className={classes.root}>
+
                 <Typography
                     component="h2" m variant="display4">
-                    Purchase Order
+                    Purchase Order - {poNumber}
                 </Typography>
                 <Paper className={classes.paper}>
                     <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
-                        <div className={classes.inputContainer}>
-                            <TextField
-                                required
-                                label="Company"
-                                InputProps={{ name: 'company' }}
-                                className={classes.textField}
-                                onChange={this.onChange}
-                                value={company}
-                                variant="outlined"
-                            />
-                            <Divider variant="middle" />
+                        <Grid container spacing={8}>
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    label="Company"
+                                    InputProps={{ name: 'company' }}
+                                    className={classes.textField}
+                                    onChange={this.onChange}
+                                    value={company}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    label="Vendor Name"
+                                    InputProps={{ name: 'vendorName' }}
+                                    className={classes.textField}
+                                    onChange={this.onChange}
+                                    value={vendorName}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    label='PO Number'
+                                    InputProps={{ name: 'poNumber' }}
+                                    className={classes.textField}
+                                    onChange={this.onChange}
+                                    value={poNumber}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={8}>
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    label="E-Mail"
+                                    InputProps={{ name: 'email' }}
+                                    className={classes.textField}
+                                    onChange={this.onChange}
+                                    value={email}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    label="Phone Number"
+                                    InputProps={{ name: 'phoneNumber' }}
+                                    className={classes.textField}
+                                    onChange={this.onChange}
+                                    value={phoneNumber}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    select
+                                    label="Referred By"
+                                    InputProps={{ name: 'status' }}
+                                    className={classes.textField}
+                                    value={status}
+                                    defaultValue={poDate}
+                                    onChange={this.onChange}
+                                    fullWidth
+                                    SelectProps={{
+                                        MenuProps: {
+                                            className: classes.menu,
+                                        },
+                                    }}
+                                    helperText="Please select "
+                                    margin="normal"
+                                    variant="outlined"
+                                >
+                                    {statusList.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={8}>
 
-                        </div>
+                            <Grid item xs={4}>
+                                <TextField
+
+                                    id="poDate"
+                                    label="Date"
+                                    type="date"
+                                    className={classes.textField}
+                                    InputProps={{
+                                        name: 'poDate'
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    value={poDate}
+                                    variant="outlined"
+                                    onChange={this.onChange}
+                                />
+                            </Grid>
+
+                            <Grid item xs={4}>
+
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    select
+                                    label="Payment Type"
+                                    InputProps={{ name: 'typePayment' }}
+                                    className={classes.textField}
+                                    value={typePayment}
+                                    onChange={this.onChange}
+                                    fullWidth
+                                    SelectProps={{
+                                        MenuProps: {
+                                            className: classes.menu,
+                                        },
+                                    }}
+                                    helperText="Please select "
+                                    margin="normal"
+                                    variant="outlined"
+                                >
+                                    {payment.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        </Grid>
+
+
 
 
                         <Divider />
@@ -174,12 +355,60 @@ class NewOrder extends Component {
                                 <TableBody>
                                     <TableRow>
 
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                InputProps={{ name: 'quantity' }}
+                                                className={classes.textField}
+                                                onChange={this.onChange}
+                                                value={quantity}
+                                                variant="outlined"
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -189,7 +418,7 @@ class NewOrder extends Component {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                className={classes.button}
+                                className={classes.submit}
                                 onClick={this.return}
                                 color="primary">
                                 Save
@@ -201,7 +430,6 @@ class NewOrder extends Component {
 
 
             </div>
-
 
         );
     }

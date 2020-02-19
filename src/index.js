@@ -25,7 +25,7 @@ ReactDOM.render(
       <Route exact path="/" component={App} />
       <Route exact path="/vendors" component={CustomerList} />
       <Route exact path="/edit/:id" component={Edit} />
-      <Route exact path="/create" component={Create} />
+      <Route exact path="/vendors/new" component={Create} />
       <Route exact path="/show/:id" component={Show} />
       <Route exact path="/purchaseorders" component={PurchaseOrders} />
       <Route exact path="/neworder" component={NewOrder} />

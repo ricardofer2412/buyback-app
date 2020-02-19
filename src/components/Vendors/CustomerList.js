@@ -93,7 +93,7 @@ class CustomerList extends React.Component {
       >
         <Fab
           variant="extended"
-          component={Link} to="/Create"
+          component={Link} to="/vendors/new"
           color="secondary"
           aria-label="Add"
           className={classes.fab}

@@ -161,7 +161,7 @@ class Create extends Component {
                 <TextField
                   required
                   label="Company"
-                  InputProps={{ name: 'phoneNumber' }}
+                  InputProps={{ name: 'company' }}
                   className={classes.textField}
                   onChange={this.onChange}
                   value={company}
