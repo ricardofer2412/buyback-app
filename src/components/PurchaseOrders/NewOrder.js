@@ -17,6 +17,29 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 
 const uuid = require("uuid");
+const carriers = [
+    {
+        value: "AT&T",
+        label: "AT&T",
+        color: 'red'
+    }, 
+    {
+        value: "T-Mobile", 
+        label: "T-Mobile"
+    }, 
+    {
+        value: "Sprint",
+        label: "Sprint"
+    }, 
+    {
+        value: "Verizon",
+        label: "Verizon"
+    }, 
+    {
+        value: "Unlocked", 
+        label: "Unlocked"
+    }
+]
 const payment = [
     {
         value: 'Cash',
@@ -395,13 +418,30 @@ class NewOrder extends Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'deviceCarrier' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={deviceCarrier}
-                                                variant="outlined"
-                                            />
+                                        <TextField
+                                    select
+                                    label="Carrier"
+                                    InputProps={{ name: 'deviceCarrier' }}
+                                    className={classes.textField}
+                                    value={deviceCarrier}
+                                    onChange={this.onChange}
+                                    
+                                    width={400}
+                                    SelectProps={{
+                                        MenuProps: {
+                                            className: classes.menu,
+                                        },
+                                    }}
+                                    helperText="Please select "
+                                    margin="normal"
+                                    variant="outlined"
+                                >
+                                    {carriers.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                                         </TableCell>
                                         <TableCell>
                                             <TextField
