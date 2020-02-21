@@ -16,6 +16,8 @@ import {
 } from "@material-ui/core"
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Create, Visibility } from '@material-ui/icons'
+
 
 
 
@@ -32,58 +34,52 @@ const useStyles = makeStyles(theme => ({
     }
     ,
 }));
-export default class PurchaseOrders extends React.Component {
+class PurchaseOrders extends React.Component {
 
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection("purchase_orders");
+        this.ref = firebase.firestore().collection("purchaseOrders")
         this.unsubscribe = null;
         this.state = {
-            purchase_orders: [],
-            key: false
+            purchaseOrders: []
         };
     }
 
-    onCollectionUpdate = querrySnapshot => {
-        const purchase_orders = [];
-        querrySnapshot.forEach(doc => {
-            const { deductionAmount,
-                deviceTotal,
-                poData,
+    onCollectionUpdate = (querySnapshot) => {
+        const purchaseOrders = [];
+        querySnapshot.forEach(doc => {
+            const {
                 poNumber,
-                poTotal,
-                quantity, 
                 company,
+                vendorName,
+                status
             } = doc.data();
-            purchase_orders.push({
-                purchase_orderId: doc.id,
+            purchaseOrders.push({
+                purchaseOrderId: doc.id,
                 doc,
-                deductionAmount,
-                deviceTotal,
-                poData,
                 poNumber,
-                poTotal,
-                quantity, 
-                company
+                company,
+                vendorName,
+                status
             });
         });
 
         this.setState({
-            purchase_orders
+            purchaseOrders
         });
     };
 
-    componentDiMount() {
-        this.unsubscribe = this.ref.onSnapShot(this.onCollectionUpdate);
+    componentDidMount() {
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     }
 
-    delete = purchase_order => {
-        const { purchase_orderId } = purchase_order;
-        console.log("key", purchase_orderId, "purchase_order", purchase_order);
+    delete = purchaseOrder => {
+        const { purchaseOrderId } = purchaseOrder;
+        console.log("key: ", purchaseOrderId, "purchaseOrder", purchaseOrder);
         firebase
             .firestore()
-            .collection("purchase_orders")
-            .doc(purchase_orderId)
+            .collection("purchaseOrders")
+            .doc(purchaseOrderId)
             .delete()
             .then(() => {
                 console.log("PO Deleted");
@@ -109,33 +105,41 @@ export default class PurchaseOrders extends React.Component {
                     <AddIcon className={classes.extendedIcon} />
                 </Fab>
                 <Paper>
-
                     <Table>
                         <TableHead>
                             <TableRow>
-
-                                <TableCell>PO # </TableCell>
-                                <TableCell>Date  </TableCell>
-                                <TableCell>Actions</TableCell>
+                                <TableCell>PO# </TableCell>
+                                <TableCell>Vendor  </TableCell>
+                                <TableCell>Status</TableCell>
+                                <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.purchase_orders.map((purchase_order, idx) => 
+                            {this.state.purchaseOrders.map(orders => (
                                 <TableRow>
-                                    <TableCell>{purchase_order.poNumber}</TableCell>
-                                    <TableCell>{purchase_order.company}</TableCell>
+
+                                    <TableCell>{orders.poNumber}</TableCell>
+                                    <TableCell>{orders.vendorName}</TableCell>
+                                    <TableCell>{orders.status}</TableCell>
                                     <TableCell>
-                                        <IconButton onClick={() => this.delete(purchase_order)} aria-label="Delete" >
+                                        <IconButton onClick={() => this.delete(orders)} aria-label="Delete" >
                                             <DeleteIcon fontSize="small" />
                                         </IconButton>
+                                        <IconButton
+                                            component={Link} to={`/purchaseorders/edit/${orders.purchaseOrderId}`}
+                                        >
+                                            <Create />
+                                        </IconButton>
                                     </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
 
+                                </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
                 </Paper>
             </Container>
         )
     }
 }
+
+export default PurchaseOrders;

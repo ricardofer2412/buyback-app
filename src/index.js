@@ -14,6 +14,7 @@ import TrackingList from "./components/tracking/tracking-list";
 import NewTracking from './components/tracking/new-tracking'
 import NavBar from './components/NavBar/NavBar'
 import EditTracking from './components/tracking/edit-tracking'
+import EditOrder from './components/PurchaseOrders/EditOrder'
 
 ReactDOM.render(
   <Router>
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route exact path="/tracking" component={TrackingList} />
       <Route exact path='/new-tracking' component={NewTracking} />
       <Route exact path='/edit-tracking' component={EditTracking} />
+      <Route exact path="/purchaserorders/edit/:id" component={EditOrder} />
 
     </div>
   </Router>,

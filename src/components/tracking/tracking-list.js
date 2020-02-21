@@ -35,9 +35,6 @@ class TrackingList extends React.Component {
     this.customerRef = firebase.firestore().collection('customers');
     this.ref = firebase.firestore().collection('trackings');
     this.unsubscribe = null;
-
-
-
     this.state = {
       poNumber: '',
       trackings: [],
@@ -103,8 +100,6 @@ class TrackingList extends React.Component {
       <Container fixed>
         <Container fixed>
           <Container>
-
-
             <h3>Tracking Orders</h3>
             <Fab
               variant="extended"

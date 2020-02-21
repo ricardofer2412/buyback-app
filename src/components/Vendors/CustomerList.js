@@ -112,7 +112,7 @@ class CustomerList extends React.Component {
             </TableHead>
             <TableBody>
               {this.state.customers.map(customer => (
-                <TableRow>
+                < TableRow >
                   <TableCell>{customer.vendorName}</TableCell>
                   <TableCell>{customer.phoneNumber}</TableCell>
                   <TableCell>{customer.email}</TableCell>
@@ -137,7 +137,7 @@ class CustomerList extends React.Component {
             </TableBody>
           </Table>
         </Paper>
-      </Container>
+      </Container >
     );
   }
 }

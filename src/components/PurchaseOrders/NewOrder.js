@@ -22,21 +22,21 @@ const carriers = [
         value: "AT&T",
         label: "AT&T",
         color: 'red'
-    }, 
+    },
     {
-        value: "T-Mobile", 
+        value: "T-Mobile",
         label: "T-Mobile"
-    }, 
+    },
     {
         value: "Sprint",
         label: "Sprint"
-    }, 
+    },
     {
         value: "Verizon",
         label: "Verizon"
-    }, 
+    },
     {
-        value: "Unlocked", 
+        value: "Unlocked",
         label: "Unlocked"
     }
 ]
@@ -110,7 +110,7 @@ class NewOrder extends Component {
     constructor(props) {
         super(props);
 
-        this.ref = firebase.firestore().collection("purchase_orders")
+        this.ref = firebase.firestore().collection("purchaseOrders")
         this.state = {
             company: "",
             deviceTotal: 0.00,
@@ -125,10 +125,11 @@ class NewOrder extends Component {
             typePayment: '',
             phoneNumber: "",
             carrier: '',
-            devicePrice: 0.00, 
+            devicePrice: 0.00,
             deviceCarrier: '',
-            deviceModel: '', 
-            deviceImei: '', 
+            deviceModel: '',
+            deviceImei: '',
+            vendorName: ''
 
         };
     }
@@ -138,7 +139,7 @@ class NewOrder extends Component {
     handleDateChange = date => {
         this.setState({ poDate: date });
     };
-  
+
     onChange = e => {
         const state = this.state;
         state[e.target.name] = e.target.value;
@@ -160,19 +161,20 @@ class NewOrder extends Component {
             status,
             typePayment,
             phoneNumber,
-            devicePrice, 
-            deviceCarrier, 
-            deviceModel, 
-            deviceImei, 
+            devicePrice,
+            deviceCarrier,
+            deviceModel,
+            deviceImei,
+            vendorName
         } = this.state;
-        const purchase_orderId = uuid();
+        const purchaseOrderId = uuid();
 
-        console.log("purchase_orderId: ", purchase_orderId);
+        console.log("purchase_orderId: ", purchaseOrderId);
         this.ref
-            .doc(purchase_orderId)
+            .doc(purchaseOrderId)
             .set({
                 company,
-                purchase_orderId,
+                purchaseOrderId,
                 deviceTotal,
                 poDate,
                 poNumber,
@@ -184,10 +186,11 @@ class NewOrder extends Component {
                 status,
                 typePayment,
                 phoneNumber,
-                devicePrice, 
-                deviceCarrier, 
-                deviceModel, 
-                deviceImei, 
+                devicePrice,
+                deviceCarrier,
+                deviceModel,
+                deviceImei,
+                vendorName
             })
             .then(() => {
                 this.setState({
@@ -203,13 +206,14 @@ class NewOrder extends Component {
                     status: "",
                     typePayment: "",
                     phoneNumber: "",
-                    devicePrice: "", 
-                    deviceCarrier: "", 
-                    deviceModel: '', 
-                    deviceImei: '', 
-                    deviceList: ""
+                    devicePrice: "",
+                    deviceCarrier: "",
+                    deviceModel: '',
+                    deviceImei: '',
+                    deviceList: "",
+                    vendorName: ""
                 });
-                this.props.history.push('/puchaseorders');
+                this.props.history.push('/purchaseorders');
             })
             .catch(error => {
                 console.error("Error adding document:", error)
@@ -228,7 +232,7 @@ class NewOrder extends Component {
         } = this.state;
         const { classes } = this.props;
 
-        const deviceTotal =  devicePrice * quantity;
+        const deviceTotal = devicePrice * quantity;
         return (
 
             <div className={classes.root}>
@@ -287,7 +291,7 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={email}
                                     variant="outlined"
-                                    
+
                                     width={400}
                                 />
                             </Grid>
@@ -300,7 +304,7 @@ class NewOrder extends Component {
                                     onChange={this.onChange}
                                     value={phoneNumber}
                                     variant="outlined"
-                                    
+
                                     width={400}
                                 />
                             </Grid>
@@ -313,7 +317,7 @@ class NewOrder extends Component {
                                     value={status}
                                     defaultValue={poDate}
                                     onChange={this.onChange}
-                                    
+
                                     width={400}
                                     SelectProps={{
                                         MenuProps: {
@@ -365,7 +369,7 @@ class NewOrder extends Component {
                                     className={classes.textField}
                                     value={typePayment}
                                     onChange={this.onChange}
-                                    
+
                                     width={400}
                                     SelectProps={{
                                         MenuProps: {
@@ -404,7 +408,7 @@ class NewOrder extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                 
+
                                     <TableRow>
                                         <TableCell>
                                             <TextField
@@ -413,35 +417,35 @@ class NewOrder extends Component {
                                                 onChange={this.onChange}
                                                 value={quantity}
                                                 variant="outlined"
-                                                width="25%"  
-                                                
+                                                width="25%"
+
                                             />
                                         </TableCell>
                                         <TableCell>
-                                        <TextField
-                                    select
-                                    label="Carrier"
-                                    InputProps={{ name: 'deviceCarrier' }}
-                                    className={classes.textField}
-                                    value={deviceCarrier}
-                                    onChange={this.onChange}
-                                    
-                                    width={400}
-                                    SelectProps={{
-                                        MenuProps: {
-                                            className: classes.menu,
-                                        },
-                                    }}
-                                    helperText="Please select "
-                                    margin="normal"
-                                    variant="outlined"
-                                >
-                                    {carriers.map(option => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                            <TextField
+                                                select
+                                                label="Carrier"
+                                                InputProps={{ name: 'deviceCarrier' }}
+                                                className={classes.textField}
+                                                value={deviceCarrier}
+                                                onChange={this.onChange}
+
+                                                width={400}
+                                                SelectProps={{
+                                                    MenuProps: {
+                                                        className: classes.menu,
+                                                    },
+                                                }}
+                                                helperText="Please select "
+                                                margin="normal"
+                                                variant="outlined"
+                                            >
+                                                {carriers.map(option => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
                                         </TableCell>
                                         <TableCell>
                                             <TextField
@@ -472,28 +476,28 @@ class NewOrder extends Component {
                                         </TableCell>
                                         <TableCell>
 
-                                        <Typography variant="h6" gutterBottom
-                                        >   
-                                               ${deviceTotal}
+                                            <Typography variant="h6" gutterBottom
+                                            >
+                                                ${deviceTotal}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
-                                        <button
-                                     className="btn btn-link"
-                                    type="button"
-                                    onClick={this.addDevice}
-                >
-                                             +
+                                            <button
+                                                className="btn btn-link"
+                                                type="button"
+                                                onClick={this.addDevice}
+                                            >
+                                                +
                                                </button>
-                                               </TableCell>
+                                        </TableCell>
                                     </TableRow>
-                              
-                                  
-                              
-                              </TableBody>    
+
+
+
+                                </TableBody>
                             </Table>
-                            </Grid>  
-                      
+                        </Grid>
+
 
                         <div className={classes.inputContainer}>
                             <Button
@@ -507,7 +511,7 @@ class NewOrder extends Component {
                         </div>
                     </form>
                 </Paper>
-                                            
+
 
 
             </div>
