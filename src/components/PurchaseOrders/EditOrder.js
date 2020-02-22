@@ -106,7 +106,6 @@ const styles = theme => ({
 class EditOrder extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       purchaseOrderId: '',
       company: "",
@@ -258,7 +257,7 @@ class EditOrder extends Component {
     return (
 
       <div className={classes.root}>
-
+        {console.log(this.state)}
         <Typography
           component="h2" m variant="display4">
           Purchase Order: {this.state.poNumber}

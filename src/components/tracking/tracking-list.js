@@ -103,7 +103,7 @@ class TrackingList extends React.Component {
             <h3>Tracking Orders</h3>
             <Fab
               variant="extended"
-              component={Link} to="/new-tracking"
+              component={Link} to="/tracking/new/"
               color="secondary"
               aria-label="Add"
               className={classes.fab}
@@ -137,7 +137,7 @@ class TrackingList extends React.Component {
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                       <IconButton
-                        component={Link} to={`/edit-tracking/${tracking.trackingId}`}
+                        component={Link} to={`/tracking/edit/${tracking.trackingId}`}
                       ><Create />
                       </IconButton></td>
                   </tr>)}

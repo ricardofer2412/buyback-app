@@ -191,7 +191,6 @@ class NewTracking extends Component {
       trackingStatus,
       poNumber } = this.state;
 
-    console.log('this.state.customer:', this.state.customers);
 
     return (
 

@@ -31,9 +31,9 @@ ReactDOM.render(
       <Route exact path="/purchaseorders" component={PurchaseOrders} />
       <Route exact path="/neworder" component={NewOrder} />
       <Route exact path="/tracking" component={TrackingList} />
-      <Route exact path='/new-tracking' component={NewTracking} />
-      <Route exact path='/edit-tracking' component={EditTracking} />
-      <Route exact path="/purchaserorders/edit/:id" component={EditOrder} />
+      <Route exact path='/tracking/new/' component={NewTracking} />
+      <Route exact path='/tracking/edit/:id' component={EditTracking} />
+      <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
 
     </div>
   </Router>,

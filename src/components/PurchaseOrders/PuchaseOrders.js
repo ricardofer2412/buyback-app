@@ -82,7 +82,7 @@ class PurchaseOrders extends React.Component {
             .doc(purchaseOrderId)
             .delete()
             .then(() => {
-                console.log("PO Deleted");
+                console.log("Order Deleted");
                 this.props.history.push("/purchaseorders");
             })
             .catch(error => {
@@ -115,18 +115,18 @@ class PurchaseOrders extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.purchaseOrders.map(orders => (
+                            {this.state.purchaseOrders.map(purchaseOrder => (
                                 <TableRow>
 
-                                    <TableCell>{orders.poNumber}</TableCell>
-                                    <TableCell>{orders.vendorName}</TableCell>
-                                    <TableCell>{orders.status}</TableCell>
+                                    <TableCell>{purchaseOrder.poNumber}</TableCell>
+                                    <TableCell>{purchaseOrder.vendorName}</TableCell>
+                                    <TableCell>{purchaseOrder.status}</TableCell>
                                     <TableCell>
-                                        <IconButton onClick={() => this.delete(orders)} aria-label="Delete" >
+                                        <IconButton onClick={() => this.delete(purchaseOrder)} aria-label="Delete" >
                                             <DeleteIcon fontSize="small" />
                                         </IconButton>
                                         <IconButton
-                                            component={Link} to={`/purchaseorders/edit/${orders.purchaseOrderId}`}
+                                            component={Link} to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
                                         >
                                             <Create />
                                         </IconButton>
