@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Title from './Title';
@@ -17,21 +18,30 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
+
+
 
 
 
 
 const styles = theme => ({
   depositContext: {
-    flex: 1,
+    flex: 2,
 
   },
     
-  AccountCircleIcon: {
+  ShoppingCart: {
     color: 'red', 
     justify: 'center', 
     fontSize: 30,
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+
+
+  },
+
+  Title: {
+   
   }
 
 });
@@ -51,20 +61,22 @@ class VendorCount extends Component {
       <React.Fragment>
         <Grid item xs={12}>
         <CardActionArea>
-                   <AccountCircleIcon className={classes.AccountCircleIcon}/>
+                   <ShoppingCart className={classes.ShoppingCart}/>
                  <CardContent>
                 <Typography variant="h5" component="h2">
-                    Vendors 
+                    Purchase Orders
                 </Typography>
               <Typography component="p">
-                3000
+               52
              </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button  size="small" 
-         component={Link} to={'/vendors/new'}>
-         Add New Vendor
+        <Button 
+            size="small" 
+         component={Link} to={'/neworder/'}
+         >
+        Create New PO
         </Button>
        
       </CardActions>

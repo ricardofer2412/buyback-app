@@ -17,7 +17,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-
+import FlightIcon from '@material-ui/icons/Flight';
 
 
 
@@ -27,11 +27,13 @@ const styles = theme => ({
 
   },
     
-  AccountCircleIcon: {
+  FlightIcon: {
     color: 'red', 
     justify: 'center', 
-    fontSize: 30,
-    margin: theme.spacing(1)
+    fontSize: 30, 
+    margin: theme.spacing(1),
+
+
   }
 
 });
@@ -51,20 +53,20 @@ class VendorCount extends Component {
       <React.Fragment>
         <Grid item xs={12}>
         <CardActionArea>
-                   <AccountCircleIcon className={classes.AccountCircleIcon}/>
+                   <FlightIcon className={classes.FlightIcon}/>
                  <CardContent>
                 <Typography variant="h5" component="h2">
-                    Vendors 
+                    Trackings
                 </Typography>
               <Typography component="p">
-                3000
+                15
              </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button  size="small" 
-         component={Link} to={'/vendors/new'}>
-         Add New Vendor
+         component={Link} to={'/tracking/new/'}>
+         Add New Tracking
         </Button>
        
       </CardActions>
