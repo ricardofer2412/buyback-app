@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
   ,
 }));
 
+const vendorCount = 0;
 
 
 class CustomerList extends React.Component {
@@ -40,11 +41,12 @@ class CustomerList extends React.Component {
     this.unsubscribe = null;
     this.state = {
       customers: [],
-      key: false
+      key: false,
     };
   }
 
   onCollectionUpdate = querySnapshot => {
+
     const customers = [];
     querySnapshot.forEach(doc => {
       const { vendorName, firstName, lastName, phoneNumber, email } = doc.data();
@@ -68,6 +70,7 @@ class CustomerList extends React.Component {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
+
   delete = customer => {
     const { customerId } = customer;
     console.log("key: ", customerId, "customer", customer);
@@ -87,10 +90,14 @@ class CustomerList extends React.Component {
 
   render() {
     const classes = useStyles
+
+    console.log({ vendorCount })
+
     return (
       <Container
         style={{ marginTop: 68 }}
       >
+        <h1>{this.state.vendorCount}</h1>
         <Fab
           variant="extended"
           component={Link} to="/vendors/new"

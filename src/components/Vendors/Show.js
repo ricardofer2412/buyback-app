@@ -30,6 +30,7 @@ class Show extends Component {
 
   getTrackingNumbers = (customerId) => {
     console.log('customerId: ', customerId);
+    console.log('Hi')
     firebase.firestore().collection("trackings").where("customerId", "==", customerId)
       .get()
       .then((querySnapshot) => {
@@ -77,6 +78,8 @@ class Show extends Component {
 
   render() {
     console.log(this.state.trackingNums)
+    console.log('Hi')
+
     return (
       <div className="container">
         <div className="panel panel-default">
