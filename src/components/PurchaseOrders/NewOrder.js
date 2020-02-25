@@ -129,7 +129,15 @@ class NewOrder extends Component {
             deviceCarrier: '',
             deviceModel: '',
             deviceImei: '',
-            vendorName: ''
+            vendorName: '',
+            devices: [
+                {
+                    imei: '',
+                    model: '',
+                    carrier: '',
+                    price: ''
+                }
+            ]
 
         };
     }
@@ -165,7 +173,15 @@ class NewOrder extends Component {
             deviceCarrier,
             deviceModel,
             deviceImei,
-            vendorName
+            vendorName,
+            devices: [
+                {
+                    imei,
+                    model,
+                    carrier,
+                    price
+                }
+            ]
         } = this.state;
         const purchaseOrderId = uuid();
 
@@ -190,7 +206,15 @@ class NewOrder extends Component {
                 deviceCarrier,
                 deviceModel,
                 deviceImei,
-                vendorName
+                vendorName,
+                devices: [
+                    {
+                        imei,
+                        model,
+                        carrier,
+                        price
+                    }
+                ]
             })
             .then(() => {
                 this.setState({
@@ -211,7 +235,15 @@ class NewOrder extends Component {
                     deviceModel: '',
                     deviceImei: '',
                     deviceList: "",
-                    vendorName: ""
+                    vendorName: "",
+                    devices: [
+                        {
+                            imei: '',
+                            model: '',
+                            carrier: '',
+                            price: ''
+                        }
+                    ]
                 });
                 this.props.history.push('/purchaseorders');
             })
@@ -226,13 +258,13 @@ class NewOrder extends Component {
     render() {
 
         const {
-            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate, devicePrice,
-            quantity, deviceCarrier, deviceModel, deviceImei
+            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate,
+            quantity, devices: [{ imei, price, carrier, model }]
 
         } = this.state;
         const { classes } = this.props;
 
-        const deviceTotal = devicePrice * quantity;
+        const deviceTotal = price * quantity;
         return (
 
             <div className={classes.root}>
@@ -425,9 +457,9 @@ class NewOrder extends Component {
                                             <TextField
                                                 select
                                                 label="Carrier"
-                                                InputProps={{ name: 'deviceCarrier' }}
+                                                InputProps={{ name: 'carrier' }}
                                                 className={classes.textField}
-                                                value={deviceCarrier}
+                                                value={carrier}
                                                 onChange={this.onChange}
 
                                                 width={400}
@@ -449,28 +481,28 @@ class NewOrder extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'deviceModel' }}
+                                                InputProps={{ name: 'model' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={deviceModel}
+                                                value={model}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'deviceImei' }}
+                                                InputProps={{ name: 'imei' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={deviceImei}
+                                                value={imei}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'devicePrice' }}
+                                                InputProps={{ name: 'devices.price' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={devicePrice}
+                                                value={this.price}
                                                 variant="outlined"
                                             />
                                         </TableCell>
