@@ -1,191 +1,201 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Link } from 'react-router-dom';
-import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-
-
-
+import { Link } from 'react-router-dom';
+import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
+import './NavBar.css'
 
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
-    flexGrow: 1,
     display: 'flex',
-  },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
   },
   drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+      color: '#E7EAF0'
+
+    },
   },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
+  toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+  },
+  appBar: {
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      background: 'white',
+      color: "black"
+    },
+  },
+ 
+
+  menuButton: {
+    marginRight: 20,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+    background: '#182B50',
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
+    padding: theme.spacing.unit * 3,
   },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  fab: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
 
-export default function ButtonAppBar() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  listItemText: {
+    color: '#E7EAF0'
+  },
 
-  function handleDrawerOpen() {
-    setOpen(true);
+  VersionText: {
+    color: '#E7EAF0',
+    align: 'center',
+    hight: 5
+
+
   }
+  
+});
 
-  function handleDrawerClose() {
-    setOpen(false)
-  }
+class ResponsiveDrawer extends React.Component {
+  state = {
+    mobileOpen: false,
+  };
 
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
 
-  return (
-    <ClickAwayListener onClickAway={handleDrawerClose}>
+  render() {
+    const { classes, theme } = this.props;
 
-      <div className={classes.root}  >
-
-        <CssBaseline />
-        <AppBar
-          style={{ background: '#0B2545' }}
-          position="static"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <Typography variant="h6" className={classes.title}>
-              BUY-BACK APP - MS
-          </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          onClick={handleDrawerClose}
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <Typography variant="h6" className={classes.title}>
-              BUYBACK APP
-          </Typography>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List component="nav" aria-label="Main mailbox folders">
+    const drawer = (
+      <div>
+        <div className={classes.toolbar} />
+        <div className={classes.toolbarIcon}>
+          <IconButton>
+          <Home className={classes.listItemText}/>
+          </IconButton>
+        </div>
+        <List component="nav" aria-label="Main mailbox folders">
+       <Divider />
             <ListItem button component={Link} to="/">
               <ListItemIcon>
-                <Home />
-                <ListItemText primary="Home" />
+                <Home className={classes.listItemText}/>
+                <ListItemText  className={classes.listItemText} primary="Home" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/vendors">
-              <ListItemIcon>
-                <People />
-                <ListItemText primary="Vendors" />
+              <ListItemIcon >
+                <People  className={classes.listItemText} />
+                <ListItemText  className={classes.listItemText} primary="Vendors" />
               </ListItemIcon>
             </ListItem>
 
             <ListItem button component={Link} to="/purchaseorders">
               <ListItemIcon>
-                <ShoppingCart />
-                <ListItemText primary="Purchase Orders" />
+                <ShoppingCart  className={classes.listItemText} />
+                <ListItemText  className={classes.listItemText} primary="Purchase Orders" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/tracking">
               <ListItemIcon>
-                <StayCurrentPortrait />
-                <ListItemText primary="Tracking" />
+                <StayCurrentPortrait  className={classes.listItemText} />
+                <ListItemText  className={classes.listItemText} primary="Tracking" />
               </ListItemIcon>
             </ListItem>
           </List>
-        </Drawer>
       </div>
-    </ClickAwayListener>
-  );
+    );
+
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" noWrap>
+              BUYBACK APP
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <nav className={classes.drawer}>
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={this.props.container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={this.state.mobileOpen}
+              onClose={this.handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="permanent"
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          
+        </main>
+      </div>
+    );
+  }
 }
+
+ResponsiveDrawer.propTypes = {
+  classes: PropTypes.object.isRequired,
+  // Injected by the documentation to work in an iframe.
+  // You won't need it on your project.
+  container: PropTypes.object,
+  theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);

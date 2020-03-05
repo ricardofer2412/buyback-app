@@ -109,7 +109,7 @@ const styles = theme => ({
 class NewOrder extends Component {
     constructor(props) {
         super(props);
-
+        this.deviceRef = firebase.firestore().collection('devices')
         this.ref = firebase.firestore().collection("purchaseOrders")
         this.state = {
             company: "",
@@ -124,20 +124,8 @@ class NewOrder extends Component {
             status: "",
             typePayment: '',
             phoneNumber: "",
-            carrier: '',
-            devicePrice: 0.00,
-            deviceCarrier: '',
-            deviceModel: '',
-            deviceImei: '',
-            vendorName: '',
-            devices: [
-                {
-                    imei: '',
-                    model: '',
-                    carrier: '',
-                    price: ''
-                }
-            ]
+            devices: []
+            
 
         };
     }
@@ -153,118 +141,57 @@ class NewOrder extends Component {
         state[e.target.name] = e.target.value;
         this.setState(state);
     }
-    onSubmit = e => {
-        e.preventDefault();
+    onSubmit = (e) => {
+      e.preventDefault();
+      const purchaseOrderId = uuid();
+      const deviceId = uuid();
+      const {
+          company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity
+      } = this.state
+      const { devices } = this.state;
+      this.ref
+      .doc(purchaseOrderId)
+      .set({
+        company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity, devices 
+      }).then((docRef) => {
+          this.setState({
+            company: "",
+            deviceTotal: "", 
+            poDate:'',
+            poNumber: "",
+            poTotal: "",
+            quantity: '',
+            email: "",
+            address: "",
+            expectDeliver: "",
+            status: "",
+            typePayment: '',
+            phoneNumber: "",
+            devices: []
+        
+          });
 
-        const {
-            company,
-            deviceTotal,
-            poDate,
-            poNumber,
-            poTotal,
-            quantity,
-            email,
-            address,
-            expectDeliver,
-            status,
-            typePayment,
-            phoneNumber,
-            devicePrice,
-            deviceCarrier,
-            deviceModel,
-            deviceImei,
-            vendorName,
-            devices: [
-                {
-                    imei,
-                    model,
-                    carrier,
-                    price
-                }
-            ]
-        } = this.state;
-        const purchaseOrderId = uuid();
+          
+          this.props.history.push("/purchaseorders")
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error)
+        });
 
-        console.log("purchase_orderId: ", purchaseOrderId);
-        this.ref
-            .doc(purchaseOrderId)
-            .set({
-                company,
-                purchaseOrderId,
-                deviceTotal,
-                poDate,
-                poNumber,
-                poTotal,
-                quantity,
-                email,
-                address,
-                expectDeliver,
-                status,
-                typePayment,
-                phoneNumber,
-                devicePrice,
-                deviceCarrier,
-                deviceModel,
-                deviceImei,
-                vendorName,
-                devices: [
-                    {
-                        imei,
-                        model,
-                        carrier,
-                        price
-                    }
-                ]
-            })
-            .then(() => {
-                this.setState({
-                    company: "",
-                    deviceTotal: "",
-                    poDate: "",
-                    poNumber: "",
-                    poTotal: "",
-                    quantity: "",
-                    email: "",
-                    address: "",
-                    expectDeliver: "",
-                    status: "",
-                    typePayment: "",
-                    phoneNumber: "",
-                    devicePrice: "",
-                    deviceCarrier: "",
-                    deviceModel: '',
-                    deviceImei: '',
-                    deviceList: "",
-                    vendorName: "",
-                    devices: [
-                        {
-                            imei: '',
-                            model: '',
-                            carrier: '',
-                            price: ''
-                        }
-                    ]
-                });
-                this.props.history.push('/purchaseorders');
-            })
-            .catch(error => {
-                console.error("Error adding document:", error)
-
-            });
-
-    };
+      
+};
 
 
     render() {
 
         const {
             company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate,
-            quantity, devices: [{ imei, price, carrier, model }]
+            quantity, devices
 
         } = this.state;
         const { classes } = this.props;
 
-        const deviceTotal = price * quantity;
+        const deviceTotal = this.state.price * quantity;
         return (
 
             <div className={classes.root}>
@@ -459,7 +386,7 @@ class NewOrder extends Component {
                                                 label="Carrier"
                                                 InputProps={{ name: 'carrier' }}
                                                 className={classes.textField}
-                                                value={carrier}
+                                                value={this.state.carrier}
                                                 onChange={this.onChange}
 
                                                 width={400}
@@ -484,7 +411,7 @@ class NewOrder extends Component {
                                                 InputProps={{ name: 'model' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={model}
+                                                value={this.state.model}
                                                 variant="outlined"
                                             />
                                         </TableCell>
@@ -493,16 +420,16 @@ class NewOrder extends Component {
                                                 InputProps={{ name: 'imei' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={imei}
+                                                value={this.state.imei}
                                                 variant="outlined"
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
-                                                InputProps={{ name: 'devices.price' }}
+                                                InputProps={{ name: 'price' }}
                                                 className={classes.textField}
                                                 onChange={this.onChange}
-                                                value={this.price}
+                                                value={this.state.price}
                                                 variant="outlined"
                                             />
                                         </TableCell>

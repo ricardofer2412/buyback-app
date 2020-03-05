@@ -24,7 +24,6 @@ import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
 
 
 
-
 const styles = theme => ({
   depositContext: {
     flex: 2,
