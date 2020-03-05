@@ -42,13 +42,15 @@ const styles = theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+    background: '#4C6178'
+    
   },
   appBar: {
     marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: 'white',
-      color: "black"
+      color: 'bbl'
     },
   },
  
@@ -97,13 +99,17 @@ class ResponsiveDrawer extends React.Component {
     const { classes, theme } = this.props;
 
     const drawer = (
+
       <div>
-        <div className={classes.toolbar} />
-        <div className={classes.toolbarIcon}>
-          <IconButton>
-          <Home className={classes.listItemText}/>
+          <div className={classes.toolbarIcon}>
+          <IconButton o>
+          <Typography className={classes.listItemText} align='right'>
+            Version 1.0
+          </Typography>
           </IconButton>
         </div>
+        <div className={classes.toolbar} />
+ 
         <List component="nav" aria-label="Main mailbox folders">
        <Divider />
             <ListItem button component={Link} to="/">
