@@ -18,8 +18,10 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home'
 import { Link } from 'react-router-dom';
-import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
+import { People, ShoppingCart, StayCurrentPortrait, CropLandscapeSharp, Autorenew } from '@material-ui/icons'
 import './NavBar.css'
+import Container from '@material-ui/core/Container';
+
 
 
 const drawerWidth = 240;
@@ -43,7 +45,7 @@ const styles = theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
     background: '#4C6178'
-    
+
   },
   appBar: {
     marginLeft: drawerWidth,
@@ -53,7 +55,7 @@ const styles = theme => ({
       color: 'bbl'
     },
   },
- 
+
 
   menuButton: {
     marginRight: 20,
@@ -66,10 +68,12 @@ const styles = theme => ({
   drawerPaper: {
     width: drawerWidth,
     background: '#182B50',
+
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
+
   },
 
   listItemText: {
@@ -82,11 +86,19 @@ const styles = theme => ({
     hight: 5
 
 
+  },
+  sideBarIcon: {
+    marginLeft: 5,
+    marginRight: 10,
+    color: '#E7EAF0'
+  },
+  titleText: {
+    color: '#182B50'
   }
-  
+
 });
 
-class ResponsiveDrawer extends React.Component {
+class NavBar extends React.Component {
   state = {
     mobileOpen: false,
   };
@@ -101,43 +113,41 @@ class ResponsiveDrawer extends React.Component {
     const drawer = (
 
       <div>
-          <div className={classes.toolbarIcon}>
-          <IconButton o>
+        <div className={classes.toolbarIcon}>
+
           <Typography className={classes.listItemText} align='right'>
             Version 1.0
           </Typography>
-          </IconButton>
-        </div>
-        <div className={classes.toolbar} />
- 
-        <List component="nav" aria-label="Main mailbox folders">
-       <Divider />
-            <ListItem button component={Link} to="/">
-              <ListItemIcon>
-                <Home className={classes.listItemText}/>
-                <ListItemText  className={classes.listItemText} primary="Home" />
-              </ListItemIcon>
-            </ListItem>
-            <ListItem button component={Link} to="/vendors">
-              <ListItemIcon >
-                <People  className={classes.listItemText} />
-                <ListItemText  className={classes.listItemText} primary="Vendors" />
-              </ListItemIcon>
-            </ListItem>
 
-            <ListItem button component={Link} to="/purchaseorders">
-              <ListItemIcon>
-                <ShoppingCart  className={classes.listItemText} />
-                <ListItemText  className={classes.listItemText} primary="Purchase Orders" />
-              </ListItemIcon>
-            </ListItem>
-            <ListItem button component={Link} to="/tracking">
-              <ListItemIcon>
-                <StayCurrentPortrait  className={classes.listItemText} />
-                <ListItemText  className={classes.listItemText} primary="Tracking" />
-              </ListItemIcon>
-            </ListItem>
-          </List>
+        </div>
+        <div className={classes.toolbar} marginTop={0} />
+        <List component="nav" aria-label="Main mailbox folders">
+          <ListItem button component={Link} to="/">
+            <ListItemIcon>
+              <Home className={classes.sideBarIcon} />
+              <ListItemText className={classes.listItemText} primary="Home" />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem button component={Link} to="/vendors">
+            <ListItemIcon >
+              <People className={classes.sideBarIcon} />
+              <ListItemText className={classes.listItemText} primary="Vendors" />
+            </ListItemIcon>
+          </ListItem>
+
+          <ListItem button component={Link} to="/purchaseorders">
+            <ListItemIcon>
+              <ShoppingCart className={classes.sideBarIcon} />
+              <ListItemText className={classes.listItemText} primary="Purchase Orders" />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem button component={Link} to="/tracking">
+            <ListItemIcon>
+              <StayCurrentPortrait className={classes.sideBarIcon} />
+              <ListItemText className={classes.listItemText} primary="Tracking" />
+            </ListItemIcon>
+          </ListItem>
+        </List>
       </div>
     );
 
@@ -154,7 +164,7 @@ class ResponsiveDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography className={classes.titleText} variant="h6" color="black" noWrap>
               BUYBACK APP
             </Typography>
           </Toolbar>
@@ -187,21 +197,10 @@ class ResponsiveDrawer extends React.Component {
             </Drawer>
           </Hidden>
         </nav>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          
-        </main>
       </div>
     );
   }
 }
 
-ResponsiveDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
-  // Injected by the documentation to work in an iframe.
-  // You won't need it on your project.
-  container: PropTypes.object,
-  theme: PropTypes.object.isRequired,
-};
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+export default withStyles(styles, { withTheme: true })(NavBar);

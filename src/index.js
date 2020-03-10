@@ -19,9 +19,7 @@ import EditOrder from './components/PurchaseOrders/EditOrder'
 ReactDOM.render(
   <Router>
     <div>
-      <NavBar />
       <div className="container">
-
       </div>
       <Route exact path="/" component={App} />
       <Route exact path="/vendors" component={CustomerList} />
@@ -34,7 +32,6 @@ ReactDOM.render(
       <Route exact path='/tracking/new/' component={NewTracking} />
       <Route exact path='/tracking/edit/:id' component={EditTracking} />
       <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
-
     </div>
   </Router>,
   document.getElementById("root")

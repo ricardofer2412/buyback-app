@@ -26,13 +26,22 @@ const styles = theme => ({
     flex: 1,
 
   },
-    
-  AccountCircleIcon: {
-    color: 'red', 
-    justify: 'center', 
+  titleText: {
+    color: '#708096',
+    fontSize: 25
+  },
+  countText: {
+    color: '#708096',
     fontSize: 30,
-    margin: theme.spacing(1)
-  }
+    marginLeft: 10
+  },
+  iconStyle: {
+    color: '#76C63A',
+    float: 'right',
+    marginTop: 15,
+    marginRight: 15,
+    fontSize: 40
+  },
 
 });
 
@@ -50,26 +59,23 @@ class VendorCount extends Component {
     return (
       <React.Fragment>
         <Grid item xs={12}>
-        <CardActionArea>
-                   <AccountCircleIcon className={classes.AccountCircleIcon}/>
-                 <CardContent>
-                <Typography variant="h5" component="h2">
-                    Vendors 
+          <CardActionArea>
+            <AccountCircleIcon className={classes.iconStyle} />
+            <CardContent>
+              <Typography className={classes.titleText} variant="h5" component="h2">
+                Vendors
                 </Typography>
-              <Typography component="p">
+              <Typography className={classes.countText} component="p">
                 3000
              </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button  size="small" 
-         component={Link} to={'/vendors/new'}>
-         Add New Vendor
-        </Button>
-       
-      </CardActions>
-                
-        </Grid>  
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+
+
+          </CardActions>
+
+        </Grid>
       </React.Fragment>
     )
   }

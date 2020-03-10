@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
+import Container from '@material-ui/core/Container'
 
 
 
@@ -82,28 +83,60 @@ const statusList = [
 const styles = theme => ({
     root: {
         flexGrow: 1,
+        marginTop: 20
 
     },
+    container: {
+        maxWidth: 'lg'
+    },
+    Typography: {
+        fontFamily: '"Product Sans", serif',
+    },
+
+
+    // paper: {
+    //     padding: theme.spacing.unit * 2,
+    //     marginLeft: theme.spacing.unit * 3,
+    //     marginRight: theme.spacing.unit * 3,
+    //     marginTop: theme.spacing.unit * 6,
+    //     textAlign: 'left',
+    //     display: "flex",
+    //     flexDirection: 'column',
+    //     color: theme.palette.text.secondary,
+    // },
     paper: {
         padding: theme.spacing.unit * 2,
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        marginTop: theme.spacing.unit * 6,
-        textAlign: 'left',
-        display: "flex",
-        flexDirection: 'column',
-        color: theme.palette.text.secondary,
+        margin: 5,
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'row',
+        textAlign: 'center',
+        justify: 'center'
     },
     textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        marginBottom: 20
+        marginLeft: 5,
+        marginTop: 10,
+        width: 150
+    },
+    textFieldDevice: {
+        marginLeft: 5,
+        marginTop: 10,
+        width: 150
     },
     inputContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'
-    }
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+
+    },
+    menu: {
+        width: 150
+    },
 });
 
 class NewOrder extends Component {
@@ -125,7 +158,7 @@ class NewOrder extends Component {
             typePayment: '',
             phoneNumber: "",
             devices: []
-            
+
 
         };
     }
@@ -142,44 +175,44 @@ class NewOrder extends Component {
         this.setState(state);
     }
     onSubmit = (e) => {
-      e.preventDefault();
-      const purchaseOrderId = uuid();
-      const deviceId = uuid();
-      const {
-          company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity
-      } = this.state
-      const { devices } = this.state;
-      this.ref
-      .doc(purchaseOrderId)
-      .set({
-        company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity, devices 
-      }).then((docRef) => {
-          this.setState({
-            company: "",
-            deviceTotal: "", 
-            poDate:'',
-            poNumber: "",
-            poTotal: "",
-            quantity: '',
-            email: "",
-            address: "",
-            expectDeliver: "",
-            status: "",
-            typePayment: '',
-            phoneNumber: "",
-            devices: []
-        
-          });
+        e.preventDefault();
+        const purchaseOrderId = uuid();
+        const deviceId = uuid();
+        const {
+            company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity
+        } = this.state
+        const { devices } = this.state;
+        this.ref
+            .doc(purchaseOrderId)
+            .set({
+                company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity, devices
+            }).then((docRef) => {
+                this.setState({
+                    company: "",
+                    deviceTotal: "",
+                    poDate: '',
+                    poNumber: "",
+                    poTotal: "",
+                    quantity: '',
+                    email: "",
+                    address: "",
+                    expectDeliver: "",
+                    status: "",
+                    typePayment: '',
+                    phoneNumber: "",
+                    devices: []
 
-          
-          this.props.history.push("/purchaseorders")
-        })
-        .catch((error) => {
-            console.error("Error adding document: ", error)
-        });
+                });
 
-      
-};
+
+                this.props.history.push("/purchaseorders")
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error)
+            });
+
+
+    };
 
 
     render() {
@@ -193,286 +226,277 @@ class NewOrder extends Component {
 
         const deviceTotal = this.state.price * quantity;
         return (
-
             <div className={classes.root}>
+                <Container className={classes.container}>
+                    <Typography
+                        className={classes.Typography}
+                        component="h2" m variant="display4">
+                        Purchase Order: {poNumber}
+                    </Typography>
+                    <Paper className={classes.paper}>
 
-                <Typography
-                    component="h2" m variant="display4">
-                    Purchase Order: {poNumber}
-                </Typography>
-                <Paper className={classes.paper}>
-                    <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
-                        <Grid container spacing={8}>
-                            <Grid item xs={4}>
-                                <TextField
-                                    required
-                                    label="Company"
-                                    InputProps={{ name: 'company' }}
-                                    className={classes.textField}
-                                    onChange={this.onChange}
-                                    value={company}
-                                    variant="outlined"
-                                    width={400}
-                                />
+                        <form onSubmit={this.onSubmit.bind(this)} noValidate>
+                            <Grid container spacing={2}>
+                                <Grid item sm>
+                                    <TextField
+                                        required
+                                        label="Company"
+                                        InputProps={{ name: 'company' }}
+                                        className={classes.textField}
+                                        onChange={this.onChange}
+                                        value={company}
+                                        variant="outlined"
+                                        style={{ width: 250 }}
+                                    />
+                                </Grid>
+                                <Grid item sm >
+                                    <TextField
+                                        required
+                                        label="Vendor Name"
+                                        InputProps={{ name: 'vendorName' }}
+                                        className={classes.textField}
+                                        onChange={this.onChange}
+                                        value={vendorName}
+                                        variant="outlined"
+                                        style={{ width: 250 }}
+
+                                    />
+                                </Grid>
+                                <Grid item sm>
+                                    <TextField
+                                        required
+                                        label='PO Number'
+                                        InputProps={{ name: 'poNumber' }}
+                                        className={classes.textField}
+                                        onChange={this.onChange}
+                                        value={poNumber}
+                                        variant="outlined"
+                                        style={{ width: 250 }}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    required
-                                    label="Vendor Name"
-                                    InputProps={{ name: 'vendorName' }}
-                                    className={classes.textField}
-                                    onChange={this.onChange}
-                                    value={vendorName}
-                                    variant="outlined"
-                                    width={400}
-                                />
+                            <Grid container spacing={2}>
+                                <Grid item sm>
+                                    <TextField
+                                        required
+                                        label="E-Mail"
+                                        InputProps={{ name: 'email' }}
+                                        className={classes.textField}
+                                        onChange={this.onChange}
+                                        value={email}
+                                        variant="outlined"
+                                        style={{ width: 250 }}
+
+                                    />
+                                </Grid>
+                                <Grid item sm>
+                                    <TextField
+                                        required
+                                        label="Phone Number"
+                                        InputProps={{ name: 'phoneNumber' }}
+                                        className={classes.textField}
+                                        onChange={this.onChange}
+                                        value={phoneNumber}
+                                        variant="outlined"
+                                        style={{ width: 250 }}
+
+                                    />
+                                </Grid>
+                                <Grid item sm>
+                                    <TextField
+                                        style={{ width: 250 }}
+                                        select
+                                        label="Referred By"
+                                        InputProps={{ name: 'status' }}
+                                        className={classes.textField}
+                                        value={status}
+                                        defaultValue={poDate}
+                                        onChange={this.onChange}
+
+                                        SelectProps={{
+                                            MenuProps: {
+                                                className: classes.menu,
+                                            },
+                                        }}
+                                        margin="normal"
+                                        variant="outlined"
+                                    >
+                                        {statusList.map(option => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    required
-                                    label='PO Number'
-                                    InputProps={{ name: 'poNumber' }}
-                                    className={classes.textField}
-                                    onChange={this.onChange}
-                                    value={poNumber}
-                                    variant="outlined"
-                                    width={400}
-                                />
+                            <Grid container spacing={2}>
+
+                                <Grid item sm>
+                                    <TextField
+                                        style={{ width: 250 }}
+                                        id="poDate"
+                                        label="Date"
+                                        type="date"
+                                        className={classes.textField}
+                                        InputProps={{
+                                            name: 'poDate'
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        value={poDate}
+                                        variant="outlined"
+                                        onChange={this.onChange}
+                                    />
+                                </Grid>
+
+                                <Grid item sm>
+
+                                </Grid>
+                                <Grid item sm>
+                                    <TextField
+                                        select
+                                        label="Payment Type"
+                                        InputProps={{ name: 'typePayment' }}
+                                        className={classes.textField}
+                                        value={typePayment}
+                                        onChange={this.onChange}
+                                        style={{ width: 250 }}
+                                        SelectProps={{
+                                            MenuProps: {
+                                                className: classes.menu,
+                                            },
+                                        }}
+                                        margin="normal"
+                                        variant="outlined"
+                                    >
+                                        {payment.map(option => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container spacing={8}>
-                            <Grid item xs={4}>
-                                <TextField
-                                    required
-                                    label="E-Mail"
-                                    InputProps={{ name: 'email' }}
-                                    className={classes.textField}
-                                    onChange={this.onChange}
-                                    value={email}
-                                    variant="outlined"
+                            <Divider />
+                            <Grid container spacing={2}>
+                                <Table className={classes.table}>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>QTY</TableCell>
+                                            <TableCell>Carrier</TableCell>
+                                            <TableCell>Model</TableCell>
+                                            <TableCell>IMEI</TableCell>
+                                            <TableCell>Cost</TableCell>
+                                            <TableCell>Total</TableCell>
+                                            <TableCell>Actions</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
 
-                                    width={400}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    required
-                                    label="Phone Number"
-                                    InputProps={{ name: 'phoneNumber' }}
-                                    className={classes.textField}
-                                    onChange={this.onChange}
-                                    value={phoneNumber}
-                                    variant="outlined"
+                                        <TableRow>
+                                            <TableCell>
+                                                <TextField
+                                                    InputProps={{ name: 'quantity' }}
+                                                    className={classes.textFieldDevice}
+                                                    onChange={this.onChange}
+                                                    value={quantity}
+                                                    variant="outlined"
+                                                    width="25%"
 
-                                    width={400}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    select
-                                    label="Referred By"
-                                    InputProps={{ name: 'status' }}
-                                    className={classes.textField}
-                                    value={status}
-                                    defaultValue={poDate}
-                                    onChange={this.onChange}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    select
+                                                    label="Carrier"
+                                                    InputProps={{ name: 'carrier' }}
+                                                    className={classes.textFieldDevice}
+                                                    value={this.state.carrier}
+                                                    onChange={this.onChange}
 
-                                    width={400}
-                                    SelectProps={{
-                                        MenuProps: {
-                                            className: classes.menu,
-                                        },
-                                    }}
-                                    helperText="Please select "
-                                    margin="normal"
-                                    variant="outlined"
-                                >
-                                    {statusList.map(option => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={8}>
+                                                    SelectProps={{
+                                                        MenuProps: {
+                                                            className: classes.menu,
+                                                        },
+                                                    }}
+                                                    margin="normal"
+                                                    variant="outlined"
+                                                >
+                                                    {carriers.map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    InputProps={{ name: 'model' }}
+                                                    className={classes.textFieldDevice}
+                                                    onChange={this.onChange}
+                                                    value={this.state.model}
+                                                    variant="outlined"
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    InputProps={{ name: 'imei' }}
+                                                    className={classes.textFieldDevice}
+                                                    onChange={this.onChange}
+                                                    value={this.state.imei}
+                                                    variant="outlined"
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    InputProps={{ name: 'price' }}
+                                                    className={classes.textFieldDevice}
+                                                    onChange={this.onChange}
+                                                    value={this.state.price}
+                                                    variant="outlined"
+                                                />
+                                            </TableCell>
+                                            <TableCell>
 
-                            <Grid item xs={4}>
-                                <TextField
-
-                                    id="poDate"
-                                    label="Date"
-                                    type="date"
-                                    className={classes.textField}
-                                    InputProps={{
-                                        name: 'poDate'
-                                    }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    value={poDate}
-                                    variant="outlined"
-                                    onChange={this.onChange}
-                                    width={400}
-                                />
-                            </Grid>
-
-                            <Grid item xs={4}>
-
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    select
-                                    label="Payment Type"
-                                    InputProps={{ name: 'typePayment' }}
-                                    className={classes.textField}
-                                    value={typePayment}
-                                    onChange={this.onChange}
-
-                                    width={400}
-                                    SelectProps={{
-                                        MenuProps: {
-                                            className: classes.menu,
-                                        },
-                                    }}
-                                    helperText="Please select "
-                                    margin="normal"
-                                    variant="outlined"
-                                >
-                                    {payment.map(option => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        </Grid>
-
-
-
-
-                        <Divider />
-                        <Grid container spacing={12}>
-
-                            <Table className={classes.table}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>QTY</TableCell>
-                                        <TableCell>Carrier</TableCell>
-                                        <TableCell>Model</TableCell>
-                                        <TableCell>IMEI</TableCell>
-                                        <TableCell>Cost</TableCell>
-                                        <TableCell>Total</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    <TableRow>
-                                        <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'quantity' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={quantity}
-                                                variant="outlined"
-                                                width="25%"
-
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                select
-                                                label="Carrier"
-                                                InputProps={{ name: 'carrier' }}
-                                                className={classes.textField}
-                                                value={this.state.carrier}
-                                                onChange={this.onChange}
-
-                                                width={400}
-                                                SelectProps={{
-                                                    MenuProps: {
-                                                        className: classes.menu,
-                                                    },
-                                                }}
-                                                helperText="Please select "
-                                                margin="normal"
-                                                variant="outlined"
-                                            >
-                                                {carriers.map(option => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'model' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={this.state.model}
-                                                variant="outlined"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'imei' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={this.state.imei}
-                                                variant="outlined"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                InputProps={{ name: 'price' }}
-                                                className={classes.textField}
-                                                onChange={this.onChange}
-                                                value={this.state.price}
-                                                variant="outlined"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-
-                                            <Typography variant="h6" gutterBottom
-                                            >
-                                                ${deviceTotal}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <button
-                                                className="btn btn-link"
-                                                type="button"
-                                                onClick={this.addDevice}
-                                            >
-                                                +
+                                                <Typography variant="h6" gutterBottom
+                                                >
+                                                    ${deviceTotal}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <button
+                                                    className="btn btn-link"
+                                                    type="button"
+                                                    onClick={this.addDevice}
+                                                >
+                                                    +
                                                </button>
-                                        </TableCell>
-                                    </TableRow>
+                                            </TableCell>
+                                        </TableRow>
 
 
 
-                                </TableBody>
-                            </Table>
-                        </Grid>
+                                    </TableBody>
+                                </Table>
+                            </Grid>
 
 
-                        <div className={classes.inputContainer}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                className={classes.submit}
-                                onClick={this.return}
-                                color="primary">
-                                Save
+                            <div className={classes.inputContainer}>
+                                <Button
+                                    style={{ margin: 25 }}
+                                    type="submit"
+                                    variant="contained"
+                                    className={classes.submit}
+                                    onClick={this.return}
+                                    color="primary">
+                                    Save
                         </Button>
-                        </div>
-                    </form>
-                </Paper>
+                            </div>
 
-
-
+                        </form>
+                    </Paper>
+                </Container>
             </div>
 
         );

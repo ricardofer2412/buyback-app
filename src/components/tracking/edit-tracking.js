@@ -23,6 +23,7 @@ import Person from '@material-ui/icons/Person';
 import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import NavBar from '../NavBar/NavBar'
 
 const styles = theme => ({
   paper: {
@@ -121,6 +122,7 @@ class EditTracking extends Component {
 
     return (
       <Container component="main" maxWidth="xs">
+        <NavBar />
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>

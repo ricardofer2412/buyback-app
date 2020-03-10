@@ -16,18 +16,53 @@ import { makeStyles } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import firebase from '../firebase/Firebase';
 import { track } from "../../fedexservice";
+import NavBar from '../NavBar/NavBar'
+import { withStyles } from '@material-ui/core/styles';
+import {
+  withRouter
+} from 'react-router-dom';
 
 
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
   fab: {
-    margin: theme.spacing(1),
+    margin: 5,
+    marginTop: -20,
+    padding: 5,
+    weight: 40,
+    color: 'white',
+    background: '#76C63A'
+
+  },
+  container: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    width: '100%',
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+    textAlign: 'center',
+    justify: 'center'
   },
   extendedIcon: {
     marginLeft: theme.spacing(1),
   },
-}));
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+
+  },
+
+
+});
 
 class TrackingList extends React.Component {
   constructor(props) {
@@ -95,11 +130,13 @@ class TrackingList extends React.Component {
   }
   render() {
     console.log(this.state.trackingStatuses)
-    const classes = useStyles
+    const { classes } = this.props
     return (
-      <Container fixed>
-        <Container fixed>
-          <Container>
+      <div className={classes.root}>
+        <NavBar />
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container className={classes.container}>
             <h3>Tracking Orders</h3>
             <Fab
               variant="extended"
@@ -110,45 +147,46 @@ class TrackingList extends React.Component {
             >
               <AddIcon className={classes.extendedIcon} />
             </Fab>
-          </Container>
-          <br />
-          <Paper >
-            <Table >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Tracking Number</TableCell>
-                  <TableCell>PO#</TableCell>
-                  <TableCell>Vendor</TableCell>
-                  <TableCell> Status</TableCell>
-                  <TableCell>Method</TableCell>
+            <br />
+            <Paper >
+              <Table >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Tracking Number</TableCell>
+                    <TableCell>PO#</TableCell>
+                    <TableCell>Vendor</TableCell>
+                    <TableCell> Status</TableCell>
+                    <TableCell>Method</TableCell>
 
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {this.state.trackings.map((tracking, idx) =>
-                  <tr>
-                    <td>{tracking.trackingNum} </td>
-                    <td>{tracking.poNumber}</td>
-                    <td>{tracking.customerId}</td>
-                    <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].status}</td>
-                    <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].carrierDesc}</td>
-                    <td>  <IconButton onClick={() => this.delete(tracking)} aria-label="Delete" >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                      <IconButton
-                        component={Link} to={`/tracking/edit/${tracking.trackingId}`}
-                      ><Create />
-                      </IconButton></td>
-                  </tr>)}
-              </TableBody>
-            </Table>
-          </Paper>
-        </Container>
-      </Container>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.trackings.map((tracking, idx) =>
+                    <tr>
+                      <td>{tracking.trackingNum} </td>
+                      <td>{tracking.poNumber}</td>
+                      <td>{tracking.customerId}</td>
+                      <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].status}</td>
+                      <td>{this.state.trackingStatuses[idx] && this.state.trackingStatuses[idx].carrierDesc}</td>
+                      <td>  <IconButton onClick={() => this.delete(tracking)} aria-label="Delete" >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                        <IconButton
+                          component={Link} to={`/tracking/edit/${tracking.trackingId}`}
+                        ><Create />
+                        </IconButton></td>
+                    </tr>)}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Container>
+        </main>
+      </div>
+
 
     );
   }
 }
 
-export default TrackingList;
+export default withStyles(styles)(withRouter(TrackingList));

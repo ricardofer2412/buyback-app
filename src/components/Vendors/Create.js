@@ -14,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Person from '@material-ui/icons/Person';
 import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
+import NavBar from '../NavBar/NavBar'
 
 
 const referreds = [
@@ -136,6 +137,7 @@ class Create extends Component {
     const { vendorName, phoneNumber, email, company, address, referredBy } = this.state;
     return (
       <Container component="main" maxWidth="xs">
+        <NavBar />
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>

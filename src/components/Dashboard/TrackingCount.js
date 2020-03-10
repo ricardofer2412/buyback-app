@@ -26,15 +26,31 @@ const styles = theme => ({
     flex: 1,
 
   },
-    
+
   FlightIcon: {
-    color: 'red', 
-    justify: 'center', 
-    fontSize: 30, 
+    color: 'red',
+    justify: 'center',
+    fontSize: 30,
     margin: theme.spacing(1),
 
 
-  }
+  },
+  titleText: {
+    color: '#708096',
+    fontSize: 25
+  },
+  countText: {
+    color: '#708096',
+    fontSize: 30,
+    marginLeft: 10
+  },
+  iconStyle: {
+    color: '#76C63A',
+    float: 'right',
+    marginTop: 15,
+    marginRight: 15,
+    fontSize: 40
+  },
 
 });
 
@@ -52,26 +68,22 @@ class VendorCount extends Component {
     return (
       <React.Fragment>
         <Grid item xs={12}>
-        <CardActionArea>
-                   <FlightIcon className={classes.FlightIcon}/>
-                 <CardContent>
-                <Typography variant="h5" component="h2">
-                    Trackings
+          <CardActionArea>
+            <FlightIcon className={classes.iconStyle} />
+            <CardContent>
+              <Typography className={classes.titleText} variant="h5" component="h2">
+                Trackings
                 </Typography>
-              <Typography component="p">
+              <Typography className={classes.countText} component="p">
                 15
              </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button  size="small" 
-         component={Link} to={'/tracking/new/'}>
-         Add New Tracking
-        </Button>
-       
-      </CardActions>
-                
-        </Grid>  
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+
+          </CardActions>
+
+        </Grid>
       </React.Fragment>
     )
   }

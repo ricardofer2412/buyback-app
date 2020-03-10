@@ -16,6 +16,7 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import { track } from "../../fedexservice"
+import NavBar from '../NavBar/NavBar'
 
 class Show extends Component {
 
@@ -82,6 +83,7 @@ class Show extends Component {
 
     return (
       <div className="container">
+        <NavBar />
         <div className="panel panel-default">
           <div className="panel-heading">
             <h4><Link to="/">Customer List</Link></h4>

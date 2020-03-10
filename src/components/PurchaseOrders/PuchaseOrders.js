@@ -17,23 +17,55 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Create, Visibility } from '@material-ui/icons'
+import NavBar from '../NavBar/NavBar'
+import { withStyles } from '@material-ui/core/styles';
+import {
+    withRouter
+} from 'react-router-dom';
 
 
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
     fab: {
-        margin: theme.spacing(1),
+        margin: 10,
+        margisnTop: -10,
+        padding: 5,
+        weight: 40,
+        color: 'white',
+        background: '#76C63A'
+
+    },
+    container: {
+        paddingTop: theme.spacing(3),
+        paddingBottom: theme.spacing(3),
+        width: '100%',
+    },
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+        textAlign: 'center',
+        justify: 'center'
     },
     extendedIcon: {
         marginLeft: theme.spacing(1),
+
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+
     },
 
-    container: {
-        marginTop: 64,
-    }
-    ,
-}));
+
+
+});
 class PurchaseOrders extends React.Component {
 
     constructor(props) {
@@ -92,54 +124,60 @@ class PurchaseOrders extends React.Component {
 
 
     render() {
-        const classes = useStyles
+        const { classes } = this.props
         return (
-            <Container style={{ marginTop: 68 }}>
-                <Fab
-                    variant="extended"
-                    component={Link} to="/neworder"
-                    color="secondary"
-                    aria-label="Add"
-                    className={classes.fab}
-                >
-                    <AddIcon className={classes.extendedIcon} />
-                </Fab>
-                <Paper>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>PO# </TableCell>
-                                <TableCell>Vendor  </TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Action</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.state.purchaseOrders.map(purchaseOrder => (
-                                <TableRow>
+            <div className={classes.root}>
+                <NavBar />
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Container className={classes.container}>
+                        <Fab
+                            variant="extended"
+                            component={Link} to="/neworder"
+                            color="secondary"
+                            aria-label="Add"
+                            className={classes.fab}
+                        >
+                            <AddIcon className={classes.extendedIcon} />
+                        </Fab>
+                        <Paper>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>PO# </TableCell>
+                                        <TableCell>Vendor  </TableCell>
+                                        <TableCell>Status</TableCell>
+                                        <TableCell>Action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.purchaseOrders.map(purchaseOrder => (
+                                        <TableRow>
 
-                                    <TableCell>{purchaseOrder.poNumber}</TableCell>
-                                    <TableCell>{purchaseOrder.vendorName}</TableCell>
-                                    <TableCell>{purchaseOrder.status}</TableCell>
-                                    <TableCell>
-                                        <IconButton onClick={() => this.delete(purchaseOrder)} aria-label="Delete" >
-                                            <DeleteIcon fontSize="small" />
-                                        </IconButton>
-                                        <IconButton
-                                            component={Link} to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
-                                        >
-                                            <Create />
-                                        </IconButton>
-                                    </TableCell>
+                                            <TableCell>{purchaseOrder.poNumber}</TableCell>
+                                            <TableCell>{purchaseOrder.vendorName}</TableCell>
+                                            <TableCell>{purchaseOrder.status}</TableCell>
+                                            <TableCell>
+                                                <IconButton onClick={() => this.delete(purchaseOrder)} aria-label="Delete" >
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                                <IconButton
+                                                    component={Link} to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
+                                                >
+                                                    <Create />
+                                                </IconButton>
+                                            </TableCell>
 
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </Container>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </Container>
+                </main>
+            </div>
         )
     }
 }
 
-export default PurchaseOrders;
+export default withStyles(styles)(withRouter(PurchaseOrders));

@@ -13,12 +13,12 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { Create, Visibility } from '@material-ui/icons'
 import Container from '@material-ui/core/Container'
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core";
 import Typography from '@material-ui/core/Typography';
 
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   fab: {
     margin: theme.spacing(1),
   },
@@ -29,12 +29,14 @@ const useStyles = makeStyles(theme => ({
   container: {
     marginTop: 64,
   },
-  
-    Typography: {
-      marginLeft: theme.spacing(1),
-    },
-  
-}));
+
+  tableTitle: {
+    align: 'left',
+    color: '#708096',
+    fontSize: 25,
+  }
+
+});
 
 const vendorCount = 0;
 
@@ -94,54 +96,52 @@ class CustomerList extends React.Component {
   };
 
   render() {
-    const classes = useStyles
+    const { classes } = this.props;
 
 
     return (
-      
-      <Container
-        style={{ marginTop: 68 }}
-      >
-      <Typography variant="h5" component="h2" margin='left'>
-                    Customer List
-                </Typography>
-   
-          <Table >
-            <TableHead>
-              <TableRow>
-                <TableCell>Vendor Name</TableCell>
-                <TableCell> Phone Number</TableCell>
-                <TableCell>Phone Number</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.state.customers.map(customer => (
-                < TableRow >
-                  <TableCell>{customer.vendorName}</TableCell>
-                  <TableCell>{customer.phoneNumber}</TableCell>
-                  <TableCell>{customer.email}</TableCell>
-                  <TableCell>
-                
-                    <IconButton
-                      component={Link} to={`/edit/${customer.customerId}`}
 
-                    >
-                      <Create />
-                    </IconButton>
-                    <IconButton
-                      component={Link} to={`/show/${customer.customerId}`}
-                    >
-                      <Visibility />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+      <Container>
+        <Typography className={classes.tableTitle} variant="h5" component="h2" >
+          Customer List
+        </Typography>
+
+        <Table >
+          <TableHead>
+            <TableRow>
+              <TableCell>Vendor Name</TableCell>
+              <TableCell> Phone Number</TableCell>
+              <TableCell>Phone Number</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {this.state.customers.map(customer => (
+              < TableRow >
+                <TableCell>{customer.vendorName}</TableCell>
+                <TableCell>{customer.phoneNumber}</TableCell>
+                <TableCell>{customer.email}</TableCell>
+                <TableCell>
+
+                  <IconButton
+                    component={Link} to={`/edit/${customer.customerId}`}
+
+                  >
+                    <Create />
+                  </IconButton>
+                  <IconButton
+                    component={Link} to={`/show/${customer.customerId}`}
+                  >
+                    <Visibility />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Container >
     );
   }
 }
 
-export default CustomerList;
+export default withStyles(styles)(CustomerList)

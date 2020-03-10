@@ -29,19 +29,29 @@ const styles = theme => ({
     flex: 2,
 
   },
-    
   ShoppingCart: {
-    color: 'red', 
-    justify: 'center', 
+    color: '#2AB9F7',
+    justify: 'center',
     fontSize: 30,
     margin: theme.spacing(1),
-
-
+  },
+  titleText: {
+    color: '#708096',
+    fontSize: 25
+  },
+  countText: {
+    color: '#708096',
+    fontSize: 30,
+    marginLeft: 10
+  },
+  iconStyle: {
+    color: '#76C63A',
+    float: 'right',
+    marginTop: 15,
+    marginRight: 15,
+    fontSize: 40
   },
 
-  Title: {
-   
-  }
 
 });
 
@@ -59,28 +69,22 @@ class VendorCount extends Component {
     return (
       <React.Fragment>
         <Grid item xs={12}>
-        <CardActionArea>
-                   <ShoppingCart className={classes.ShoppingCart}/>
-                 <CardContent>
-                <Typography variant="h5" component="h2">
-                    Purchase Orders
+          <CardActionArea>
+            <ShoppingCart className={classes.iconStyle} />
+            <CardContent>
+              <Typography className={classes.titleText} variant="h5" component="h2">
+                Purchase Orders
                 </Typography>
-              <Typography component="p">
-               52
+              <Typography className={classes.countText} component="p">
+                52
              </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button 
-            size="small" 
-         component={Link} to={'/neworder/'}
-         >
-        Create New PO
-        </Button>
-       
-      </CardActions>
-                
-        </Grid>  
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+
+          </CardActions>
+
+        </Grid>
       </React.Fragment>
     )
   }

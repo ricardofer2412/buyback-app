@@ -15,7 +15,6 @@ import VendorCount from './components/Dashboard/VendorCount'
 import PoCount from './components/Dashboard/PoCount'
 import TrackingCount from './components/Dashboard/TrackingCount'
 import CustomerListDash from './components/Dashboard/CustomerListDash'
-
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -26,24 +25,23 @@ import Button from '@material-ui/core/Button';
 
 
 
-
-
 const styles = theme => ({
   root: {
     display: 'flex',
   },
   fixedHeight: {
-    height: 200,
+    height: 125,
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    width: '100%',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+
   },
   paper: {
     padding: theme.spacing(2),
@@ -54,10 +52,16 @@ const styles = theme => ({
     justify: 'center'
   },
   AccountCircleIcon: {
-    color: 'red', 
-    justify: 'center', 
+    color: 'red',
+    justify: 'center',
     fontSize: 30
 
+  },
+
+  title: {
+    margin: 5,
+    color: '#708096',
+    fontSize: 35
   }
 
 });
@@ -67,34 +71,32 @@ class App extends React.Component {
 
     const { classes } = this.props
     return (
+
       <div className={classes.root}>
+        <NavBar />
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-
-          <Container maxWidth="lg" className={classes.container}>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+          <Container className={classes.container}>
+            <Typography component="h1" variant="h3" color="inherit" noWrap className={classes.title}>
               Dashboard
           </Typography>
             <Grid container spacing={4} >
-              {/* Chart */}
-              <Grid item xs={12} md={4} lg={4} >
+              <Grid item sm>
                 <Paper className={classes.fixedHeight}>
-                <VendorCount />
-
+                  <VendorCount />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4} lg={4}>
+              <Grid item sm>
                 <Paper className={classes.fixedHeight}>
                   <PoCount />
                 </Paper>
               </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={4}>
+              \              <Grid item sm>
                 <Paper className={classes.fixedHeight}>
                   <TrackingCount />
                 </Paper>
               </Grid>
-              {/* Recent Orders */}
+
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
                   <CustomerListDash />

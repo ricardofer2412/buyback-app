@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import firebase from '../firebase/Firebase';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
+import NavBar from '../NavBar/NavBar'
 
 
 class Edit extends Component {
@@ -70,6 +71,7 @@ class Edit extends Component {
   render() {
     return (
       <div class="container">
+        <NavBar />
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">

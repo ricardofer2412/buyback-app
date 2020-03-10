@@ -1,30 +1,4 @@
-/*! Primitive
- * A front end Sass boilerplate
- *
- * Author: Tania Rascia 
- */
-/* Variables
- * ===============
- *
- * All variables and most of the configuration is defined on this page. */
-/* Containers */
-/* Breakpoints */
-/* Colors */
-/* Typography */
-/* Padding */
-/* Borders */
-/* Buttons */
-/* Forms */
-/* Tables */
-/* Code */
-/* Mixins
-  =============== */
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS and IE text size adjust after device orientation change,
- *    without disabling user zoom.
- */
+
  html {
     -ms-text-size-adjust: 100%;
     /* 2 */
@@ -183,8 +157,7 @@
     font-size: 1rem; }
   
   body {
-    color: #404040;
-    background:#0B2545 ;
+
     font-size: 1rem; }
   
   p,
@@ -326,12 +299,7 @@
   .full-container {
     max-width: 100%;
     padding: 0 1rem; }
-  
-  .container, .small-container, .medium-container {
-    max-width: 1200px;
-    padding: 0 1rem;
-    margin-left: auto;
-    margin-right: auto; }
+
   
   .small-container {
     max-width: 800px; }

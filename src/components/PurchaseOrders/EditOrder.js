@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/c
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
+import NavBar from '../NavBar/NavBar'
 
 const carriers = [
   {
@@ -257,6 +258,7 @@ class EditOrder extends Component {
     return (
 
       <div className={classes.root}>
+        <NavBar />
         {console.log(this.state)}
         <Typography
           component="h2" m variant="display4">
