@@ -157,14 +157,47 @@ class NewOrder extends Component {
             status: "",
             typePayment: '',
             phoneNumber: "",
-            devices: []
-
-
+            vendorName: "", 
+            carrier: "", 
+            model: '', 
+            price: '', 
+            imei: '', 
+            comments: '', 
+            devices: [{
+                carrier: "", 
+                model: '', 
+                price: '', 
+                imei: '', 
+                comments: '', 
+            }]
+            
         };
     }
+    handleDeviceChange = idx => e => {
+        const newDevices = this.state.devices.map((device, sidx) => {
+          if (idx !== sidx) return device;
+          return { ...device, name: e.target.value };
+        });
+    
+        this.setState({devices: newDevices});
+      };
 
+    handleAddDevice = () => {
+        this.setState({
+          devices: this.state.devices.concat([{ 
+          carrier: "", 
+          model: '', 
+          price: '', 
+          imei: '', 
+          comments: '',  }])
+        });
+      };
 
-
+      handleRemoveShareholder = idx => () => {
+        this.setState({
+          devices: this.state.devices.filter((s, sidx) => idx !== sidx)
+        });
+      };
     handleDateChange = date => {
         this.setState({ poDate: date });
     };
@@ -176,17 +209,17 @@ class NewOrder extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        const purchaseOrderId = uuid();
-        const deviceId = uuid();
         const {
-            company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity
+            company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate, quantity
         } = this.state
-        const { devices } = this.state;
-        this.ref
-            .doc(purchaseOrderId)
-            .set({
-                company, vendor, poNumber, emai, phoneNumber, status, typePayment, poDate, quantity, devices
-            }).then((docRef) => {
+        const purchaseOrderId = uuid();
+        const deviceId =  uuid();
+        const { devices } = this.state
+        console.log('purchaseOrderId: ', purchaseOrderId);
+        this.ref.doc(purchaseOrderId).set({
+                company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate, quantity
+            })
+            .then(() => {
                 this.setState({
                     company: "",
                     deviceTotal: "",
@@ -199,19 +232,37 @@ class NewOrder extends Component {
                     expectDeliver: "",
                     status: "",
                     typePayment: '',
-                    phoneNumber: "",
-                    devices: []
-
+                    phoneNumber: "", 
+                    vendorName: '',
                 });
-
-
                 this.props.history.push("/purchaseorders")
             })
             .catch((error) => {
                 console.error("Error adding document: ", error)
             });
+            
+            this.deviceRef.doc(deviceId).set({
+                carrier: this.state.carrier,
+                model: this.state.model, 
+                price: this.state.price, 
+                comments: this.state.comments, 
+                imei: this.state.imei
+            })
+            .then(() => {
+                this.setState({
+                    devices: [{
+                        carrier: '', 
+                        model: '', 
+                        price: '', 
+                        comments: '', 
+                        imei: ''
 
+                    }]
+                });
+             
+    
 
+            })
     };
 
 
@@ -219,10 +270,11 @@ class NewOrder extends Component {
 
         const {
             company, vendorName, poNumber, email, phoneNumber, status, typePayment, poDate,
-            quantity, devices
+            quantity
 
         } = this.state;
         const { classes } = this.props;
+   
 
         const deviceTotal = this.state.price * quantity;
         return (
@@ -393,8 +445,9 @@ class NewOrder extends Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-
+                                    {this.state.devices.map((device, idx) => (
                                         <TableRow>
+                                       
                                             <TableCell>
                                                 <TextField
                                                     InputProps={{ name: 'quantity' }}
@@ -412,8 +465,8 @@ class NewOrder extends Component {
                                                     label="Carrier"
                                                     InputProps={{ name: 'carrier' }}
                                                     className={classes.textFieldDevice}
-                                                    value={this.state.carrier}
-                                                    onChange={this.onChange}
+                                                    value={device.carrier}
+                                                    onChange={this.handleDeviceChange(idx)}
 
                                                     SelectProps={{
                                                         MenuProps: {
@@ -435,7 +488,7 @@ class NewOrder extends Component {
                                                     InputProps={{ name: 'model' }}
                                                     className={classes.textFieldDevice}
                                                     onChange={this.onChange}
-                                                    value={this.state.model}
+                                                    value={device.model}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
@@ -444,7 +497,7 @@ class NewOrder extends Component {
                                                     InputProps={{ name: 'imei' }}
                                                     className={classes.textFieldDevice}
                                                     onChange={this.onChange}
-                                                    value={this.state.imei}
+                                                    value={device.imei}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
@@ -453,7 +506,7 @@ class NewOrder extends Component {
                                                     InputProps={{ name: 'price' }}
                                                     className={classes.textFieldDevice}
                                                     onChange={this.onChange}
-                                                    value={this.state.price}
+                                                    value={device.price}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
@@ -468,15 +521,23 @@ class NewOrder extends Component {
                                                 <button
                                                     className="btn btn-link"
                                                     type="button"
-                                                    onClick={this.addDevice}
+                                                    onClick={this.handleAddDevice}
                                                 >
                                                     +
                                                </button>
+                                               <button
+
+              type="button"
+              onClick={this.handleRemoveShareholder(idx)}
+              className="btn btn-link"
+            >
+              -
+            </button>
                                             </TableCell>
+                                               
+
                                         </TableRow>
-
-
-
+                                        ))} 
                                     </TableBody>
                                 </Table>
                             </Grid>
@@ -492,6 +553,7 @@ class NewOrder extends Component {
                                     color="primary">
                                     Save
                         </Button>
+                      
                             </div>
 
                         </form>
