@@ -158,11 +158,11 @@ class NewOrder extends Component {
             typePayment: '',
             phoneNumber: "",
             vendorName: "", 
-            carrier: "", 
-            model: '', 
-            price: '', 
-            imei: '', 
-            comments: '', 
+            // carrier: "", 
+            // model: '', 
+            // price: '', 
+            // imei: '', 
+            // comments: '', 
             devices: [{
                 carrier: "", 
                 model: '', 
@@ -172,6 +172,11 @@ class NewOrder extends Component {
             }]
             
         };
+    }
+    onChange = e => {
+        const state = this.state;
+        state[e.target.name] = e.target.value;
+        this.setState(state);
     }
     handleDeviceChange = idx => e => {
         const newDevices = this.state.devices.map((device, sidx) => {
@@ -189,7 +194,7 @@ class NewOrder extends Component {
           model: '', 
           price: '', 
           imei: '', 
-          comments: '',  }])
+          comments: '' }])
         });
       };
 
@@ -202,11 +207,7 @@ class NewOrder extends Component {
         this.setState({ poDate: date });
     };
 
-    onChange = e => {
-        const state = this.state;
-        state[e.target.name] = e.target.value;
-        this.setState(state);
-    }
+
     onSubmit = (e) => {
         e.preventDefault();
         const {
@@ -242,11 +243,11 @@ class NewOrder extends Component {
             });
             
             this.deviceRef.doc(deviceId).set({
-                carrier: this.state.carrier,
-                model: this.state.model, 
-                price: this.state.price, 
-                comments: this.state.comments, 
-                imei: this.state.imei
+                carrier: this.state.devices.carrier,
+                model: this.state.devices.model, 
+                price: this.state.devices.price, 
+                comments: this.state.devices.comments, 
+                imei: this.state.devices.imei
             })
             .then(() => {
                 this.setState({
@@ -276,7 +277,7 @@ class NewOrder extends Component {
         const { classes } = this.props;
    
 
-        const deviceTotal = this.state.price * quantity;
+        const deviceTotal = this.state.devices.price * quantity;
         return (
             <div className={classes.root}>
                 <Container className={classes.container}>
@@ -487,8 +488,7 @@ class NewOrder extends Component {
                                                 <TextField
                                                     InputProps={{ name: 'model' }}
                                                     className={classes.textFieldDevice}
-                                                    onChange={this.onChange}
-                                                    value={device.model}
+                                                    onChange={this.handleDeviceChange(idx)}                                                    value={device.model}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
@@ -496,8 +496,7 @@ class NewOrder extends Component {
                                                 <TextField
                                                     InputProps={{ name: 'imei' }}
                                                     className={classes.textFieldDevice}
-                                                    onChange={this.onChange}
-                                                    value={device.imei}
+                                                    onChange={this.handleDeviceChange(idx)}                                                    value={device.imei}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
@@ -505,8 +504,7 @@ class NewOrder extends Component {
                                                 <TextField
                                                     InputProps={{ name: 'price' }}
                                                     className={classes.textFieldDevice}
-                                                    onChange={this.onChange}
-                                                    value={device.price}
+                                                    onChange={this.handleDeviceChange(idx)}                                                    value={device.price}
                                                     variant="outlined"
                                                 />
                                             </TableCell>
