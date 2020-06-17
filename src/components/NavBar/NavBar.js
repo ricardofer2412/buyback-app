@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { People, ShoppingCart, StayCurrentPortrait, CropLandscapeSharp, Autorenew } from '@material-ui/icons'
 import './NavBar.css'
 import Container from '@material-ui/core/Container';
+import Weather from '../Weather/Weather'
 
 
 
@@ -147,6 +148,12 @@ class NavBar extends React.Component {
               <ListItemText className={classes.listItemText} primary="Tracking" />
             </ListItemIcon>
           </ListItem>
+          <ListItem button component={Link} to="/UnlockediPhones">
+            <ListItemIcon>
+              <StayCurrentPortrait className={classes.sideBarIcon} />
+              <ListItemText className={classes.listItemText} primary="UnlockediPhones" />
+            </ListItemIcon>
+          </ListItem>
         </List>
       </div>
     );
@@ -166,7 +173,9 @@ class NavBar extends React.Component {
             </IconButton>
             <Typography className={classes.titleText} variant="h6" color="black" noWrap>
               BUYBACK APP
+          
             </Typography>
+        
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>

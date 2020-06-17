@@ -17,6 +17,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import firebase from "../firebase/Firebase.js";
+
 
 
 
@@ -48,13 +50,27 @@ const styles = theme => ({
 class VendorCount extends Component {
   constructor(props) {
     super(props);
-
+    this.ref = firebase.firestore().collection("customers");
     this.state = {
-      vendorCount: "1"
+      vendorCount: ''
     }
+  }
+
+  componentDidMount = () => {
+    this.ref.get().then(querySnapshot => {
+      this.customerCount = querySnapshot.size
+    }
+    ).then( (querySnapshot) => {
+     this.setState({
+       vendorCount: this.customerCount
+     })
+    
+    })
   }
   render() {
     const { classes } = this.props;
+    console.log(this.state.vendorCount)
+    console.log(this.state.vendorCount)
 
     return (
       <React.Fragment>
@@ -66,7 +82,7 @@ class VendorCount extends Component {
                 Vendors
                 </Typography>
               <Typography className={classes.countText} component="p">
-                3000
+               {this.customerCount}
              </Typography>
             </CardContent>
           </CardActionArea>

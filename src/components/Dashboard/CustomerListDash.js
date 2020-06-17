@@ -75,6 +75,8 @@ class CustomerList extends React.Component {
 
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+
+ 
   }
 
 

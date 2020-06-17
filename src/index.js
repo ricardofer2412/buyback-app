@@ -15,6 +15,7 @@ import NewTracking from './components/tracking/new-tracking'
 import NavBar from './components/NavBar/NavBar'
 import EditTracking from './components/tracking/edit-tracking'
 import EditOrder from './components/PurchaseOrders/EditOrder'
+import UnlockediPhones from './components/CellphonePrices/UnlockediPhones'
 
 ReactDOM.render(
   <Router>
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route exact path='/tracking/new/' component={NewTracking} />
       <Route exact path='/tracking/edit/:id' component={EditTracking} />
       <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
+      <Route exact path="/UnlockediPhones/" component={UnlockediPhones} />
     </div>
   </Router>,
   document.getElementById("root")

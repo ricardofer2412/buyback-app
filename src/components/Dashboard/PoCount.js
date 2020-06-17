@@ -19,6 +19,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
+import firebase from "../firebase/Firebase.js";
 
 
 
@@ -58,10 +59,22 @@ const styles = theme => ({
 class VendorCount extends Component {
   constructor(props) {
     super(props);
-
+    this.poCountRef = firebase.firestore().collection('purchaseOrders')
     this.state = {
       vendorCount: "1"
     }
+  }
+
+  componentDidMount = () => {
+    this.poCountRef.get().then(querySnapshot => {
+      this.poCount = querySnapshot.size
+    }
+    ).then( (querySnapshot) => {
+     this.setState({
+       vendorCount: this.customerCount
+     })
+    
+    })
   }
   render() {
     const { classes } = this.props;
@@ -76,7 +89,7 @@ class VendorCount extends Component {
                 Purchase Orders
                 </Typography>
               <Typography className={classes.countText} component="p">
-                52
+                {this.poCount}
              </Typography>
             </CardContent>
           </CardActionArea>

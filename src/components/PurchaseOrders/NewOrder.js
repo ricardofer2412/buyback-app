@@ -17,6 +17,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
+import { firestore } from "firebase";
 
 const uuid = require("uuid");
 const carriers = [
@@ -141,12 +142,12 @@ class NewOrder extends Component {
     this.deviceRef = firebase.firestore().collection("devices");
     this.ref = firebase.firestore().collection("purchaseOrders");
     this.state = {
+      purchaseOrderId: '', 
       company: "",
       deviceTotal: 0.0,
       poDate: new Date(),
       poNumber: "",
       poTotal: "",
-      quantity: 1,
       email: "",
       address: "",
       expectDeliver: "",
@@ -154,52 +155,53 @@ class NewOrder extends Component {
       typePayment: "",
       phoneNumber: "",
       vendorName: "",
-      // carrier: "",
-      // model: '',
-      // price: '',
-      // imei: '',
-      // comments: '',
-      devices: [
-        {
-          carrier: "",
-          model: "",
-          price: "",
-          imei: "",
-          comments: ""
-        }
-      ]
+      deviceModel:'', 
+      devicePrice: '', 
+      deviceQty: '', 
+      deviceComments: '', 
+      deviceDeduction: '', 
     };
+  }
+  componentDidMount = () => {
+    this.purchaseOrderId =  uuid()
+    console.log('purchase order' + this.purchaseOrderId)
   }
   onChange = e => {
     const state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   };
+
   handleDeviceChange = (e, idx) => {
     const devices = [...this.state.devices];
     devices[idx] = e.target.value;
     this.setState({devices});
   };
 
-  handleAddDevice = () => {
-    const newDevice = {
-      carrier: "",
-      model: "",
-      price: "",
-      imei: "",
-      comments: ""
-    };
+  addNewDevice = (e) => {
+    e.preventDefault();
+  
+  const purchaseOrderId = this.purchaseOrderId
+  console.log(purchaseOrderId)
+  const deviceId = uuid();
+  this.deviceRef.add({
+      // purchaseOrderId: purchaseOrderId,
+      deviceId: deviceId,
+      deviceModel: this.state.deviceModel, 
+      devicePrice: this.state.devicePrice, 
+      deviceQty: this.state.deviceQty, 
+      deviceComments: this.state.deviceComments, 
+      deviceDeduction: this.state.deviceDeduction, 
+      
+    }).then(() => {
+      console.log("Device Added")
+      console.log("Device Model: "+ this.state.deviceModel)
+      console.log('DeviceId' + deviceId)
 
-    this.setState({
-      devices: [...this.state.devices, newDevice]
-    });
-  };
+    })
+  }
 
-  handleRemoveShareholder = idx => () => {
-    this.setState({
-      devices: this.state.devices.filter((s, sidx) => idx !== sidx)
-    });
-  };
+
   handleDateChange = date => {
     this.setState({ poDate: date });
   };
@@ -216,13 +218,13 @@ class NewOrder extends Component {
       typePayment,
       poDate,
       quantity
+      
     } = this.state;
-    const purchaseOrderId = uuid();
+   
+    const purchaseOrderId = this.purchaseOrderId
     const deviceId = uuid();
-    const { devices } = this.state;
     console.log("purchaseOrderId: ", purchaseOrderId);
-    this.ref
-      .doc(purchaseOrderId)
+    this.ref.doc(purchaseOrderId)
       .set({
         company,
         vendorName,
@@ -232,7 +234,7 @@ class NewOrder extends Component {
         status,
         typePayment,
         poDate,
-        quantity
+       
       })
       .then(() => {
         this.setState({
@@ -241,7 +243,7 @@ class NewOrder extends Component {
           poDate: "",
           poNumber: "",
           poTotal: "",
-          quantity: "",
+         
           email: "",
           address: "",
           expectDeliver: "",
@@ -255,29 +257,6 @@ class NewOrder extends Component {
       .catch(error => {
         console.error("Error adding document: ", error);
       });
-
-    this.deviceRef
-      .doc(deviceId)
-      .set({
-        carrier: this.state.devices.carrier,
-        model: this.state.devices.model,
-        price: this.state.devices.price,
-        comments: this.state.devices.comments,
-        imei: this.state.devices.imei
-      })
-      .then(() => {
-        this.setState({
-          devices: [
-            {
-              carrier: "",
-              model: "",
-              price: "",
-              comments: "",
-              imei: ""
-            }
-          ]
-        });
-      });
   };
 
   render() {
@@ -290,11 +269,16 @@ class NewOrder extends Component {
       status,
       typePayment,
       poDate,
-      quantity
+      quantity, 
+      deviceModel, 
+      deviceQty, 
+      devicePrice, 
+      deviceComments, 
+      
     } = this.state;
     const { classes } = this.props;
 
-    const deviceTotal = this.state.devices.price * quantity;
+
     return (
       <div className={classes.root}>
         <Container className={classes.container}>
@@ -375,7 +359,7 @@ class NewOrder extends Component {
                   <TextField
                     style={{ width: 250 }}
                     select
-                    label="Referred By"
+                    label="Status"
                     InputProps={{ name: "status" }}
                     className={classes.textField}
                     value={status}
@@ -444,108 +428,59 @@ class NewOrder extends Component {
                 </Grid>
               </Grid>
               <Divider />
-              <Grid container spacing={2}>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>QTY</TableCell>
-                      <TableCell>Carrier</TableCell>
-                      <TableCell>Model</TableCell>
-                      <TableCell>IMEI</TableCell>
-                      <TableCell>Cost</TableCell>
-                      <TableCell>Total</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.devices.map((device, idx) => (
-                      <TableRow>
-                        <TableCell>
-                          <TextField
-                            InputProps={{ name: "quantity" }}
-                            className={classes.textFieldDevice}
-                            onChange={this.onChange}
-                            value={quantity}
-                            variant="outlined"
-                            width="25%"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            select
-                            label="Carrier"
-                            InputProps={{ name: "carrier" }}
-                            className={classes.textFieldDevice}
-                            value={device.carrier}
-                            onChange={e => this.handleDeviceChange(e, idx)}
-                            SelectProps={{
-                              MenuProps: {
-                                className: classes.menu
-                              }
-                            }}
-                            margin="normal"
-                            variant="outlined"
-                          >
-                            {carriers.map(option => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            InputProps={{ name: "model" }}
-                            className={classes.textFieldDevice}
-                            onChange={e => this.handleDeviceChange(e, idx)}
-                            value={device.model}
-                            variant="outlined"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            InputProps={{ name: "imei" }}
-                            className={classes.textFieldDevice}
-                            onChange={e => this.handleDeviceChange(e, idx)}
-                            value={device.imei}
-                            variant="outlined"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            InputProps={{ name: "price" }}
-                            className={classes.textFieldDevice}
-                            onChange={e => this.handleDeviceChange(e, idx)}
-                            value={device.price}
-                            variant="outlined"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="h6" gutterBottom>
-                            ${deviceTotal}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <button
-                            className="btn btn-link"
-                            type="button"
-                            onClick={this.handleAddDevice}
-                          >
-                            +
-                          </button>
-                          <button
-                            type="button"
-                            onClick={this.handleRemoveShareholder(idx)}
-                            className="btn btn-link"
-                          >
-                            -
-                          </button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Grid>
+              <Grid item sm>
+              <TextField
+                    required
+                    label="Qty"
+                    InputProps={{ name: "deviceQty" }}
+                    className={classes.textField}
+                    onChange={this.onChange}
+                    value={deviceQty}
+                    variant="outlined"
+                    style={{ width: 250 }}
+                  />
+                  <TextField
+                    required
+                    label="Phone model"
+                    InputProps={{ name: "deviceModel" }}
+                    className={classes.textField}
+                    onChange={this.onChange}
+                    value={deviceModel}
+                    variant="outlined"
+                    style={{ width: 250 }}
+                  />
+                 
+                  <TextField
+                    required
+                    label="Comments"
+                    InputProps={{ name: "deviceComments" }}
+                    className={classes.textField}
+                    onChange={this.onChange}
+                    value={deviceComments}
+                    variant="outlined"
+                    style={{ width: 250 }}
+                  />
+                  <TextField
+                    required
+                    label="Price"
+                    InputProps={{ name: "devicePrice" }}
+                    className={classes.textField}
+                    onChange={this.onChange}
+                    value={devicePrice}
+                    variant="outlined"
+                    style={{ width: 250 }}
+                  />
+                  <Button
+                  style={{ margin: 25 }}
+                  type="Add Device"
+                  variant="contained"
+               
+                  onClick={this.addNewDevice}
+                  color="primary"
+                >
+                 Add Device
+                </Button>
+                </Grid>
               <div className={classes.inputContainer}>
                 <Button
                   style={{ margin: 25 }}

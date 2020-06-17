@@ -18,6 +18,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import FlightIcon from '@material-ui/icons/Flight';
+import firebase from "../firebase/Firebase.js";
 
 
 
@@ -57,10 +58,21 @@ const styles = theme => ({
 class VendorCount extends Component {
   constructor(props) {
     super(props);
-
+    this.trackingRef =  firebase.firestore().collection('trackings')
     this.state = {
       vendorCount: "1"
     }
+  }
+  componentDidMount = () => {
+    this.trackingRef.get().then(querySnapshot => {
+      this.trackingCount = querySnapshot.size
+    }
+    ).then( (querySnapshot) => {
+     this.setState({
+       vendorCount: this.customerCount
+     })
+    
+    })
   }
   render() {
     const { classes } = this.props;
@@ -75,7 +87,7 @@ class VendorCount extends Component {
                 Trackings
                 </Typography>
               <Typography className={classes.countText} component="p">
-                15
+              {this.trackingCount}
              </Typography>
             </CardContent>
           </CardActionArea>
