@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import firebase from "../firebase/Firebase.js";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
@@ -80,67 +79,34 @@ const statusList = [
   }
 ];
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    marginTop: 20
-  },
-  container: {
-    maxWidth: "lg"
-  },
-  Typography: {
-    fontFamily: '"Product Sans", serif'
-  },
-
-  // paper: {
-  //     padding: theme.spacing.unit * 2,
-  //     marginLeft: theme.spacing.unit * 3,
-  //     marginRight: theme.spacing.unit * 3,
-  //     marginTop: theme.spacing.unit * 6,
-  //     textAlign: 'left',
-  //     display: "flex",
-  //     flexDirection: 'column',
-  //     color: theme.palette.text.secondary,
-  // },
+const classes = {
+  maincontainer: {
+  
+    display: 'flex',
+    flexDiretion: 'column', 
+    marginTop: 100, 
+    marginRight: 200, 
+    width: '100%'
+    
+  }, 
+  topForm: {
+    display: 'flex', 
+    flexDiretion: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: 50
+  
+  }, 
   paper: {
-    padding: theme.spacing.unit * 2,
-    margin: 5,
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "row",
-    textAlign: "center",
-    justify: "center"
-  },
-  textField: {
-    marginLeft: 5,
-    marginTop: 10,
-    width: 150
-  },
-  textFieldDevice: {
-    marginLeft: 5,
-    marginTop: 10,
-    width: 150
-  },
-  inputContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh"
-  },
-  menu: {
-    width: 150
+    width: '100%'
   }
-});
+}
 
 class NewOrder extends Component {
   constructor(props) {
     super(props);
     this.deviceRef = firebase.firestore().collection("devices");
     this.ref = firebase.firestore().collection("purchaseOrders");
+    this.customerRef =  firebase.firestore().collection('customers')
     this.state = {
       purchaseOrderId: '', 
       company: "",
@@ -160,11 +126,12 @@ class NewOrder extends Component {
       deviceQty: '', 
       deviceComments: '', 
       deviceDeduction: '', 
+      newDeviceList: [], 
+      deviceTotal: ''
     };
   }
   componentDidMount = () => {
-    this.purchaseOrderId =  uuid()
-    console.log('purchase order' + this.purchaseOrderId)
+
   }
   onChange = e => {
     const state = this.state;
@@ -179,34 +146,44 @@ class NewOrder extends Component {
   };
 
   addNewDevice = (e) => {
-    e.preventDefault();
-  
-  const purchaseOrderId = this.purchaseOrderId
-  console.log(purchaseOrderId)
-  const deviceId = uuid();
-  this.deviceRef.add({
-      // purchaseOrderId: purchaseOrderId,
-      deviceId: deviceId,
-      deviceModel: this.state.deviceModel, 
-      devicePrice: this.state.devicePrice, 
-      deviceQty: this.state.deviceQty, 
-      deviceComments: this.state.deviceComments, 
-      deviceDeduction: this.state.deviceDeduction, 
+    this.deviceRef.add({
       
-    }).then(() => {
-      console.log("Device Added")
-      console.log("Device Model: "+ this.state.deviceModel)
-      console.log('DeviceId' + deviceId)
-
     })
   }
-
+  addDevice = (e) => {
+    e.preventDefault()
+    const newDeviceList = [...this.state.newDeviceList,
+    { qty: this.state.qty, phoneModel: this.state.comments, price: this.state.price, deviceTotal: this.state.deviceTotal }]
+    const deviceId = uuid()
+    this.postRef.doc(deviceId).set({
+      qty: this.state.qty,
+      deviceId: deviceId,
+      phoneModel: this.state.phoneModel,
+      price: this.state.price, 
+      deviceTotal: this.state.deviceTotal, 
+      comments: this.state.comments
+    })
+      .then(res => {
+        this.setState({
+          newDeviceList: newDeviceList,
+          qty: '', 
+          phoneModel: '', 
+          price: '', 
+          deviceTotal: '', 
+          comments: ''
+          
+         
+        })
+      })
+  }
 
   handleDateChange = date => {
     this.setState({ poDate: date });
   };
-
   onSubmit = e => {
+ 
+    const purchaseOrderId =  uuid();
+    const customerId =  uuid();
     e.preventDefault();
     const {
       company,
@@ -218,14 +195,11 @@ class NewOrder extends Component {
       typePayment,
       poDate,
       quantity
-      
     } = this.state;
    
-    const purchaseOrderId = this.purchaseOrderId
-    const deviceId = uuid();
-    console.log("purchaseOrderId: ", purchaseOrderId);
-    this.ref.doc(purchaseOrderId)
-      .set({
+    this.customerRef.doc(purchaseOrderId)
+      .set({  
+        customerId,
         company,
         vendorName,
         poNumber,
@@ -234,29 +208,26 @@ class NewOrder extends Component {
         status,
         typePayment,
         poDate,
-       
       })
       .then(() => {
-        this.setState({
-          company: "",
-          deviceTotal: "",
-          poDate: "",
-          poNumber: "",
-          poTotal: "",
-         
-          email: "",
-          address: "",
-          expectDeliver: "",
-          status: "",
-          typePayment: "",
-          phoneNumber: "",
-          vendorName: ""
-        });
         this.props.history.push("/purchaseorders");
       })
       .catch(error => {
         console.error("Error adding document: ", error);
       });
+      this.deviceRef.add({
+
+
+          deviceModel: this.state.deviceModel, 
+          devicePrice: this.state.devicePrice, 
+          deviceQty: this.state.deviceQty, 
+          deviceComments: this.state.deviceComments, 
+          deviceDeduction: this.state.deviceDeduction, 
+        }).then(() => {
+          console.log("Device Added")
+          console.log("Device Model: "+ this.state.deviceModel)
+         
+        })
   };
 
   render() {
@@ -276,98 +247,85 @@ class NewOrder extends Component {
       deviceComments, 
       
     } = this.state;
-    const { classes } = this.props;
+
 
 
     return (
-      <div className={classes.root}>
-        <Container className={classes.container}>
-          <Typography
-            className={classes.Typography}
-            component="h2"
-            m
-            variant="display4"
-          >
-            Purchase Order: {poNumber}
-          </Typography>
-          <Paper className={classes.paper}>
+
+        <Container style={classes.maincontainer}>
+      
+          <Container>
+          <Paper style={classes.paper} >
             <form onSubmit={this.onSubmit.bind(this)} noValidate>
-              <Grid container spacing={2}>
-                <Grid item sm>
+             <Container style={classes.topForm}>
                   <TextField
                     required
                     label="Company"
                     InputProps={{ name: "company" }}
-                    className={classes.textField}
+                   
                     onChange={this.onChange}
                     value={company}
                     variant="outlined"
                     style={{ width: 250 }}
                   />
-                </Grid>
-                <Grid item sm>
+             
                   <TextField
                     required
                     label="Vendor Name"
                     InputProps={{ name: "vendorName" }}
-                    className={classes.textField}
+                 
                     onChange={this.onChange}
                     value={vendorName}
                     variant="outlined"
                     style={{ width: 250 }}
                   />
-                </Grid>
-                <Grid item sm>
+                
                   <TextField
                     required
                     label="PO Number"
                     InputProps={{ name: "poNumber" }}
-                    className={classes.textField}
+                
                     onChange={this.onChange}
                     value={poNumber}
                     variant="outlined"
                     style={{ width: 250 }}
                   />
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item sm>
+          </Container>
+          <Container style={classes.topForm}>
                   <TextField
                     required
                     label="E-Mail"
                     InputProps={{ name: "email" }}
-                    className={classes.textField}
+                   
                     onChange={this.onChange}
                     value={email}
                     variant="outlined"
                     style={{ width: 250 }}
                   />
-                </Grid>
-                <Grid item sm>
+            
                   <TextField
                     required
                     label="Phone Number"
                     InputProps={{ name: "phoneNumber" }}
-                    className={classes.textField}
+                   
                     onChange={this.onChange}
                     value={phoneNumber}
                     variant="outlined"
                     style={{ width: 250 }}
                   />
-                </Grid>
-                <Grid item sm>
+               
                   <TextField
                     style={{ width: 250 }}
                     select
                     label="Status"
                     InputProps={{ name: "status" }}
-                    className={classes.textField}
+                  
                     value={status}
                     defaultValue={poDate}
                     onChange={this.onChange}
                     SelectProps={{
                       MenuProps: {
-                        className: classes.menu
+                    
                       }
                     }}
                     margin="normal"
@@ -379,16 +337,14 @@ class NewOrder extends Component {
                       </MenuItem>
                     ))}
                   </TextField>
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item sm>
+             </Container>
+             <Container style={classes.topForm}>
                   <TextField
                     style={{ width: 250 }}
                     id="poDate"
                     label="Date"
                     type="date"
-                    className={classes.textField}
+                  
                     InputProps={{
                       name: "poDate"
                     }}
@@ -399,21 +355,18 @@ class NewOrder extends Component {
                     variant="outlined"
                     onChange={this.onChange}
                   />
-                </Grid>
-
-                <Grid item sm></Grid>
-                <Grid item sm>
+             
                   <TextField
                     select
                     label="Payment Type"
                     InputProps={{ name: "typePayment" }}
-                    className={classes.textField}
+                    
                     value={typePayment}
                     onChange={this.onChange}
                     style={{ width: 250 }}
                     SelectProps={{
                       MenuProps: {
-                        className: classes.menu
+                      
                       }
                     }}
                     margin="normal"
@@ -425,15 +378,14 @@ class NewOrder extends Component {
                       </MenuItem>
                     ))}
                   </TextField>
-                </Grid>
-              </Grid>
+                  </Container>
               <Divider />
-              <Grid item sm>
+              <Container style={classes.topForm}>
               <TextField
                     required
                     label="Qty"
                     InputProps={{ name: "deviceQty" }}
-                    className={classes.textField}
+                  
                     onChange={this.onChange}
                     value={deviceQty}
                     variant="outlined"
@@ -443,7 +395,7 @@ class NewOrder extends Component {
                     required
                     label="Phone model"
                     InputProps={{ name: "deviceModel" }}
-                    className={classes.textField}
+                  
                     onChange={this.onChange}
                     value={deviceModel}
                     variant="outlined"
@@ -454,7 +406,7 @@ class NewOrder extends Component {
                     required
                     label="Comments"
                     InputProps={{ name: "deviceComments" }}
-                    className={classes.textField}
+                    
                     onChange={this.onChange}
                     value={deviceComments}
                     variant="outlined"
@@ -464,7 +416,7 @@ class NewOrder extends Component {
                     required
                     label="Price"
                     InputProps={{ name: "devicePrice" }}
-                    className={classes.textField}
+                    
                     onChange={this.onChange}
                     value={devicePrice}
                     variant="outlined"
@@ -480,13 +432,13 @@ class NewOrder extends Component {
                 >
                  Add Device
                 </Button>
-                </Grid>
-              <div className={classes.inputContainer}>
+         </Container>
+              <div >
                 <Button
                   style={{ margin: 25 }}
                   type="submit"
                   variant="contained"
-                  className={classes.submit}
+                
                   onClick={this.return}
                   color="primary"
                 >
@@ -494,11 +446,13 @@ class NewOrder extends Component {
                 </Button>
               </div>
             </form>
+          
           </Paper>
+          </Container>
         </Container>
-      </div>
+     
     );
   }
 }
 
-export default withStyles(styles)(withRouter(NewOrder));
+export default (withRouter(NewOrder));

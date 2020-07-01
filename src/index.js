@@ -22,6 +22,7 @@ ReactDOM.render(
     <div>
       <div className="container">
       </div>
+      <Route path="/" component={NavBar}/>
       <Route exact path="/" component={App} />
       <Route exact path="/vendors" component={CustomerList} />
       <Route exact path="/edit/:id" component={Edit} />
