@@ -1,9 +1,8 @@
 import * as firebase from 'firebase';
+import "firebase/auth";
 
 
-const settings = { timestampsInSnapshots: true };
-
-const config = {
+const firebaseConfig = {
     apiKey: "AIzaSyCZRnr5TKThtRolB_rrYeVqrezDlaMBYC4",
     authDomain: "buyback-app.firebaseapp.com",
     databaseURL: "https://buyback-app.firebaseio.com",
@@ -12,8 +11,7 @@ const config = {
     messagingSenderId: "460126132060",
     appId: "1:460126132060:web:a6137d4f90908ad1"
 };
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
-firebase.firestore().settings(settings);
-
+export const auth = firebase.auth();
 export default firebase;

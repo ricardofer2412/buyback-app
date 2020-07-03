@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import firebase from "../firebase/Firebase.js";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
@@ -16,7 +15,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
-import { firestore } from "firebase";
+import firebase from "../firebase/Firebase";
 
 const uuid = require("uuid");
 const carriers = [
@@ -104,7 +103,7 @@ const classes = {
 class NewOrder extends Component {
   constructor(props) {
     super(props);
-    this.deviceRef = firebase.firestore().collection("devices");
+
     this.ref = firebase.firestore().collection("purchaseOrders");
     this.customerRef =  firebase.firestore().collection('customers')
     this.state = {
@@ -145,34 +144,30 @@ class NewOrder extends Component {
     this.setState({devices});
   };
 
+
   addNewDevice = (e) => {
-    this.deviceRef.add({
-      
-    })
-  }
-  addDevice = (e) => {
     e.preventDefault()
     const newDeviceList = [...this.state.newDeviceList,
-    { qty: this.state.qty, phoneModel: this.state.comments, price: this.state.price, deviceTotal: this.state.deviceTotal }]
+    { qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }]
     const deviceId = uuid()
-    this.postRef.doc(deviceId).set({
-      qty: this.state.qty,
+    firebase.firestore()
+    .collection("devices")
+    .doc(deviceId)
+    .set({
+      qty: this.state.deviceQty,
       deviceId: deviceId,
-      phoneModel: this.state.phoneModel,
-      price: this.state.price, 
+      phoneModel: this.state.deviceModel,
+      price: this.state.devicePrice, 
       deviceTotal: this.state.deviceTotal, 
-      comments: this.state.comments
+      comments: this.state.deviceComments
     })
       .then(res => {
         this.setState({
-          newDeviceList: newDeviceList,
-          qty: '', 
-          phoneModel: '', 
-          price: '', 
-          deviceTotal: '', 
-          comments: ''
-          
-         
+        
+          qty: "", 
+          phoneModel: "", 
+          price: "", 
+          comments: ""
         })
       })
   }
@@ -426,7 +421,6 @@ class NewOrder extends Component {
                   style={{ margin: 25 }}
                   type="Add Device"
                   variant="contained"
-               
                   onClick={this.addNewDevice}
                   color="primary"
                 >
