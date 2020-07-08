@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { Typography } from "@material-ui/core";
+import { Typography, Tab } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import {
   Table,
@@ -17,6 +17,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
 import firebase from "../firebase/Firebase";
 import TableContainer from '@material-ui/core/TableContainer';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const uuid = require("uuid");
@@ -102,6 +103,7 @@ const classes = {
   }
 }
 
+
 class NewOrder extends Component {
   constructor(props) {
     super(props);
@@ -152,8 +154,6 @@ class NewOrder extends Component {
     const deviceId = uuid()
     const newItem = { comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
     const newDeviceList = [...this.state.deviceList, newItem]
-
-
     firebase.firestore()
       .collection("devices")
       .doc(deviceId)
@@ -170,11 +170,21 @@ class NewOrder extends Component {
 
   }
 
+  deleteItem = (id) => {
+    firebase.firestore().collection("devices").doc(id)
+      .delete()
+      .then((res) => {
+        this.setState({
+          deviceList: this.state.deviceList
+        })
+
+      })
+  }
+
   handleDateChange = date => {
     this.setState({ poDate: date });
   };
   onSubmit = e => {
-
     const purchaseOrderId = uuid();
     const customerId = uuid();
     e.preventDefault();
@@ -383,6 +393,7 @@ class NewOrder extends Component {
                     <TableCell align="right">Comments</TableCell>
                     <TableCell align="right">PRICE</TableCell>
                     <TableCell align="right">TOTAL</TableCell>
+                    <TableCell align="right">ACTIONS</TableCell>
                   </TableRow>
                 </TableHead>
 
@@ -396,6 +407,13 @@ class NewOrder extends Component {
                       <TableCell align="right">{item.comments}</TableCell>
                       <TableCell align="right">{item.price}</TableCell>
                       <TableCell align="right">{item.deviceTotal}</TableCell>
+                      <TableCell>
+                        <DeleteIcon
+                          onClick={() => this.deleteItem(item.deviceId)}
+                          variant="contained"
+                          style={{ color: "#144864", cursor: "pointer" }}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
