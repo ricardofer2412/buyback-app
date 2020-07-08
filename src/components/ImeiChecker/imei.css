@@ -1,0 +1,26 @@
+.container {
+  padding: 10px;
+  margin: 25px;
+
+  
+}
+.formcontainer{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch
+}
+.title {
+  color:gray;
+  text-align: center;
+  font-weight: 200;
+}
+.form{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+ 
+}
+.buttonForm{
+  background-color: greenyellow;
+}
