@@ -171,11 +171,14 @@ class NewOrder extends Component {
   }
 
   deleteItem = (id) => {
+    const items = Object.assign([], this.state.deviceList)
+    items.splice(id, 1)
+
     firebase.firestore().collection("devices").doc(id)
       .delete()
       .then((res) => {
         this.setState({
-          deviceList: this.state.deviceList
+          deviceList: items
         })
 
       })
@@ -399,7 +402,7 @@ class NewOrder extends Component {
 
                 <TableBody>
                   {this.state.deviceList.map((item) => (
-                    <TableRow key={item.deviceId} >
+                    <TableRow key={item.id} >
                       <TableCell component="th" scope="row">
                         {item.qty}
                       </TableCell>
@@ -409,7 +412,7 @@ class NewOrder extends Component {
                       <TableCell align="right">{item.deviceTotal}</TableCell>
                       <TableCell>
                         <DeleteIcon
-                          onClick={() => this.deleteItem(item.deviceId)}
+                          onClick={() => this.deleteItem(item.id)}
                           variant="contained"
                           style={{ color: "#144864", cursor: "pointer" }}
                         />
