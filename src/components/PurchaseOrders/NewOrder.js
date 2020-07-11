@@ -18,6 +18,7 @@ import Container from "@material-ui/core/Container";
 import firebase from "../firebase/Firebase";
 import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { CastConnectedOutlined } from "@material-ui/icons";
 
 
 const uuid = require("uuid");
@@ -113,10 +114,10 @@ class NewOrder extends Component {
     this.state = {
       purchaseOrderId: '',
       company: "",
-      deviceTotal: 0.0,
+      deviceTotal: "",
       poDate: new Date(),
       poNumber: "",
-      poTotal: "",
+      poTotal: "$0.00",
       email: "",
       address: "",
       expectDeliver: "",
@@ -130,7 +131,7 @@ class NewOrder extends Component {
       deviceComments: '',
       deviceDeduction: '',
       deviceList: [],
-      deviceTotal: ''
+
     };
   }
   componentDidMount = () => {
@@ -154,6 +155,13 @@ class NewOrder extends Component {
     const deviceId = uuid()
     const newItem = { comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
     const newDeviceList = [...this.state.deviceList, newItem]
+    let poTotal = 0
+    for (let i = 0; i < newDeviceList.length; i++) {
+      poTotal += newDeviceList[i].deviceTotal
+
+    }
+    poTotal = poTotal.toFixed(2)
+
     firebase.firestore()
       .collection("devices")
       .doc(deviceId)
@@ -164,21 +172,23 @@ class NewOrder extends Component {
           deviceQty: "",
           deviceModel: "",
           devicePrice: "",
-          deviceComments: ""
+          deviceComments: "",
+          poTotal
         })
       })
-
   }
 
-  deleteItem = (id) => {
-    const items = Object.assign([], this.state.deviceList)
-    items.splice(id, 1)
+  deleteItem = (id, itemId) => {
+    const deviceList = Object.assign([], this.state.deviceList)
+    console.log(id)
+    deviceList.splice(id, 1)
 
-    firebase.firestore().collection("devices").doc(id)
+
+    firebase.firestore().collection("devices").doc(itemId)
       .delete()
       .then((res) => {
         this.setState({
-          deviceList: items
+          deviceList
         })
 
       })
@@ -200,10 +210,11 @@ class NewOrder extends Component {
       status,
       typePayment,
       poDate,
+      deviceList
 
     } = this.state;
 
-    this.customerRef.doc(purchaseOrderId)
+    this.ref.doc(purchaseOrderId)
       .set({
         customerId,
         company,
@@ -214,6 +225,7 @@ class NewOrder extends Component {
         status,
         typePayment,
         poDate,
+        deviceList
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -221,19 +233,7 @@ class NewOrder extends Component {
       .catch(error => {
         console.error("Error adding document: ", error);
       });
-    this.deviceRef.add({
 
-
-      deviceModel: this.state.deviceModel,
-      devicePrice: this.state.devicePrice,
-      deviceQty: this.state.deviceQty,
-      deviceComments: this.state.deviceComments,
-      deviceDeduction: this.state.deviceDeduction,
-    }).then(() => {
-      console.log("Device Added")
-      console.log("Device Model: " + this.state.deviceModel)
-
-    })
   };
 
   render() {
@@ -401,8 +401,8 @@ class NewOrder extends Component {
                 </TableHead>
 
                 <TableBody>
-                  {this.state.deviceList.map((item) => (
-                    <TableRow key={item.id} >
+                  {this.state.deviceList.map((item, i) => (
+                    <TableRow key={i} >
                       <TableCell component="th" scope="row">
                         {item.qty}
                       </TableCell>
@@ -412,7 +412,7 @@ class NewOrder extends Component {
                       <TableCell align="right">{item.deviceTotal}</TableCell>
                       <TableCell>
                         <DeleteIcon
-                          onClick={() => this.deleteItem(item.id)}
+                          onClick={() => this.deleteItem(i, item.deviceId)}
                           variant="contained"
                           style={{ color: "#144864", cursor: "pointer" }}
                         />
@@ -495,6 +495,7 @@ class NewOrder extends Component {
               >
                 Save
                 </Button>
+              <Typography>{this.state.poTotal}</Typography>
             </div>
           </form>
 
