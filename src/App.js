@@ -73,7 +73,7 @@ class App extends React.Component {
     return (
 
       <div className={classes.root}>
-        <NavBar />
+ 
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container className={classes.container}>
