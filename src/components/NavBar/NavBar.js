@@ -103,6 +103,7 @@ class PersistentDrawerLeft extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
+          style={{ backgroundColor: '#383F67' }}
           position="fixed"
           className={classNames(classes.appBar, {
             [classes.appBarShift]: open,
@@ -118,7 +119,7 @@ class PersistentDrawerLeft extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-             BuyBack App
+              BuyBack App
             </Typography>
           </Toolbar>
         </AppBar>
@@ -165,7 +166,7 @@ class PersistentDrawerLeft extends React.Component {
             </ListItem>
           </List>
         </Drawer>
-      
+
       </div>
     );
   }

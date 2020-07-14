@@ -30,20 +30,24 @@ const styles = theme => ({
   },
   titleText: {
     color: '#708096',
-    fontSize: 25
+    fontSize: 18,
   },
   countText: {
-    color: '#708096',
+    color: 'black',
     fontSize: 30,
     marginLeft: 10
   },
   iconStyle: {
-    color: '#76C63A',
+    color: '#150452',
     float: 'right',
     marginTop: 15,
     marginRight: 15,
     fontSize: 40
-  },
+  }, countTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
 
 });
 
@@ -60,39 +64,35 @@ class VendorCount extends Component {
     this.ref.get().then(querySnapshot => {
       this.customerCount = querySnapshot.size
     }
-    ).then( (querySnapshot) => {
-     this.setState({
-       vendorCount: this.customerCount
-     })
-    
+    ).then((querySnapshot) => {
+      this.setState({
+        vendorCount: this.customerCount
+      })
+
     })
   }
   render() {
     const { classes } = this.props;
-    console.log(this.state.vendorCount)
-    console.log(this.state.vendorCount)
+
 
     return (
-      <React.Fragment>
-        <Grid item xs={12}>
-          <CardActionArea>
-            <AccountCircleIcon className={classes.iconStyle} />
-            <CardContent>
-              <Typography className={classes.titleText} variant="h5" component="h2">
-                Vendors
+
+
+      <Card>
+        <AccountCircleIcon className={classes.iconStyle} />
+        <CardContent>
+          <Typography className={classes.titleText} variant="h5" component="h2">
+            Vendors
                 </Typography>
-              <Typography className={classes.countText} component="p">
-               {this.customerCount}
-             </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
+        </CardContent>
+        <CardContent className={classes.countTextView}>
 
+          <Typography className={classes.countText} component="p">
+            {this.customerCount}
+          </Typography>
+        </CardContent>
+      </Card>
 
-          </CardActions>
-
-        </Grid>
-      </React.Fragment>
     )
   }
 }

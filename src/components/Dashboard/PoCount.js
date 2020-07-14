@@ -31,27 +31,34 @@ const styles = theme => ({
 
   },
   ShoppingCart: {
-    color: '#2AB9F7',
+    color: '#F23535',
     justify: 'center',
     fontSize: 30,
     margin: theme.spacing(1),
   },
   titleText: {
     color: '#708096',
-    fontSize: 25
+    fontSize: 18,
+
   },
   countText: {
-    color: '#708096',
+    color: 'black',
     fontSize: 30,
-    marginLeft: 10
+    marginLeft: 10,
+
   },
   iconStyle: {
-    color: '#76C63A',
+    color: '#F23535',
     float: 'right',
     marginTop: 15,
     marginRight: 15,
     fontSize: 40
   },
+  countTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
 
 
 });
@@ -69,36 +76,32 @@ class VendorCount extends Component {
     this.poCountRef.get().then(querySnapshot => {
       this.poCount = querySnapshot.size
     }
-    ).then( (querySnapshot) => {
-     this.setState({
-       vendorCount: this.customerCount
-     })
-    
+    ).then((querySnapshot) => {
+      this.setState({
+        vendorCount: this.customerCount
+      })
+
     })
   }
   render() {
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        <Grid item xs={12}>
-          <CardActionArea>
-            <ShoppingCart className={classes.iconStyle} />
-            <CardContent>
-              <Typography className={classes.titleText} variant="h5" component="h2">
-                Purchase Orders
+
+      <Card>
+        <ShoppingCart className={classes.iconStyle} />
+        <CardContent>
+          <Typography className={classes.titleText} variant="h5" component="h2">
+            Purchase Orders
                 </Typography>
-              <Typography className={classes.countText} component="p">
-                {this.poCount}
-             </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
+        </CardContent>
+        <CardContent className={classes.countTextView}>
+          <Typography className={classes.countText} component="p">
+            {this.poCount}
+          </Typography>
+        </CardContent>
+      </Card>
 
-          </CardActions>
-
-        </Grid>
-      </React.Fragment>
     )
   }
 }

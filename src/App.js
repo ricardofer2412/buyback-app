@@ -73,7 +73,7 @@ class App extends React.Component {
     return (
 
       <div className={classes.root}>
- 
+
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container className={classes.container}>
@@ -82,17 +82,17 @@ class App extends React.Component {
           </Typography>
             <Grid container spacing={4} >
               <Grid item sm>
-                <Paper className={classes.fixedHeight}>
+                <Paper>
                   <VendorCount />
                 </Paper>
               </Grid>
               <Grid item sm>
-                <Paper className={classes.fixedHeight}>
+                <Paper >
                   <PoCount />
                 </Paper>
               </Grid>
-              \              <Grid item sm>
-                <Paper className={classes.fixedHeight}>
+              <Grid item sm>
+                <Paper >
                   <TrackingCount />
                 </Paper>
               </Grid>

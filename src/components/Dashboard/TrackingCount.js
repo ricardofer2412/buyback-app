@@ -38,10 +38,10 @@ const styles = theme => ({
   },
   titleText: {
     color: '#708096',
-    fontSize: 25
+    fontSize: 18,
   },
   countText: {
-    color: '#708096',
+    color: 'black',
     fontSize: 30,
     marginLeft: 10
   },
@@ -52,13 +52,18 @@ const styles = theme => ({
     marginRight: 15,
     fontSize: 40
   },
+  countTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
 
 });
 
 class VendorCount extends Component {
   constructor(props) {
     super(props);
-    this.trackingRef =  firebase.firestore().collection('trackings')
+    this.trackingRef = firebase.firestore().collection('trackings')
     this.state = {
       vendorCount: "1"
     }
@@ -67,36 +72,35 @@ class VendorCount extends Component {
     this.trackingRef.get().then(querySnapshot => {
       this.trackingCount = querySnapshot.size
     }
-    ).then( (querySnapshot) => {
-     this.setState({
-       vendorCount: this.customerCount
-     })
-    
+    ).then((querySnapshot) => {
+      this.setState({
+        vendorCount: this.customerCount
+      })
+
     })
   }
   render() {
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        <Grid item xs={12}>
-          <CardActionArea>
-            <FlightIcon className={classes.iconStyle} />
-            <CardContent>
-              <Typography className={classes.titleText} variant="h5" component="h2">
-                Trackings
+
+
+      <Card>
+        <FlightIcon className={classes.iconStyle} />
+        <CardContent>
+          <Typography className={classes.titleText} variant="h5" component="h2">
+            Trackings
                 </Typography>
-              <Typography className={classes.countText} component="p">
-              {this.trackingCount}
-             </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
+        </CardContent>
+        <CardContent className={classes.countTextView}>
 
-          </CardActions>
+          <Typography className={classes.countText} component="p">
+            {this.trackingCount}
+          </Typography>
+        </CardContent>
+      </Card>
 
-        </Grid>
-      </React.Fragment>
+
     )
   }
 }

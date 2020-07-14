@@ -139,23 +139,18 @@ class EditOrder extends Component {
         this.setState({
           purchaseOrderId: doc.id,
           company: purchaseOrders.company,
-          deviceTotal: purchaseOrders.deviceTotal,
           poDate: purchaseOrders.poDate,
           poNumber: purchaseOrders.poNumber,
           poTotal: purchaseOrders.poTotal,
-          quantity: purchaseOrders.quantity,
           email: purchaseOrders.email,
           address: purchaseOrders.address,
           expectDeliver: purchaseOrders.expectDeliver,
           status: purchaseOrders.status,
           typePayment: purchaseOrders.typePayment,
           phoneNumber: purchaseOrders.phoneNumber,
-          devicePrice: purchaseOrders.devicePrice,
-          deviceCarrier: purchaseOrders.deviceCarrier,
-          deviceModel: purchaseOrders.deviceModel,
-          deviceImei: purchaseOrders.deviceImei,
           deviceList: purchaseOrders.deviceList,
           vendorName: purchaseOrders.vendorName,
+          deviceTotal: purchaseOrders.deviceTotal,
 
         });
       } else {
@@ -408,6 +403,7 @@ class EditOrder extends Component {
                     </MenuItem>
                   ))}
                 </TextField>
+
               </Grid>
             </Grid>
 
@@ -536,6 +532,9 @@ class EditOrder extends Component {
                 component={Link} to="/purchaseorder/">
                 Back
               </Button>
+              <Typography>
+                PO Total: {this.state.poTotal}
+              </Typography>
             </div>
           </form>
         </Paper>

@@ -88,8 +88,8 @@ const classes = {
     display: 'flex',
     flexDiretion: 'column',
     marginTop: 100,
-    marginRight: 200,
-    width: '100%'
+
+
 
   },
   topForm: {
@@ -210,7 +210,8 @@ class NewOrder extends Component {
       status,
       typePayment,
       poDate,
-      deviceList
+      deviceList,
+      poTotal
 
     } = this.state;
 
@@ -225,7 +226,8 @@ class NewOrder extends Component {
         status,
         typePayment,
         poDate,
-        deviceList
+        deviceList,
+        poTotal
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -246,11 +248,11 @@ class NewOrder extends Component {
       status,
       typePayment,
       poDate,
-
       deviceModel,
       deviceQty,
       devicePrice,
       deviceComments,
+
 
     } = this.state;
 
