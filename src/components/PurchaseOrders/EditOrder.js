@@ -73,7 +73,10 @@ const statusList = [
   {
     value: 'Entered',
     label: 'Entered'
-  }
+  }, {
+  value: 'Received', 
+  label: 'Received'
+}
 ]
 
 
@@ -345,7 +348,7 @@ class EditOrder extends Component {
               <Grid item xs={4}>
                 <TextField
                   select
-                  label="Referred By"
+                  label="Status"
                   InputProps={{ name: 'status' }}
                   className={classes.textField}
                   value={this.state.status}

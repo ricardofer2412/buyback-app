@@ -17,6 +17,7 @@ import Container from "@material-ui/core/Container";
 import firebase from "../firebase/Firebase";
 import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 
 
 
@@ -78,6 +79,9 @@ const statusList = [
   {
     value: "Entered",
     label: "Entered"
+  },  {
+    value: 'Received', 
+    label: 'Received'
   }
 ];
 
@@ -95,7 +99,7 @@ const classes = {
     display: 'flex',
     flexDiretion: 'row',
     justifyContent: 'space-between',
-    marginTop: 50
+    marginTop: 15
 
   },
   paper: {
@@ -152,7 +156,7 @@ class NewOrder extends Component {
   addNewDevice = (e) => {
     e.preventDefault()
     const deviceId = uuid()
-    const newItem = { comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
+    const newItem = { deviceCarrier: this.state.deviceCarrier, comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
     const newDeviceList = [...this.state.deviceList, newItem]
     let poTotal = 0
     for (let i = 0; i < newDeviceList.length; i++) {
@@ -172,6 +176,7 @@ class NewOrder extends Component {
           deviceModel: "",
           devicePrice: "",
           deviceComments: "",
+          deviceCarrier: "",
           poTotal
         })
       })
@@ -258,6 +263,7 @@ class NewOrder extends Component {
       deviceQty,
       devicePrice,
       deviceComments,
+      deviceCarrier
 
 
     } = this.state;
@@ -270,6 +276,7 @@ class NewOrder extends Component {
 
 
         <Paper style={classes.paper} >
+          <h2>New Purchase Order </h2>
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
             <Container style={classes.topForm}>
               <TextField
@@ -400,6 +407,7 @@ class NewOrder extends Component {
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>
+                    <TableCell align="right">Carrier</TableCell>
                     <TableCell align="right">MODEL</TableCell>
                     <TableCell align="right">Comments</TableCell>
                     <TableCell align="right">PRICE</TableCell>
@@ -414,6 +422,7 @@ class NewOrder extends Component {
                       <TableCell component="th" scope="row">
                         {item.qty}
                       </TableCell>
+                      <TableCell align="right">{item.deviceCarrier}</TableCell>
                       <TableCell align="right">{item.phoneModel}</TableCell>
                       <TableCell align="right">{item.comments}</TableCell>
                       <TableCell align="right">{item.price}</TableCell>
@@ -434,13 +443,32 @@ class NewOrder extends Component {
                       required
                       label="Qty"
                       InputProps={{ name: "deviceQty" }}
-
                       onChange={this.onChange}
                       value={deviceQty}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 75 }}
                     />
                   </TableCell>
+                  <TextField
+                select
+                label="Carrier"
+                InputProps={{ name: "deviceCarrier" }}
+                value={deviceCarrier}
+                onChange={this.onChange}
+                style={{ width: 250, marginTop: 30 }}
+                SelectProps={{
+                  MenuProps: {
+                  }
+                }}
+                margin="normal"
+                variant="outlined"
+              >
+                {carriers.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
                   <TableCell>
                     <TextField
                       required
@@ -474,19 +502,16 @@ class NewOrder extends Component {
                       onChange={this.onChange}
                       value={devicePrice}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 100 }}
                     />
                   </TableCell>
                   <TableCell>
-                    <Button
-                      style={{ margin: 25 }}
-                      type="Add Device"
+                    <AddIcon
+                      style={{ margin: 25, cursor: 'pointer' }}
                       variant="contained"
                       onClick={this.addNewDevice}
                       color="primary"
-                    >
-                      Add Device
-                </Button>
+                />
                   </TableCell>
                 </TableBody>
               </Table>
