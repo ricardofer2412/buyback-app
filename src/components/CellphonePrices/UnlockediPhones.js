@@ -1,22 +1,20 @@
 import React from 'react'
-import firebase from "../firebase/Firebase.js";
-
 
 
 class UnlockediPhones extends React.Component {
 
 
-    constructor(){
+    constructor() {
         super()
         this.state = {
-           unlockedIphones: []
+            unlockedIphones: []
         }
         this.handleChange = this.handleChange.bind(this)
     }
 
 
-    componentDidMount(){
-  
+    componentDidMount() {
+
     }
 
     handleChange(e) {
@@ -24,9 +22,9 @@ class UnlockediPhones extends React.Component {
             [e.target.name]: e.target.value
         })
     }
-    render(){
+    render() {
 
-        return(
+        return (
             <div>
             </div>
         )

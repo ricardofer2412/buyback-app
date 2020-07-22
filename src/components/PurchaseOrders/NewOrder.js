@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { Typography, Tab } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import {
   Table,
@@ -12,13 +12,12 @@ import {
   TableHead,
   TableRow
 } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
 import firebase from "../firebase/Firebase";
 import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { CastConnectedOutlined } from "@material-ui/icons";
+
 
 
 const uuid = require("uuid");
@@ -193,6 +192,12 @@ class NewOrder extends Component {
 
       })
   }
+  addCustomer() {
+    const newCustomer = { company: this.state.company, vendorName: this.state.vendorName, email: this.state.email, phoneNumber: this.state.phoneNumber }
+    firebase.firestore().collection("customers").add(newCustomer)
+
+  }
+
 
   handleDateChange = date => {
     this.setState({ poDate: date });
@@ -201,6 +206,7 @@ class NewOrder extends Component {
     const purchaseOrderId = uuid();
     const customerId = uuid();
     e.preventDefault();
+
     const {
       company,
       vendorName,
@@ -214,7 +220,7 @@ class NewOrder extends Component {
       poTotal
 
     } = this.state;
-
+    this.addCustomer()
     this.ref.doc(purchaseOrderId)
       .set({
         customerId,

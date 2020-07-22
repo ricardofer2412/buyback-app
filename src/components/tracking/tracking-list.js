@@ -10,10 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { Create, Visibility, DockSharp } from '@material-ui/icons'
+import { Create } from '@material-ui/icons'
 import Container from '@material-ui/core/Container'
-import { makeStyles } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
 import firebase from '../firebase/Firebase';
 import { track } from "../../fedexservice";
 import NavBar from '../NavBar/NavBar'

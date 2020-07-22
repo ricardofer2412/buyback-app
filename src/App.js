@@ -1,7 +1,4 @@
 import React from "react";
-import ButtonAppBar from './components/NavBar/NavBar'
-import { DialogContent } from "@material-ui/core";
-import NavBar from './components/NavBar/NavBar'
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -15,13 +12,7 @@ import VendorCount from './components/Dashboard/VendorCount'
 import PoCount from './components/Dashboard/PoCount'
 import TrackingCount from './components/Dashboard/TrackingCount'
 import CustomerListDash from './components/Dashboard/CustomerListDash'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+
 
 
 

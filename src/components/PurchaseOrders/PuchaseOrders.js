@@ -1,5 +1,4 @@
 import React from 'react'
-import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import firebase from "../firebase/Firebase.js";
 import {
@@ -12,11 +11,10 @@ import {
     TableRow,
     Fab,
     IconButton,
-    makeStyles
 } from "@material-ui/core"
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Create, Visibility } from '@material-ui/icons'
+import { Create } from '@material-ui/icons'
 import NavBar from '../NavBar/NavBar'
 import { withStyles } from '@material-ui/core/styles';
 import {

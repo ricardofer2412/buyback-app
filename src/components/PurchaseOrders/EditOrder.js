@@ -7,13 +7,14 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField"
-import { Typography } from "@material-ui/core";
+import { Typography, TableContainer } from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar'
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const carriers = [
   {
@@ -76,6 +77,7 @@ const statusList = [
 ]
 
 
+const uuid = require("uuid");
 
 const styles = theme => ({
   root: {
@@ -126,7 +128,8 @@ class EditOrder extends Component {
       deviceCarrier: '',
       deviceModel: '',
       deviceImei: '',
-      vendorName: ''
+      vendorName: '',
+      deviceList: []
 
     };
   }
@@ -136,6 +139,8 @@ class EditOrder extends Component {
       if (doc.exists) {
         console.log("Loading")
         const purchaseOrders = doc.data();
+        const deviceList = doc.data().deviceList
+        const newDeviceList = [...deviceList]
         this.setState({
           purchaseOrderId: doc.id,
           company: purchaseOrders.company,
@@ -148,7 +153,7 @@ class EditOrder extends Component {
           status: purchaseOrders.status,
           typePayment: purchaseOrders.typePayment,
           phoneNumber: purchaseOrders.phoneNumber,
-          deviceList: purchaseOrders.deviceList,
+          deviceList: newDeviceList,
           vendorName: purchaseOrders.vendorName,
           deviceTotal: purchaseOrders.deviceTotal,
 
@@ -158,8 +163,49 @@ class EditOrder extends Component {
       }
     });
   }
+  deleteItem = (id, itemId) => {
+    const deviceList = Object.assign([], this.state.deviceList)
+    console.log(id)
+    deviceList.splice(id, 1)
 
 
+    firebase.firestore().collection("devices").doc(itemId)
+      .delete()
+      .then((res) => {
+        this.setState({
+          deviceList
+        })
+
+      })
+  }
+
+  addNewDevice = (e) => {
+    e.preventDefault()
+    const deviceId = uuid()
+    const newItem = { comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
+    const newDeviceList = [...this.state.deviceList, newItem]
+    let poTotal = 0
+    for (let i = 0; i < newDeviceList.length; i++) {
+      poTotal += newDeviceList[i].deviceTotal
+
+    }
+    poTotal = poTotal.toFixed(2)
+
+    firebase.firestore()
+      .collection("devices")
+      .doc(deviceId)
+      .set(newItem)
+      .then((res) => {
+        this.setState({
+          deviceList: newDeviceList,
+          deviceQty: "",
+          deviceModel: "",
+          devicePrice: "",
+          deviceComments: "",
+          poTotal
+        })
+      })
+  }
 
   handleDateChange = date => {
     this.setState({ poDate: date });
@@ -172,73 +218,35 @@ class EditOrder extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault();
-
-    const { company,
-      purchaseOrderId,
-      deviceTotal,
-      poDate,
-      poNumber,
-      poTotal,
-      quantity,
-      email,
-      address,
-      expectDeliver,
-      status,
-      typePayment,
-      phoneNumber,
-      devicePrice,
-      deviceCarrier,
-      deviceModel,
-      deviceImei,
-      vendorName } = this.state;
-
-    const updateRef = firebase.firestore().collection('purcharseOrders').doc(this.state.purchaseOrderId);
-    updateRef.set({
+    const {
       company,
       purchaseOrderId,
-      deviceTotal,
       poDate,
       poNumber,
       poTotal,
       quantity,
       email,
-      address,
-      expectDeliver,
       status,
       typePayment,
       phoneNumber,
-      devicePrice,
-      deviceCarrier,
-      deviceModel,
-      deviceImei,
-      vendorName
-    }).then((docRef) => {
-      this.setState({
-        purchaseOrderId: '',
-        company: "",
-        deviceTotal: "",
-        poDate: "",
-        poNumber: "",
-        poTotal: "",
-        quantity: "",
-        email: "",
-        address: "",
-        expectDeliver: "",
-        status: "",
-        typePayment: "",
-        phoneNumber: "",
-        devicePrice: "",
-        deviceCarrier: "",
-        deviceModel: '',
-        deviceImei: '',
-        deviceList: "",
-        vendorName: ""
-      });
-      console.log("Loading")
+      vendorName,
+      deviceList } = this.state;
 
-      this.props.history.push("/purchaseorders/edit" + this.props.match.params.id)
-      console.log()
-
+    firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
+      company,
+      purchaseOrderId,
+      poDate,
+      poNumber,
+      poTotal,
+      quantity,
+      email,
+      status,
+      typePayment,
+      phoneNumber,
+      vendorName,
+      deviceList
+    }).then(() => {
+      this.props.history.push("/purchaseorders")
     })
       .catch((error) => {
         console.error("Error adding customer: ", error);
@@ -248,8 +256,16 @@ class EditOrder extends Component {
   render() {
 
     const { classes } = this.props;
+    const {
 
-    const deviceTotal = this.state.devicePrice * this.state.quantity;
+      deviceModel,
+      deviceQty,
+      devicePrice,
+      deviceComments,
+
+
+    } = this.state;
+
     return (
 
       <div className={classes.root}>
@@ -411,125 +427,117 @@ class EditOrder extends Component {
 
 
             <Divider />
-            <Grid container spacing={12}>
 
-              <Table className={classes.table}>
+
+            <TableContainer style={classes.topForm} component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>
-                    <TableCell>Carrier</TableCell>
-                    <TableCell>Model</TableCell>
-                    <TableCell>IMEI</TableCell>
-                    <TableCell>Cost</TableCell>
-                    <TableCell>Total</TableCell>
-                    <TableCell>Actions</TableCell>
+                    <TableCell align="right">MODEL</TableCell>
+                    <TableCell align="right">Comments</TableCell>
+                    <TableCell align="right">PRICE</TableCell>
+                    <TableCell align="right">TOTAL</TableCell>
+                    <TableCell align="right">ACTIONS</TableCell>
                   </TableRow>
                 </TableHead>
+
                 <TableBody>
+                  {this.state.deviceList.map((item, i) => (
+                    <TableRow key={i} >
+                      <TableCell component="th" scope="row">
+                        {item.qty}
+                      </TableCell>
+                      <TableCell align="right">{item.phoneModel}</TableCell>
+                      <TableCell align="right">{item.comments}</TableCell>
+                      <TableCell align="right">{item.price}</TableCell>
+                      <TableCell align="right">{item.deviceTotal}</TableCell>
+                      <TableCell>
+                        <DeleteIcon
+                          onClick={() => this.deleteItem(i, item.deviceId)}
+                          variant="contained"
+                          style={{ color: "#144864", cursor: "pointer" }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableBody>
+                  <TableCell>
+                    <TextField
+                      required
+                      label="Qty"
+                      InputProps={{ name: "deviceQty" }}
 
-                  <TableRow>
-                    <TableCell>
-                      <TextField
-                        InputProps={{ name: 'quantity' }}
-                        className={classes.textField}
-                        onChange={this.onChange}
-                        value={this.state.quantity}
-                        variant="outlined"
-                        width="25%"
+                      onChange={this.onChange}
+                      value={deviceQty}
+                      variant="outlined"
+                      style={{ width: 250 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      required
+                      label="Phone model"
+                      InputProps={{ name: "deviceModel" }}
 
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        select
-                        label="Carrier"
-                        InputProps={{ name: 'deviceCarrier' }}
-                        className={classes.textField}
-                        value={this.state.deviceCarrier}
-                        onChange={this.onChange}
+                      onChange={this.onChange}
+                      value={deviceModel}
+                      variant="outlined"
+                      style={{ width: 250 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      required
+                      label="Comments"
+                      InputProps={{ name: "deviceComments" }}
 
-                        width={400}
-                        SelectProps={{
-                          MenuProps: {
-                            className: classes.menu,
-                          },
-                        }}
-                        helperText="Please select "
-                        margin="normal"
-                        variant="outlined"
-                      >
-                        {carriers.map(option => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        InputProps={{ name: 'deviceModel' }}
-                        className={classes.textField}
-                        onChange={this.onChange}
-                        value={this.state.deviceModel}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        InputProps={{ name: 'deviceImei' }}
-                        className={classes.textField}
-                        onChange={this.onChange}
-                        value={this.state.deviceImei}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        InputProps={{ name: 'devicePrice' }}
-                        className={classes.textField}
-                        onChange={this.onChange}
-                        value={this.state.devicePrice}
-                        variant="outlined"
-                      />
-                    </TableCell>
-                    <TableCell>
+                      onChange={this.onChange}
+                      value={deviceComments}
+                      variant="outlined"
+                      style={{ width: 250 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      required
+                      label="Price"
+                      InputProps={{ name: "devicePrice" }}
 
-                      <Typography variant="h6" gutterBottom
-                      >
-                        ${deviceTotal}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={this.addDevice}
-                      >
-                        +
-                                               </button>
-                    </TableCell>
-                  </TableRow>
-
-
-
+                      onChange={this.onChange}
+                      value={devicePrice}
+                      variant="outlined"
+                      style={{ width: 250 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      style={{ margin: 25 }}
+                      type="Add Device"
+                      variant="contained"
+                      onClick={this.addNewDevice}
+                      color="primary"
+                    >
+                      Add Device
+                </Button>
+                  </TableCell>
                 </TableBody>
               </Table>
-            </Grid>
-
-
+            </TableContainer>
             <div className={classes.inputContainer}>
               <Button
                 type="submit"
                 variant="contained"
                 className={classes.submit}
-                onClick={this.return}
+                onClick={this.onSubmit}
                 color="primary">
                 Save
                         </Button>
               <Button
                 variant="contained"
                 color="secondary"
-                component={Link} to="/purchaseorder/">
+                component={Link} to="/purchaseorders/">
                 Back
               </Button>
               <Typography>
