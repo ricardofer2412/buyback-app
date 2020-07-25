@@ -61,8 +61,8 @@ const statusList = [
     label: 'Pending'
   },
   {
-    value: 'Completed',
-    label: 'Completed'
+    value: 'Complete',
+    label: 'Complete'
   },
   {
     value: 'Tested',
@@ -78,7 +78,8 @@ const statusList = [
   }, {
     value: 'Received',
     label: 'Received'
-  }
+  },
+
 ]
 
 

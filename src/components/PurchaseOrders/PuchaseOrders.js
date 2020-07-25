@@ -28,15 +28,6 @@ const styles = theme => ({
     root: {
         display: 'flex',
     },
-    fab: {
-        margin: 10,
-        margisnTop: -10,
-        padding: 5,
-        weight: 40,
-        color: 'white',
-        background: '#76C63A'
-
-    },
     container: {
         paddingTop: theme.spacing(3),
         paddingBottom: theme.spacing(3),
@@ -50,19 +41,14 @@ const styles = theme => ({
         textAlign: 'center',
         justify: 'center'
     },
-    extendedIcon: {
-        marginLeft: theme.spacing(1),
-
-    },
     appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
         height: '100vh',
-
     },
-
-
-
+    fab: {
+        marginBottom: 15
+    }
 });
 class PurchaseOrders extends React.Component {
 
@@ -128,16 +114,17 @@ class PurchaseOrders extends React.Component {
                 <NavBar />
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
-                    <Container className={classes.container}>
-                        <Fab
-                            variant="extended"
-                            component={Link} to="/neworder"
-                            color="secondary"
-                            aria-label="Add"
-                            className={classes.fab}
-                        >
-                            <AddIcon className={classes.extendedIcon} />
-                        </Fab>
+                    <Container>
+                        <Container className={classes.container}>
+                            <Fab
+                                component={Link} to="/neworder"
+                                color="secondary"
+                                aria-label="Add"
+                                className={classes.fab}
+                            >
+                                <AddIcon className={classes.extendedIcon} />
+                            </Fab>
+                        </Container>
                         <Paper>
                             <Table>
                                 <TableHead>
@@ -154,7 +141,30 @@ class PurchaseOrders extends React.Component {
 
                                             <TableCell>{purchaseOrder.poNumber}</TableCell>
                                             <TableCell>{purchaseOrder.vendorName}</TableCell>
-                                            <TableCell>{purchaseOrder.status}</TableCell>
+
+                                            {purchaseOrder.status === "Paid"
+                                                ?
+                                                <TableCell style={{ backgroundColor: '#e91e63', color: 'white' }}>{purchaseOrder.status}</TableCell>
+                                                :
+                                                purchaseOrder.status === 'Received'
+                                                    ?
+                                                    <TableCell style={{ backgroundColor: '#ffeb3b', color: 'black' }}>{purchaseOrder.status}</TableCell>
+                                                    :
+                                                    purchaseOrder.status === 'Tested'
+                                                        ?
+                                                        <TableCell style={{ backgroundColor: '#ff9800', color: 'white' }}>{purchaseOrder.status}</TableCell>
+                                                        :
+                                                        purchaseOrder.status === 'Entered'
+                                                            ?
+                                                            <TableCell style={{ backgroundColor: '#f44336', color: 'white' }}>{purchaseOrder.status}</TableCell>
+                                                            :
+                                                            purchaseOrder.status === 'Complete'
+                                                                ?
+                                                                <TableCell style={{ backgroundColor: '#4caf50', color: 'white' }}>{purchaseOrder.status}</TableCell>
+                                                                :
+                                                                <TableCell style={{ backgroundColor: 'white', color: 'gray' }}>{purchaseOrder.status}</TableCell>
+
+                                            }
                                             <TableCell>
                                                 <IconButton onClick={() => this.delete(purchaseOrder)} aria-label="Delete" >
                                                     <DeleteIcon fontSize="small" />
@@ -173,7 +183,7 @@ class PurchaseOrders extends React.Component {
                         </Paper>
                     </Container>
                 </main>
-            </div>
+            </div >
         )
     }
 }

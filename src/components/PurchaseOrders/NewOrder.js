@@ -18,7 +18,7 @@ import firebase from "../firebase/Firebase";
 import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-
+import ImageUploader from '../ImageUploader/ImageUploader'
 
 
 const uuid = require("uuid");
@@ -65,8 +65,8 @@ const statusList = [
     label: "Pending"
   },
   {
-    value: "Completed",
-    label: "Completed"
+    value: "Complete",
+    label: "Complete"
   },
   {
     value: "Tested",
@@ -82,7 +82,8 @@ const statusList = [
   }, {
     value: 'Received',
     label: 'Received'
-  }
+  },
+
 ];
 
 const classes = {
@@ -533,13 +534,14 @@ class NewOrder extends Component {
               >
                 Save
                 </Button>
-              <Typography>{this.state.poTotal}</Typography>
+
             </div>
           </form>
-
+          <ImageUploader />
         </Paper>
 
       </Container>
+
 
     );
   }
