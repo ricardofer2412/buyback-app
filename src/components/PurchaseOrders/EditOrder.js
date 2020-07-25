@@ -4,17 +4,19 @@ import Button from '@material-ui/core/Button';
 import {
   withRouter
 } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import Container from "@material-ui/core/Container";
+
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField"
 import { Typography, TableContainer } from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
-import Grid from '@material-ui/core/Grid';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
-import NavBar from '../NavBar/NavBar'
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const carriers = [
   {
@@ -74,40 +76,44 @@ const statusList = [
     value: 'Entered',
     label: 'Entered'
   }, {
-  value: 'Received', 
-  label: 'Received'
-}
+    value: 'Received',
+    label: 'Received'
+  }
 ]
 
 
 const uuid = require("uuid");
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
+const classes = {
+
+  maincontainer: {
+    display: 'flex',
+    flexDiretion: 'column',
+    marginTop: 100,
+  },
+  topForm: {
+    display: 'flex',
+    flexDiretion: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15
 
   },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    marginTop: theme.spacing.unit * 6,
-    textAlign: 'left',
-    display: "flex",
-    flexDirection: 'column',
-    color: theme.palette.text.secondary,
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    marginBottom: 20
-  },
-  inputContainer: {
+  total: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDiretion: 'row',
+    justifyContent: 'flex-end'
+  },
+  backButton: {
+    marginRight: 15,
+    marginTop: 15,
+    marginBottom: 15
+  },
+  saveButton: {
+    marginRight: 20,
+    marginTop: 15,
+    marginBottom: 15
   }
-});
+}
 
 class EditOrder extends Component {
   constructor(props) {
@@ -118,7 +124,7 @@ class EditOrder extends Component {
       deviceTotal: '',
       poDate: '',
       poNumber: "",
-      poTotal: "",
+      poTotal: "0.00",
       quantity: '',
       email: "",
       address: "",
@@ -185,12 +191,11 @@ class EditOrder extends Component {
   addNewDevice = (e) => {
     e.preventDefault()
     const deviceId = uuid()
-    const newItem = { comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
+    const newItem = { deviceCarrier: this.state.deviceCarrier, comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
     const newDeviceList = [...this.state.deviceList, newItem]
     let poTotal = 0
     for (let i = 0; i < newDeviceList.length; i++) {
       poTotal += newDeviceList[i].deviceTotal
-
     }
     poTotal = poTotal.toFixed(2)
 
@@ -205,6 +210,7 @@ class EditOrder extends Component {
           deviceModel: "",
           devicePrice: "",
           deviceComments: "",
+          deviceCarrier: "",
           poTotal
         })
       })
@@ -258,185 +264,157 @@ class EditOrder extends Component {
 
   render() {
 
-    const { classes } = this.props;
-    const {
 
+    const {
       deviceModel,
       deviceQty,
       devicePrice,
       deviceComments,
-
-
+      deviceCarrier
     } = this.state;
 
     return (
 
-      <div className={classes.root}>
-        <NavBar />
-        {console.log(this.state)}
-        <Typography
-          component="h2" m variant="display4">
-          Purchase Order: {this.state.poNumber}
-        </Typography>
+      <Container style={classes.maincontainer}>
         <Paper className={classes.paper}>
           <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
-            <Grid container spacing={8}>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  label="Company"
-                  InputProps={{ name: 'company' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={this.state.company}
-                  variant="outlined"
-                  width={400}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  label="Vendor Name"
-                  InputProps={{ name: 'vendorName' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={this.state.vendorName}
-                  variant="outlined"
-                  width={400}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  label='PO Number'
-                  InputProps={{ name: 'poNumber' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={this.state.poNumber}
-                  variant="outlined"
-                  width={400}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={8}>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  label="E-Mail"
-                  InputProps={{ name: 'email' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  variant="outlined"
+            <Container style={classes.topForm}>
+              <TextField
+                required
+                label="Company"
+                InputProps={{ name: 'company' }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.company}
+                variant="outlined"
+                style={{ width: 250 }}
+              />
 
-                  width={400}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  label="Phone Number"
-                  InputProps={{ name: 'phoneNumber' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={this.state.phoneNumber}
-                  variant="outlined"
+              <TextField
+                required
+                label="Vendor Name"
+                InputProps={{ name: 'vendorName' }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.vendorName}
+                variant="outlined"
+                style={{ width: 250 }}
+              />
 
-                  width={400}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  select
-                  label="Status"
-                  InputProps={{ name: 'status' }}
-                  className={classes.textField}
-                  value={this.state.status}
-                  onChange={this.onChange}
+              <TextField
+                required
+                label='PO Number'
+                InputProps={{ name: 'poNumber' }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.poNumber}
+                variant="outlined"
+                style={{ width: 250 }}
+              />
+            </Container>
+            <Container style={classes.topForm}>
+              <TextField
+                required
+                label="E-Mail"
+                InputProps={{ name: 'email' }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.email}
+                variant="outlined"
 
-                  width={400}
-                  SelectProps={{
-                    MenuProps: {
-                      className: classes.menu,
-                    },
-                  }}
-                  helperText="Please select "
-                  margin="normal"
-                  variant="outlined"
-                >
-                  {statusList.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-            <Grid container spacing={8}>
+                style={{ width: 250 }}
+              />
 
-              <Grid item xs={4}>
-                <TextField
+              <TextField
+                required
+                label="Phone Number"
+                InputProps={{ name: 'phoneNumber' }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.phoneNumber}
+                variant="outlined"
 
-                  id="poDate"
-                  label="Date"
-                  type="date"
-                  className={classes.textField}
-                  InputProps={{
-                    name: 'poDate'
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={this.state.poDate}
-                  variant="outlined"
-                  onChange={this.onChange}
-                  width={400}
-                />
-              </Grid>
+                style={{ width: 250 }}
+              />
 
-              <Grid item xs={4}>
+              <TextField
+                select
+                label="Status"
+                InputProps={{ name: 'status' }}
+                className={classes.textField}
+                value={this.state.status}
+                onChange={this.onChange}
 
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  select
-                  label="Payment Type"
-                  InputProps={{ name: 'typePayment' }}
-                  className={classes.textField}
-                  value={this.state.typePayment}
-                  onChange={this.onChange}
+                style={{ width: 250 }}
+                SelectProps={{
+                  MenuProps: {
+                    className: classes.menu,
+                  },
+                }}
+                helperText="Please select "
+                margin="normal"
+                variant="outlined"
+              >
+                {statusList.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Container>
+            <Container style={classes.topForm}>
 
-                  width={400}
-                  SelectProps={{
-                    MenuProps: {
-                      className: classes.menu,
-                    },
-                  }}
-                  helperText="Please select "
-                  margin="normal"
-                  variant="outlined"
-                >
-                  {payment.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+              <TextField
 
-              </Grid>
-            </Grid>
+                id="poDate"
+                label="Date"
+                type="date"
+                className={classes.textField}
+                InputProps={{
+                  name: 'poDate'
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={this.state.poDate}
+                variant="outlined"
+                onChange={this.onChange}
+                style={{ width: 250 }}
+              />
 
+              <TextField
+                select
+                label="Payment Type"
+                InputProps={{ name: 'typePayment' }}
+                className={classes.textField}
+                value={this.state.typePayment}
+                onChange={this.onChange}
 
+                style={{ width: 250 }}
+                SelectProps={{
+                  MenuProps: {
+                    className: classes.menu,
+                  },
+                }}
+                helperText="Please select "
+                margin="normal"
+                variant="outlined"
+              >
+                {payment.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
 
-
+            </Container>
             <Divider />
-
-
             <TableContainer style={classes.topForm} component={Paper}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>
+                    <TableCell align="right">Carrier</TableCell>
                     <TableCell align="right">MODEL</TableCell>
                     <TableCell align="right">Comments</TableCell>
                     <TableCell align="right">PRICE</TableCell>
@@ -451,6 +429,7 @@ class EditOrder extends Component {
                       <TableCell component="th" scope="row">
                         {item.qty}
                       </TableCell>
+                      <TableCell align="right">{item.deviceCarrier}</TableCell>
                       <TableCell align="right">{item.phoneModel}</TableCell>
                       <TableCell align="right">{item.comments}</TableCell>
                       <TableCell align="right">{item.price}</TableCell>
@@ -465,6 +444,7 @@ class EditOrder extends Component {
                     </TableRow>
                   ))}
                 </TableBody>
+                <Divider />
                 <TableBody>
                   <TableCell>
                     <TextField
@@ -475,8 +455,30 @@ class EditOrder extends Component {
                       onChange={this.onChange}
                       value={deviceQty}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 75 }}
                     />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      select
+                      label="Carrier"
+                      InputProps={{ name: "deviceCarrier" }}
+                      value={deviceCarrier}
+                      onChange={this.onChange}
+                      style={{ width: 250 }}
+                      SelectProps={{
+                        MenuProps: {
+                        }
+                      }}
+                      margin="normal"
+                      variant="outlined"
+                    >
+                      {carriers.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </TableCell>
                   <TableCell>
                     <TextField
@@ -511,53 +513,56 @@ class EditOrder extends Component {
                       onChange={this.onChange}
                       value={devicePrice}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 100 }}
                     />
                   </TableCell>
                   <TableCell>
-                    <Button
-                      style={{ margin: 25 }}
-                      type="Add Device"
+                    <AddIcon
+                      style={{ margin: 25, cursor: 'pointer' }}
                       variant="contained"
                       onClick={this.addNewDevice}
                       color="primary"
-                    >
-                      Add Device
-                </Button>
+                    />
                   </TableCell>
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className={classes.inputContainer}>
+            <Container style={classes.total}>
+              <Typography style={{ color: 'gray', fontSize: 30 }}>
+                Total: ${this.state.poTotal}
+              </Typography>
+            </Container>
+            <Container style={classes.total}>
               <Button
+                style={classes.backButton}
+                variant="contained"
+                color="secondary"
+                component={Link} to="/purchaseorders/">
+                Back
+              </Button>
+              <Button
+                style={classes.saveButton}
                 type="submit"
                 variant="contained"
                 className={classes.submit}
                 onClick={this.onSubmit}
                 color="primary">
                 Save
-                        </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                component={Link} to="/purchaseorders/">
-                Back
               </Button>
-              <Typography>
-                PO Total: {this.state.poTotal}
-              </Typography>
-            </div>
+
+
+            </Container>
           </form>
         </Paper>
 
+      </Container>
 
 
-      </div>
 
     );
   }
 }
 
 
-export default withStyles(styles)(withRouter(EditOrder));
+export default (withRouter(EditOrder));
 

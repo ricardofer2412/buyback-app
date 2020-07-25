@@ -79,21 +79,17 @@ const statusList = [
   {
     value: "Entered",
     label: "Entered"
-  },  {
-    value: 'Received', 
+  }, {
+    value: 'Received',
     label: 'Received'
   }
 ];
 
 const classes = {
   maincontainer: {
-
     display: 'flex',
     flexDiretion: 'column',
     marginTop: 100,
-
-
-
   },
   topForm: {
     display: 'flex',
@@ -102,9 +98,12 @@ const classes = {
     marginTop: 15
 
   },
-  paper: {
-
+  total: {
+    display: 'flex',
+    flexDiretion: 'row',
+    justifyContent: 'flex-end'
   }
+
 }
 
 
@@ -120,7 +119,7 @@ class NewOrder extends Component {
       deviceTotal: "",
       poDate: new Date(),
       poNumber: "",
-      poTotal: "$0.00",
+      poTotal: "0.00",
       email: "",
       address: "",
       expectDeliver: "",
@@ -449,26 +448,28 @@ class NewOrder extends Component {
                       style={{ width: 75 }}
                     />
                   </TableCell>
-                  <TextField
-                select
-                label="Carrier"
-                InputProps={{ name: "deviceCarrier" }}
-                value={deviceCarrier}
-                onChange={this.onChange}
-                style={{ width: 250, marginTop: 30 }}
-                SelectProps={{
-                  MenuProps: {
-                  }
-                }}
-                margin="normal"
-                variant="outlined"
-              >
-                {carriers.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+                  <TableCell>
+                    <TextField
+                      select
+                      label="Carrier"
+                      InputProps={{ name: "deviceCarrier" }}
+                      value={deviceCarrier}
+                      onChange={this.onChange}
+                      style={{ width: 250 }}
+                      SelectProps={{
+                        MenuProps: {
+                        }
+                      }}
+                      margin="normal"
+                      variant="outlined"
+                    >
+                      {carriers.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </TableCell>
                   <TableCell>
                     <TextField
                       required
@@ -511,12 +512,16 @@ class NewOrder extends Component {
                       variant="contained"
                       onClick={this.addNewDevice}
                       color="primary"
-                />
+                    />
                   </TableCell>
                 </TableBody>
               </Table>
             </TableContainer>
-
+            <Container style={classes.total}>
+              <Typography style={{ color: 'gray', fontSize: 30 }}>
+                Total: ${this.state.poTotal}
+              </Typography>
+            </Container>
             <div >
               <Button
                 style={{ margin: 25 }}
