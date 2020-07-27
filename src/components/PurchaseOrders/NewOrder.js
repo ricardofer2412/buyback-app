@@ -19,6 +19,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import ImageUploader from '../ImageUploader/ImageUploader'
+import { storage } from '../firebase/Firebase'
+import SaveIcon from '@material-ui/icons/Save';
+
 
 
 const uuid = require("uuid");
@@ -96,13 +99,22 @@ const classes = {
     display: 'flex',
     flexDiretion: 'row',
     justifyContent: 'space-between',
-    marginTop: 15
-
+    marginTop: 15,
+    marginBottom: 30,
   },
   total: {
     display: 'flex',
-    flexDiretion: 'row',
+    flexDiretion: 'column',
     justifyContent: 'flex-end'
+  },
+  paperMain: {
+    marginRight: 20,
+    width: '80%'
+  },
+  button: {
+    marginLeft: 15,
+    marginTop: 15,
+    marginBottom: 15
   }
 
 }
@@ -134,11 +146,46 @@ class NewOrder extends Component {
       deviceComments: '',
       deviceDeduction: '',
       deviceList: [],
+      image: null,
+      url: '',
+      progress: 0
 
     };
   }
   componentDidMount = () => {
 
+
+  }
+
+  handleChangeImg = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      this.setState(() => ({ image }))
+    }
+    console.log(this.state.image)
+  }
+  handleUpload = () => {
+    const { image } = this.state
+    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+        this.setState({
+          progress
+        })
+        console.log(this.state.progress)
+      },
+      (error) => {
+        console.log(error)
+      },
+      () => {
+        storage.ref('images').child(image.name).getDownloadURL().then(url => {
+          console.log(url);
+          this.setState({
+            url
+          })
+        })
+      })
   }
   onChange = e => {
     const state = this.state;
@@ -222,7 +269,10 @@ class NewOrder extends Component {
       typePayment,
       poDate,
       deviceList,
-      poTotal
+      poTotal,
+      url,
+
+
 
     } = this.state;
     this.addCustomer()
@@ -238,7 +288,8 @@ class NewOrder extends Component {
         typePayment,
         poDate,
         deviceList,
-        poTotal
+        poTotal,
+        url
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -248,6 +299,11 @@ class NewOrder extends Component {
       });
 
   };
+
+
+  handleUrlChange = (url) => {
+    this.setState({ url });
+  }
 
   render() {
     const {
@@ -275,7 +331,7 @@ class NewOrder extends Component {
       <Container style={classes.maincontainer}>
 
 
-        <Paper style={classes.paper} >
+        <Paper style={classes.paperMain} >
           <h2>New Purchase Order </h2>
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
             <Container style={classes.topForm}>
@@ -402,7 +458,7 @@ class NewOrder extends Component {
             </Container>
             <Divider />
 
-            <TableContainer style={classes.topForm} component={Paper}>
+            <TableContainer style={classes.topForm} >
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -431,7 +487,7 @@ class NewOrder extends Component {
                         <DeleteIcon
                           onClick={() => this.deleteItem(i, item.deviceId)}
                           variant="contained"
-                          style={{ color: "#144864", cursor: "pointer" }}
+                          style={{ color: "#ff1744", cursor: "pointer" }}
                         />
                       </TableCell>
                     </TableRow>
@@ -456,7 +512,7 @@ class NewOrder extends Component {
                       InputProps={{ name: "deviceCarrier" }}
                       value={deviceCarrier}
                       onChange={this.onChange}
-                      style={{ width: 250 }}
+                      style={{ width: 150 }}
                       SelectProps={{
                         MenuProps: {
                         }
@@ -480,7 +536,7 @@ class NewOrder extends Component {
                       onChange={this.onChange}
                       value={deviceModel}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 175 }}
                     />
                   </TableCell>
                   <TableCell>
@@ -492,7 +548,7 @@ class NewOrder extends Component {
                       onChange={this.onChange}
                       value={deviceComments}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 175 }}
                     />
                   </TableCell>
                   <TableCell>
@@ -504,7 +560,7 @@ class NewOrder extends Component {
                       onChange={this.onChange}
                       value={devicePrice}
                       variant="outlined"
-                      style={{ width: 100 }}
+                      style={{ width: 75 }}
                     />
                   </TableCell>
                   <TableCell>
@@ -523,23 +579,40 @@ class NewOrder extends Component {
                 Total: ${this.state.poTotal}
               </Typography>
             </Container>
-            <div >
+            <Container style={classes.total}>
               <Button
-                style={{ margin: 25 }}
-                type="submit"
                 variant="contained"
-
-                onClick={this.return}
                 color="primary"
+                size="large"
+                style={classes.button}
+                startIcon={<SaveIcon />}
+                onClick={this.return}
               >
                 Save
-                </Button>
+      </Button>
+            </Container>
 
-            </div>
+
+
+
+
           </form>
-          <ImageUploader />
+
         </Paper>
 
+        <Paper style={classes.paper} >
+          <ImageUploader imageUrl={this.state.url} handleUrlChange={this.handleUrlChange} />
+
+          {this.state.url != null ?
+            <div>
+              <img src={this.state.url} alt="Uploaded Images" height="200" width="200" />
+            </div>
+            :
+            <div>
+
+            </div>
+          }
+        </Paper>
       </Container>
 
 

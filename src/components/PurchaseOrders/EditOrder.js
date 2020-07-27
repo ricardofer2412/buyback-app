@@ -16,6 +16,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { storage } from '../firebase/Firebase'
+import ImageUploader from '../ImageUploader/ImageUploader'
+
 
 
 const carriers = [
@@ -91,18 +94,23 @@ const classes = {
     display: 'flex',
     flexDiretion: 'column',
     marginTop: 100,
+
   },
   topForm: {
     display: 'flex',
     flexDiretion: 'row',
     justifyContent: 'space-between',
-    marginTop: 15
-
+    marginTop: 15,
+    marginBottom: 30,
   },
   total: {
     display: 'flex',
     flexDiretion: 'row',
     justifyContent: 'flex-end'
+  },
+  paperMain: {
+    marginRight: 20,
+    width: '80%'
   },
   backButton: {
     marginRight: 15,
@@ -139,7 +147,10 @@ class EditOrder extends Component {
       deviceModel: '',
       deviceImei: '',
       vendorName: '',
-      deviceList: []
+      deviceList: [],
+      image: null,
+      url: '',
+      progress: 0
 
     };
   }
@@ -166,6 +177,7 @@ class EditOrder extends Component {
           deviceList: newDeviceList,
           vendorName: purchaseOrders.vendorName,
           deviceTotal: purchaseOrders.deviceTotal,
+          url: purchaseOrders.url
 
         });
       } else {
@@ -212,9 +224,12 @@ class EditOrder extends Component {
           devicePrice: "",
           deviceComments: "",
           deviceCarrier: "",
-          poTotal
+          poTotal,
         })
       })
+  }
+  handleUrlChange = (url) => {
+    this.setState({ url });
   }
 
   handleDateChange = date => {
@@ -240,7 +255,8 @@ class EditOrder extends Component {
       typePayment,
       phoneNumber,
       vendorName,
-      deviceList } = this.state;
+      deviceList,
+      url } = this.state;
 
     firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
       company,
@@ -254,7 +270,8 @@ class EditOrder extends Component {
       typePayment,
       phoneNumber,
       vendorName,
-      deviceList
+      deviceList,
+      url
     }).then(() => {
       this.props.history.push("/purchaseorders")
     })
@@ -277,7 +294,7 @@ class EditOrder extends Component {
     return (
 
       <Container style={classes.maincontainer}>
-        <Paper className={classes.paper}>
+        <Paper style={classes.paperMain} >
           <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
             <Container style={classes.topForm}>
               <TextField
@@ -410,7 +427,7 @@ class EditOrder extends Component {
 
             </Container>
             <Divider />
-            <TableContainer style={classes.topForm} component={Paper}>
+            <TableContainer style={classes.topForm}   >
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -466,7 +483,7 @@ class EditOrder extends Component {
                       InputProps={{ name: "deviceCarrier" }}
                       value={deviceCarrier}
                       onChange={this.onChange}
-                      style={{ width: 250 }}
+                      style={{ width: 200 }}
                       SelectProps={{
                         MenuProps: {
                         }
@@ -502,7 +519,7 @@ class EditOrder extends Component {
                       onChange={this.onChange}
                       value={deviceComments}
                       variant="outlined"
-                      style={{ width: 250 }}
+                      style={{ width: 220 }}
                     />
                   </TableCell>
                   <TableCell>
@@ -553,13 +570,24 @@ class EditOrder extends Component {
 
 
             </Container>
+
           </form>
+
         </Paper>
+        <Paper style={classes.paper} >
+          <ImageUploader imageUrl={this.state.url} handleUrlChange={this.handleUrlChange} />
 
+          {this.state.url != null ?
+            <div>
+              <img src={this.state.url} alt="Uploaded Images" height="200" width="200" />
+            </div>
+            :
+            <div>
+
+            </div>
+          }
+        </Paper>
       </Container>
-
-
-
     );
   }
 }

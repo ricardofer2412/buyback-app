@@ -1,13 +1,23 @@
 import React from 'react'
 import { storage } from '../firebase/Firebase'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@material-ui/core/Button';
+
+
+const classes = {
+  button: {
+
+  }
+}
 
 class ImageUploader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       image: null,
-      url: '',
-      progress: 0
+      progress: 0,
+      isLoading: false
     }
 
 
@@ -27,6 +37,7 @@ class ImageUploader extends React.Component {
       (snapshot) => {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
         this.setState({
+          isLoading: true,
           progress
         })
         console.log(this.state.progress)
@@ -37,8 +48,9 @@ class ImageUploader extends React.Component {
       () => {
         storage.ref('images').child(image.name).getDownloadURL().then(url => {
           console.log(url);
+          this.props.handleUrlChange(url)
           this.setState({
-            url
+            isLoading: false
           })
         })
       })
@@ -48,12 +60,25 @@ class ImageUploader extends React.Component {
   render() {
     return (
       <div>
-        <progress value={this.state.progress} max="100" />
+
+        {this.state.isLoading == true ?
+          <CircularProgress color="secondary" value={this.state.progress} max="100" variant="indeterminate" />
+          // <progress value={this.state.progress} max="100" />
+          :
+          <br />
+        }
         <input
           type='file'
           onChange={this.handleChange} />
-        <button onClick={this.handleUpload}>Upload</button>
-        <img src={this.state.url} alt="Uploaded Images" height="200" width="200" />
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.button}
+          startIcon={<CloudUploadIcon />}
+          onClick={this.handleUpload}
+        >Upload Image</Button>
+        {/* <button onClick={this.handleUpload}>Upload</button> */}
+
       </div>
     )
   }
