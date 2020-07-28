@@ -7,7 +7,16 @@ import Button from '@material-ui/core/Button';
 
 const classes = {
   button: {
-
+    backgroundColor: '#00e676',
+    color: 'white',
+    marginTop: 15,
+    marginLeft: 5
+  },
+  buttonDisable: {
+    backgroundColor: 'gray',
+    color: 'white',
+    marginTop: 15,
+    marginLeft: 5
   }
 }
 
@@ -29,10 +38,14 @@ class ImageUploader extends React.Component {
     }
     console.log(this.state.image)
   }
-
+  disableUpload = () => {
+    alert('Please select file')
+  }
   handleUpload = () => {
+
     const { image } = this.state
     const uploadTask = storage.ref(`images/${image.name}`).put(image)
+
     uploadTask.on('state_changed',
       (snapshot) => {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
@@ -54,6 +67,7 @@ class ImageUploader extends React.Component {
           })
         })
       })
+
   }
 
 
@@ -68,17 +82,28 @@ class ImageUploader extends React.Component {
           <br />
         }
         <input
+          style={{ marginLeft: 5 }}
           type='file'
           onChange={this.handleChange} />
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          startIcon={<CloudUploadIcon />}
-          onClick={this.handleUpload}
-        >Upload Image</Button>
-        {/* <button onClick={this.handleUpload}>Upload</button> */}
+        {this.state.image === null
+          ?
+          <Button
+            variant="contained"
+            style={classes.buttonDisable}
+            startIcon={<CloudUploadIcon />}
+            onClick={this.disableUpload}
 
+          >Upload Image</Button>
+          :
+          <Button
+            variant="contained"
+            style={classes.button}
+            className={classes.button}
+            startIcon={<CloudUploadIcon />}
+            onClick={this.handleUpload}
+          >Upload Image</Button>
+
+        }
       </div>
     )
   }

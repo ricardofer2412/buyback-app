@@ -109,12 +109,14 @@ const classes = {
   },
   paperMain: {
     marginRight: 20,
-    width: '80%'
+    width: '100%'
   },
   button: {
     marginLeft: 15,
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
+    backgroundColor: '#00e676',
+    color: 'white'
   }
 
 }
@@ -145,6 +147,7 @@ class NewOrder extends Component {
       deviceQty: '',
       deviceComments: '',
       deviceDeduction: '',
+      deviceCarrier: '',
       deviceList: [],
       image: null,
       url: '',
@@ -493,87 +496,85 @@ class NewOrder extends Component {
                     </TableRow>
                   ))}
                 </TableBody>
-                <TableBody>
-                  <TableCell>
-                    <TextField
-                      required
-                      label="Qty"
-                      InputProps={{ name: "deviceQty" }}
-                      onChange={this.onChange}
-                      value={deviceQty}
-                      variant="outlined"
-                      style={{ width: 75 }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      select
-                      label="Carrier"
-                      InputProps={{ name: "deviceCarrier" }}
-                      value={deviceCarrier}
-                      onChange={this.onChange}
-                      style={{ width: 150 }}
-                      SelectProps={{
-                        MenuProps: {
-                        }
-                      }}
-                      margin="normal"
-                      variant="outlined"
-                    >
-                      {carriers.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      required
-                      label="Phone model"
-                      InputProps={{ name: "deviceModel" }}
-
-                      onChange={this.onChange}
-                      value={deviceModel}
-                      variant="outlined"
-                      style={{ width: 175 }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      required
-                      label="Comments"
-                      InputProps={{ name: "deviceComments" }}
-
-                      onChange={this.onChange}
-                      value={deviceComments}
-                      variant="outlined"
-                      style={{ width: 175 }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      required
-                      label="Price"
-                      InputProps={{ name: "devicePrice" }}
-
-                      onChange={this.onChange}
-                      value={devicePrice}
-                      variant="outlined"
-                      style={{ width: 75 }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <AddIcon
-                      style={{ margin: 25, cursor: 'pointer' }}
-                      variant="contained"
-                      onClick={this.addNewDevice}
-                      color="primary"
-                    />
-                  </TableCell>
-                </TableBody>
               </Table>
             </TableContainer>
+            <Divider />
+            <Container style={classes.topForm}>
+              <TextField
+                required
+                label="Qty"
+                InputProps={{ name: "deviceQty" }}
+                onChange={this.onChange}
+                value={deviceQty}
+                variant="outlined"
+                style={{ width: 75 }}
+              />
+
+              <TextField
+                style={{ width: 150, marginTop: 0 }}
+                select
+                label="Carrier"
+                InputProps={{ name: "deviceCarrier" }}
+
+                value={deviceCarrier}
+                defaultValue={carriers}
+                onChange={this.onChange}
+                SelectProps={{
+                  MenuProps: {
+
+                  }
+                }}
+                margin="normal"
+                variant="outlined"
+              >
+                {carriers.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))} </TextField>
+
+
+              <TextField
+                required
+                label="Phone model"
+                InputProps={{ name: "deviceModel" }}
+
+                onChange={this.onChange}
+                value={deviceModel}
+                variant="outlined"
+                style={{ width: 175 }}
+              />
+
+              <TextField
+                required
+                label="Comments"
+                InputProps={{ name: "deviceComments" }}
+
+                onChange={this.onChange}
+                value={deviceComments}
+                variant="outlined"
+                style={{ width: 175 }}
+              />
+
+              <TextField
+                required
+                label="Price"
+                InputProps={{ name: "devicePrice" }}
+
+                onChange={this.onChange}
+                value={devicePrice}
+                variant="outlined"
+                style={{ width: 100 }}
+              />
+
+              <AddIcon
+                style={{ margin: 25, cursor: 'pointer' }}
+                variant="contained"
+                onClick={this.addNewDevice}
+                color="primary"
+              />
+            </Container>
+            <Divider />
             <Container style={classes.total}>
               <Typography style={{ color: 'gray', fontSize: 30 }}>
                 Total: ${this.state.poTotal}
@@ -582,7 +583,7 @@ class NewOrder extends Component {
             <Container style={classes.total}>
               <Button
                 variant="contained"
-                color="primary"
+
                 size="large"
                 style={classes.button}
                 startIcon={<SaveIcon />}
@@ -605,12 +606,10 @@ class NewOrder extends Component {
 
           {this.state.url != null ?
             <div>
-              <img src={this.state.url} alt="Uploaded Images" height="200" width="200" />
+              <img src={this.state.url} alt="Uploaded Images" height="200" width="200" style={{ marginTop: 15, marginLeft: 5 }} />
             </div>
             :
-            <div>
-
-            </div>
+            <br />
           }
         </Paper>
       </Container>
