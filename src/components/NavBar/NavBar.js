@@ -116,7 +116,7 @@ class PersistentDrawerLeft extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              BuyBack App
+              BUYBACK APP
             </Typography>
           </Toolbar>
         </AppBar>

@@ -153,8 +153,8 @@ class EditOrder extends Component {
       deviceList: [],
       image: null,
       url: '',
-      progress: 0
-
+      progress: 0,
+      expectPayDate: ""
     };
   }
   componentDidMount() {
@@ -180,7 +180,8 @@ class EditOrder extends Component {
           deviceList: newDeviceList,
           vendorName: purchaseOrders.vendorName,
           deviceTotal: purchaseOrders.deviceTotal,
-          url: purchaseOrders.url
+          url: purchaseOrders.url,
+          expectPayDate: purchaseOrders.expectPayDate
 
         });
       } else {
@@ -236,7 +237,7 @@ class EditOrder extends Component {
   }
 
   handleDateChange = date => {
-    this.setState({ poDate: date });
+    this.setState({ poDate: date, expectPayDate: date });
   };
 
   onChange = (e) => {
@@ -259,7 +260,8 @@ class EditOrder extends Component {
       phoneNumber,
       vendorName,
       deviceList,
-      url } = this.state;
+      url,
+      expectPayDate } = this.state;
 
     firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
       company,
@@ -274,7 +276,8 @@ class EditOrder extends Component {
       phoneNumber,
       vendorName,
       deviceList,
-      url
+      url,
+      expectPayDate
     }).then(() => {
       this.props.history.push("/purchaseorders")
     })
@@ -401,6 +404,22 @@ class EditOrder extends Component {
                 variant="outlined"
                 onChange={this.onChange}
                 style={{ width: 250 }}
+              />
+              <TextField
+                style={{ width: 250 }}
+                id="expectPayDate"
+                label="Expected Pay Date"
+                type="date"
+                className={classes.textField}
+                InputProps={{
+                  name: "expectPayDate"
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={this.state.expectPayDate}
+                variant="outlined"
+                onChange={this.onChange}
               />
 
               <TextField

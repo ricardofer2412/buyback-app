@@ -137,7 +137,7 @@ class NewOrder extends Component {
       poTotal: "0.00",
       email: "",
       address: "",
-      expectDeliver: "",
+      expectPayDate: "",
       status: "",
       typePayment: "",
       phoneNumber: "",
@@ -254,9 +254,9 @@ class NewOrder extends Component {
   }
 
 
-  handleDateChange = date => {
-    this.setState({ poDate: date });
-  };
+
+
+
   onSubmit = e => {
     const purchaseOrderId = uuid();
     const customerId = uuid();
@@ -274,6 +274,7 @@ class NewOrder extends Component {
       deviceList,
       poTotal,
       url,
+      expectPayDate
 
 
 
@@ -292,7 +293,8 @@ class NewOrder extends Component {
         poDate,
         deviceList,
         poTotal,
-        url
+        url,
+        expectPayDate
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -322,7 +324,8 @@ class NewOrder extends Component {
       deviceQty,
       devicePrice,
       deviceComments,
-      deviceCarrier
+      deviceCarrier,
+      expectPayDate
 
 
     } = this.state;
@@ -435,6 +438,23 @@ class NewOrder extends Component {
                 variant="outlined"
                 onChange={this.onChange}
               />
+              <TextField
+                style={{ width: 250 }}
+                id="expectPayDate"
+                label="Expected Pay Date"
+                type="date"
+
+                InputProps={{
+                  name: "expectPayDate"
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={expectPayDate}
+                variant="outlined"
+                onChange={this.onChange}
+              />
+
 
               <TextField
                 select
@@ -587,16 +607,11 @@ class NewOrder extends Component {
                 size="large"
                 style={classes.button}
                 startIcon={<SaveIcon />}
-                onClick={this.return}
+                onClick={this.onSubmit}
               >
                 Save
       </Button>
             </Container>
-
-
-
-
-
           </form>
 
         </Paper>
