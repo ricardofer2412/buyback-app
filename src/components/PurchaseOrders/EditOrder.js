@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { storage } from '../firebase/Firebase'
 import ImageUploader from '../ImageUploader/ImageUploader'
+import axios from "axios";
 
 
 
@@ -156,6 +157,8 @@ class EditOrder extends Component {
       progress: 0,
       expectPayDate: ""
     };
+
+    this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
   }
   componentDidMount() {
     const ref = firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id);
@@ -245,6 +248,17 @@ class EditOrder extends Component {
     state[e.target.name] = e.target.value;
     this.setState({ purchaseOrder: state });
   }
+
+  async receivedOrderEmail(e) {
+    e.preventDefault();
+    const { email } = this.state
+    console.log(email)
+    const receivedEmail = await axios.post('/api/receivedEmail', {
+      email
+    })
+  }
+
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -583,7 +597,9 @@ class EditOrder extends Component {
                 color="primary">
                 Save
               </Button>
-
+              <button onClick={this.receivedOrderEmail}>
+                Recived Order
+              </button>
 
             </Container>
 

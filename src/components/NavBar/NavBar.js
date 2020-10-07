@@ -18,7 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 import Home from '@material-ui/icons/Home'
 import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
-
+import './NavBar.css'
 
 const drawerWidth = 240;
 
@@ -138,26 +138,26 @@ class PersistentDrawerLeft extends React.Component {
           <List component="nav" aria-label="Main mailbox folders">
             <ListItem button component={Link} to="/">
               <ListItemIcon>
-                <Home />
+                <Home className="icon" />
                 <ListItemText primary="Home" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/vendors">
               <ListItemIcon>
-                <People />
+                <People className="icon" />
                 <ListItemText primary="Vendors" />
               </ListItemIcon>
             </ListItem>
 
             <ListItem button component={Link} to="/purchaseorders">
               <ListItemIcon>
-                <ShoppingCart />
+                <ShoppingCart className="icon" />
                 <ListItemText primary="Purchase Orders" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/tracking">
               <ListItemIcon>
-                <StayCurrentPortrait />
+                <StayCurrentPortrait className="icon" />
                 <ListItemText primary="Tracking" />
               </ListItemIcon>
             </ListItem>

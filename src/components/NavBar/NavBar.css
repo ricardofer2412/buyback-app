@@ -1,3 +1,7 @@
 .ListItemText {
      color: '#FFFFFF'
 }
+
+.icon {
+     padding: 25 !important;
+}
