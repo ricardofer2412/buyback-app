@@ -10,12 +10,26 @@ app.post('/api/receivedEmail', (req, res) => {
 
   nodemailer.createTestAccount((err, account) => {
     const htmlEmail = `
-        <h3>Test Email</h3>
-        <ul>
-          <li> Email Test: ${req.body.email}</li>
-          
-        </ul>
+        <h3><strong>We'll take it from here.</strong></h3>
+       <p> 
+       Great news ${req.body.vendorName}, we've received your device!
+       <br> 
+        Next, your device will be inspected to validate its model and condition.  We will send you updated status soon.
+        <br> 
+If you have questions please email our <a href = "mailto: support@mobilesource.com">Support Team</a>
+support team.  
+Thank you
+       </p> 
+       <br> 
         <p> Your order has been received</p>
+        <br> 
+        <p> 
+        Mobilesource Corp
+        </p> 
+        <br>
+        <p> 
+       561.416.7224
+        </p> 
       `
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -29,7 +43,9 @@ app.post('/api/receivedEmail', (req, res) => {
     let mailOptions = {
       from: 'donot-reply@mobilesource.com',
       to: `${req.body.email}`,
-      text: "Text Received Order Email",
+      subject: "Your buy-back order has arrived!",
+      attachments: [
+        {path: `${req.body.url}`}],
       html: htmlEmail
     }
     transporter.sendMail(mailOptions, (err, info) => {

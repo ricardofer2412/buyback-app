@@ -252,18 +252,22 @@ class EditOrder extends Component {
 
   async receivedOrderEmail(e) {
     e.preventDefault();
-    const { email } = this.state
+    const { email, vendorName, url } = this.state
     console.log(email)
     const receivedEmail = await axios.post('/api/receivedEmail', {
-      email
+      email, 
+      vendorName, 
+      url
     })
   }
   async paymentEmail(e) {
     e.preventDefault();
-    const { email } = this.state
+    const { email, vendorName, url } = this.state
     console.log(email)
     const paymentEmail = await axios.post('/api/paymentEmail', {
-      email
+      email, 
+      vendorName, 
+      url
     })
   }
 
