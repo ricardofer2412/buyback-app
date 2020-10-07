@@ -159,6 +159,7 @@ class EditOrder extends Component {
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
+    this.paymentEmail = this.paymentEmail.bind(this)
   }
   componentDidMount() {
     const ref = firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id);
@@ -254,6 +255,14 @@ class EditOrder extends Component {
     const { email } = this.state
     console.log(email)
     const receivedEmail = await axios.post('/api/receivedEmail', {
+      email
+    })
+  }
+  async paymentEmail(e) {
+    e.preventDefault();
+    const { email } = this.state
+    console.log(email)
+    const paymentEmail = await axios.post('/api/paymentEmail', {
       email
     })
   }
@@ -599,6 +608,9 @@ class EditOrder extends Component {
               </Button>
               <button onClick={this.receivedOrderEmail}>
                 Recived Order
+              </button>
+              <button onClick={this.paymentEmail}>
+                Payment Sent
               </button>
 
             </Container>
