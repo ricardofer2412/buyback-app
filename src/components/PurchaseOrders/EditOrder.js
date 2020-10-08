@@ -156,10 +156,13 @@ class EditOrder extends Component {
       url: '',
       progress: 0,
       expectPayDate: ""
+       
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
     this.paymentEmail = this.paymentEmail.bind(this)
+    this.orderProcess = this.orderProcess.bind(this)
+
   }
   componentDidMount() {
     const ref = firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id);
@@ -265,6 +268,16 @@ class EditOrder extends Component {
     const { email, vendorName, url } = this.state
     console.log(email)
     const paymentEmail = await axios.post('/api/paymentEmail', {
+      email, 
+      vendorName, 
+      url
+    })
+  }
+  async orderProcess(e) {
+    e.preventDefault();
+    const { email, vendorName, url } = this.state
+    console.log(email)
+    const orderProcess = await axios.post('/api/orderProcess', {
       email, 
       vendorName, 
       url
@@ -615,6 +628,9 @@ class EditOrder extends Component {
               </button>
               <button onClick={this.paymentEmail}>
                 Payment Sent
+              </button>
+              <button onClick={this.orderProcess}>
+                Order Process
               </button>
 
             </Container>
