@@ -1,0 +1,1 @@
+scp -r -i emailBE.pem expressApp ec2-user@18.204.212.160:~/
