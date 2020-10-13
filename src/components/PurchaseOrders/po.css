@@ -1,0 +1,14 @@
+.button__email__div{
+  padding: 10px;
+}
+
+
+.button__email {
+  background-color: #00e676;
+  border-color: #00e676
+}
+.button__email:hover {
+  background-color: green;
+  border-color: black;
+  color: white
+}

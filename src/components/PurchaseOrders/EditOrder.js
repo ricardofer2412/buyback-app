@@ -5,13 +5,11 @@ import {
   withRouter
 } from 'react-router-dom';
 import Container from "@material-ui/core/Container";
-
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField"
 import { Typography, TableContainer } from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
-
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,7 +18,7 @@ import { storage } from '../firebase/Firebase'
 import ImageUploader from '../ImageUploader/ImageUploader'
 import axios from "axios";
 import { apiEndpoint } from "../../config.js";
-
+import './po.css'
 
 
 const carriers = [
@@ -156,8 +154,8 @@ class EditOrder extends Component {
       image: null,
       url: '',
       progress: 0,
-      expectPayDate: ""
-
+      expectPayDate: "",
+      receivedEmailDate: ""
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
@@ -268,6 +266,10 @@ class EditOrder extends Component {
         url
       }
     })
+    this.setState({
+      receivedEmailDate: new Date().toLocaleString()
+    })
+    alert("Email Was Sent!");
   }
   async paymentEmail(e) {
     e.preventDefault();
@@ -307,7 +309,8 @@ class EditOrder extends Component {
       vendorName,
       deviceList,
       url,
-      expectPayDate } = this.state;
+      expectPayDate,
+      receivedEmailDate } = this.state;
 
     firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
       company,
@@ -323,7 +326,8 @@ class EditOrder extends Component {
       vendorName,
       deviceList,
       url,
-      expectPayDate
+      expectPayDate,
+      receivedEmailDate
     }).then(() => {
       this.props.history.push("/purchaseorders")
     })
@@ -629,15 +633,7 @@ class EditOrder extends Component {
                 color="primary">
                 Save
               </Button>
-              <button onClick={this.receivedOrderEmail}>
-                Recived Order
-              </button>
-              <button onClick={this.paymentEmail}>
-                Payment Sent
-              </button>
-              <button onClick={this.orderProcess}>
-                Order Process
-              </button>
+
 
             </Container>
 
@@ -656,7 +652,24 @@ class EditOrder extends Component {
 
             </div>
           }
+          <div className="button__email__div">
+            <button className="button__email" onClick={this.receivedOrderEmail}>
+              Recived Order
+              </button>
+            <p>{this.state.receivedEmailDate}</p>
+          </div>
+          <div className="button__email__div">
+            <button className="button__email" onClick={this.paymentEmail}>
+              Payment Sent
+              </button>
+          </div>
+          <div className="button__email__div">
+            <button className="button__email" onClick={this.orderProcess}>
+              Order Process
+              </button>
+          </div>
         </Paper>
+
       </Container>
     );
   }
