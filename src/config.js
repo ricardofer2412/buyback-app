@@ -1,1 +1,1 @@
-export const apiEndpoint = "http://18.204.212.160:8080";
+export const apiEndpoint = "https://c7gvd80n4m.execute-api.us-east-1.amazonaws.com/prd";

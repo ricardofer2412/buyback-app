@@ -259,10 +259,14 @@ class EditOrder extends Component {
     console.log('Received email sent')
     const { email, vendorName, url } = this.state
     console.log(email)
-    const receivedEmail = await axios.post(`${apiEndpoint}/api/receivedEmail`, {
-      email,
-      vendorName,
-      url
+    const receivedEmail = await axios.post(apiEndpoint, {
+      path: "/api/receivedEmail",
+      method: 'post',
+      body: {
+        email,
+        vendorName,
+        url
+      }
     })
   }
   async paymentEmail(e) {
