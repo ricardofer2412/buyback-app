@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { storage } from '../firebase/Firebase'
 import ImageUploader from '../ImageUploader/ImageUploader'
 import axios from "axios";
+import { apiEndpoint } from "../../config.js";
 
 
 
@@ -258,7 +259,7 @@ class EditOrder extends Component {
     console.log('Received email sent')
     const { email, vendorName, url } = this.state
     console.log(email)
-    const receivedEmail = await axios.post('/api/receivedEmail', {
+    const receivedEmail = await axios.post(`${apiEndpoint}/api/receivedEmail`, {
       email,
       vendorName,
       url
@@ -268,7 +269,7 @@ class EditOrder extends Component {
     e.preventDefault();
     const { email, vendorName, url } = this.state
     console.log(email)
-    const paymentEmail = await axios.post('/api/paymentEmail', {
+    const paymentEmail = await axios.post(`${apiEndpoint}/api/paymentEmail`, {
       email,
       vendorName,
       url
