@@ -156,7 +156,7 @@ class EditOrder extends Component {
       url: '',
       progress: 0,
       expectPayDate: ""
-       
+
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
@@ -255,11 +255,12 @@ class EditOrder extends Component {
 
   async receivedOrderEmail(e) {
     e.preventDefault();
+    console.log('Received email sent')
     const { email, vendorName, url } = this.state
     console.log(email)
     const receivedEmail = await axios.post('/api/receivedEmail', {
-      email, 
-      vendorName, 
+      email,
+      vendorName,
       url
     })
   }
@@ -268,8 +269,8 @@ class EditOrder extends Component {
     const { email, vendorName, url } = this.state
     console.log(email)
     const paymentEmail = await axios.post('/api/paymentEmail', {
-      email, 
-      vendorName, 
+      email,
+      vendorName,
       url
     })
   }
@@ -278,8 +279,8 @@ class EditOrder extends Component {
     const { email, vendorName, url } = this.state
     console.log(email)
     const orderProcess = await axios.post('/api/orderProcess', {
-      email, 
-      vendorName, 
+      email,
+      vendorName,
       url
     })
   }

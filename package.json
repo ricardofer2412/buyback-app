@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://18.204.212.160:8080",
   "engines": {
     "node": "12.14.0"
   },
