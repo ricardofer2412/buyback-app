@@ -155,13 +155,15 @@ class EditOrder extends Component {
       url: '',
       progress: 0,
       expectPayDate: "",
-      receivedEmailDate: ""
+      receivedEmailDate: "", 
+      processEmailDate: "", 
+      paymentEmailDate: ""
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this)
     this.paymentEmail = this.paymentEmail.bind(this)
     this.orderProcess = this.orderProcess.bind(this)
-
+    this.onSubmit = this.onSubmit.bind(this)
   }
   componentDidMount() {
     const ref = firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id);
@@ -187,8 +189,10 @@ class EditOrder extends Component {
           vendorName: purchaseOrders.vendorName,
           deviceTotal: purchaseOrders.deviceTotal,
           url: purchaseOrders.url,
-          expectPayDate: purchaseOrders.expectPayDate
-
+          expectPayDate: purchaseOrders.expectPayDate,
+          receivedEmailDate: purchaseOrders.receivedEmailDate, 
+          processEmailDate: purchaseOrders.processEmailDate, 
+          paymentEmailDate: purchaseOrders.paymentEmailDate
         });
       } else {
         console.log("Order does not exist!");
@@ -253,10 +257,10 @@ class EditOrder extends Component {
   }
 
   async receivedOrderEmail(e) {
-    e.preventDefault();
+    e.preventDefault()
     console.log('Received email sent')
     const { email, vendorName, url } = this.state
-    console.log(email)
+
     const receivedEmail = await axios.post(apiEndpoint, {
       path: "/api/receivedEmail",
       method: 'post',
@@ -271,25 +275,47 @@ class EditOrder extends Component {
     })
     alert("Email Was Sent!");
   }
+
+
   async paymentEmail(e) {
-    e.preventDefault();
-    const { email, vendorName, url } = this.state
-    console.log(email)
-    const paymentEmail = await axios.post(`${apiEndpoint}/api/paymentEmail`, {
-      email,
-      vendorName,
-      url
+    e.preventDefault()
+    console.log('Received email sent')
+    const { email, vendorName, url, poTotal } = this.state
+
+    const paymentEmail = await axios.post(apiEndpoint, {
+      path: "/api/paymentEmail",
+      method: 'post',
+      body: {
+        email,
+        vendorName,
+        url, 
+        poTotal
+      }
     })
+    this.setState({
+      paymentEmailDate: new Date().toLocaleString()
+    })
+    alert("Email Was Sent!");
   }
+
   async orderProcess(e) {
-    e.preventDefault();
+    e.preventDefault()
+    console.log('Received email sent')
     const { email, vendorName, url } = this.state
-    console.log(email)
-    const orderProcess = await axios.post('/api/orderProcess', {
-      email,
-      vendorName,
-      url
+
+    const orderProcessEmail = await axios.post(apiEndpoint, {
+      path: "/api/orderProcess",
+      method: 'post',
+      body: {
+        email,
+        vendorName,
+        url
+      }
     })
+    this.setState({
+      processOrdeDate: new Date().toLocaleString()
+    })
+    alert("Email Was Sent!");
   }
 
 
@@ -310,7 +336,9 @@ class EditOrder extends Component {
       deviceList,
       url,
       expectPayDate,
-      receivedEmailDate } = this.state;
+      receivedEmailDate, 
+      processEmailDate,
+      paymentEmailDate } = this.state;
 
     firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
       company,
@@ -327,14 +355,16 @@ class EditOrder extends Component {
       deviceList,
       url,
       expectPayDate,
-      receivedEmailDate
+      receivedEmailDate, processEmailDate, paymentEmailDate
     }).then(() => {
       this.props.history.push("/purchaseorders")
+
     })
       .catch((error) => {
         console.error("Error adding customer: ", error);
       });
   }
+
 
   render() {
 
@@ -659,15 +689,20 @@ class EditOrder extends Component {
             <p>{this.state.receivedEmailDate}</p>
           </div>
           <div className="button__email__div">
-            <button className="button__email" onClick={this.paymentEmail}>
-              Payment Sent
-              </button>
-          </div>
-          <div className="button__email__div">
             <button className="button__email" onClick={this.orderProcess}>
               Order Process
               </button>
+              <p>{this.state.processEmailDate}</p>
           </div>
+          <div className="button__email__div">
+            <button className="button__email" onClick={this.paymentEmail}>
+              Payment Sent
+              </button>
+              <p>{this.state.paymentEmailDate}</p>
+
+          
+          </div>
+         
         </Paper>
 
       </Container>

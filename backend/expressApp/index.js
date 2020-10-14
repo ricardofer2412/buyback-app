@@ -61,16 +61,23 @@ Thank you
   })
 })
 
-app.post('/api/paymentEmail', (req, res) => {
+app.post('/api/paymentEmail/', (req, res) => {
 
   nodemailer.createTestAccount((err, account) => {
     const htmlEmail = `
-        <h3>Test Email</h3>
-        <ul>
-          <li> Email Test: ${req.body.email}</li>
-          
-        </ul>
-        <p> Payment is on the way!</p>
+      
+        <p>Dear ${req.body.vendorName} </p> 
+        <p> Your payment is being processed, so you will receive a check in the mail for the amount of ${req.body.poTotal} within the next 3-5 business days. </p>
+        <br> 
+        <p> Your order has been received</p>
+        <br> 
+        <p> 
+        Mobilesource Corp
+        </p> 
+        <br>
+        <p> 
+       561.416.7224
+        </p> 
       `
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -84,7 +91,7 @@ app.post('/api/paymentEmail', (req, res) => {
     let mailOptions = {
       from: 'donot-reply@mobilesource.com',
       to: `${req.body.email}`,
-      text: "Text Received Order Email",
+      text: "Your payment has been initiated!",
       html: htmlEmail
     }
     transporter.sendMail(mailOptions, (err, info) => {
@@ -95,7 +102,7 @@ app.post('/api/paymentEmail', (req, res) => {
     })
   })
 })
-app.post('/api/orderProcess', (req, res) => {
+app.post('/api/orderProcess/', (req, res) => {
 
   nodemailer.createTestAccount((err, account) => {
     const htmlEmail = `
