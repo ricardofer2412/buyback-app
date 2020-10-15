@@ -298,6 +298,23 @@ class EditOrder extends Component {
     alert("Email Was Sent!");
   }
 
+
+   deviceInfo = async (e) => {
+    e.preventDefault();
+
+    const imei = "359483083018809"
+    
+    const getInfo = await axios.post(`https://clientapiv2.phonecheck.com/cloud/cloudDB/CheckiCloud/`, 
+    {
+      "Apikey": "2c5ae2c4-61c8-4f09-b632-8bbf9506538f", 
+      "Username": "msource2",
+      "IMEI": "359466089274872"
+      }
+    )
+
+    const { data }  = getInfo.data
+    console.log(data)
+  }
   async orderProcess(e) {
     e.preventDefault()
     console.log('Received email sent')
@@ -700,7 +717,14 @@ class EditOrder extends Component {
 
           
           </div>
-         
+          <div className="button__email__div">
+            <button className="button__email" onClick={this.deviceInfo}>
+                Get Info
+              </button>
+       
+
+          
+          </div>
         </Paper>
 
       </Container>
