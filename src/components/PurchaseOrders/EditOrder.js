@@ -336,9 +336,7 @@ class EditOrder extends Component {
       deviceList,
       url,
       expectPayDate,
-      receivedEmailDate, 
-      processEmailDate,
-      paymentEmailDate } = this.state;
+      } = this.state;
 
     firebase.firestore().collection('purchaseOrders').doc(this.props.match.params.id).set({
       company,
@@ -355,7 +353,7 @@ class EditOrder extends Component {
       deviceList,
       url,
       expectPayDate,
-      receivedEmailDate, processEmailDate, paymentEmailDate
+    
     }).then(() => {
       this.props.history.push("/purchaseorders")
 
