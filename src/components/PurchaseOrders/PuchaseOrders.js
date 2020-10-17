@@ -166,7 +166,7 @@ class PurchaseOrders extends React.Component {
 
                                             }
                                             <TableCell>
-                                                <IconButton onClick={() => this.delete(purchaseOrder)} aria-label="Delete" >
+                                                <IconButton onClick={() => { if (window.confirm("Are you sure you want to delete this PO")) { this.delete(purchaseOrder) } }}>
                                                     <DeleteIcon fontSize="small" />
                                                 </IconButton>
                                                 <IconButton
