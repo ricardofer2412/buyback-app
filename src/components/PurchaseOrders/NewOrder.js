@@ -10,126 +10,135 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
 } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
 import firebase from "../firebase/Firebase";
-import TableContainer from '@material-ui/core/TableContainer';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
-import ImageUploader from '../ImageUploader/ImageUploader'
-import { storage } from '../firebase/Firebase'
-import SaveIcon from '@material-ui/icons/Save';
-
-
+import TableContainer from "@material-ui/core/TableContainer";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
+import ImageUploader from "../ImageUploader/ImageUploader";
+import { storage } from "../firebase/Firebase";
+import SaveIcon from "@material-ui/icons/Save";
+import BuyBackForm from "../BuyBackForm";
 
 const uuid = require("uuid");
 const carriers = [
   {
     value: "AT&T",
     label: "AT&T",
-    color: "red"
+    color: "red",
   },
   {
     value: "T-Mobile",
-    label: "T-Mobile"
+    label: "T-Mobile",
   },
   {
     value: "Sprint",
-    label: "Sprint"
+    label: "Sprint",
   },
   {
     value: "Verizon",
-    label: "Verizon"
+    label: "Verizon",
   },
   {
     value: "Unlocked",
-    label: "Unlocked"
-  }
+    label: "Unlocked",
+  },
 ];
 const payment = [
   {
     value: "Cash",
-    label: "Cash"
+    label: "Cash",
   },
   {
     value: "Check",
-    label: "Check"
+    label: "Check",
   },
   {
     value: "Paypal",
-    label: "Paypal"
-  }
+    label: "Paypal",
+  },
 ];
 const statusList = [
   {
     value: "Pending",
-    label: "Pending"
+    label: "Pending",
   },
   {
     value: "Complete",
-    label: "Complete"
+    label: "Complete",
   },
   {
     value: "Tested",
-    label: "Tested"
+    label: "Tested",
   },
   {
     value: "Paid",
-    label: "Paid"
+    label: "Paid",
   },
   {
     value: "Entered",
-    label: "Entered"
-  }, {
-    value: 'Received',
-    label: 'Received'
+    label: "Entered",
   },
-
+  {
+    value: "Received",
+    label: "Received",
+  },
 ];
 
 const classes = {
   maincontainer: {
-    display: 'flex',
-    flexDiretion: 'column',
+    display: "flex",
+    flexDiretion: "column",
     marginTop: 100,
   },
   topForm: {
-    display: 'flex',
-    flexDiretion: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDiretion: "row",
+    justifyContent: "space-between",
     marginTop: 15,
     marginBottom: 30,
   },
   total: {
-    display: 'flex',
-    flexDiretion: 'column',
-    justifyContent: 'flex-end'
+    display: "flex",
+    flexDiretion: "column",
+    justifyContent: "flex-end",
   },
   paperMain: {
     marginRight: 20,
-    width: '100%'
+    width: "100%",
   },
   button: {
     marginLeft: 15,
     marginTop: 15,
     marginBottom: 15,
-    backgroundColor: '#00e676',
-    color: 'white'
-  }
+    backgroundColor: "#00e676",
+    color: "white",
+  },
+};
 
-}
-
+const EMPTY_DEVICE = {
+  deviceImei: "",
+  deviceCarrier: "",
+  comments: "",
+  deviceId: "",
+  deviceQty: "",
+  phoneModel: "",
+  devicePrice: "",
+  deviceTotal: "",
+};
 
 class NewOrder extends Component {
   constructor(props) {
     super(props);
 
     this.ref = firebase.firestore().collection("purchaseOrders");
-    this.customerRef = firebase.firestore().collection('customers')
+    this.customerRef = firebase.firestore().collection("customers");
     this.state = {
-      purchaseOrderId: '',
+      vendorName: "",
+      purchaseOrderId: "",
       company: "",
       deviceTotal: "",
       poDate: new Date(),
@@ -139,58 +148,71 @@ class NewOrder extends Component {
       address: "",
       expectPayDate: "",
       status: "",
+      deviceModel: "",
+      devicePrice: "",
+      deviceQty: "",
+      deviceComments: "",
+      deviceDeduction: "",
+      deviceCarrier: "",
+      deviceImei: "",
+      deviceList: [{ ...EMPTY_DEVICE }],
+      importedDeviceList: [],
+      image: null,
+      url: "",
+      progress: 0,
       typePayment: "",
       phoneNumber: "",
-      vendorName: "",
-      deviceModel: '',
-      devicePrice: '',
-      deviceQty: '',
-      deviceComments: '',
-      deviceDeduction: '',
-      deviceCarrier: '',
-      deviceList: [],
-      image: null,
-      url: '',
-      progress: 0
-
     };
   }
-  componentDidMount = () => {
+  componentDidMount = () => {};
 
-
-  }
-
-  handleChangeImg = e => {
+  handleChangeImg = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      this.setState(() => ({ image }))
+      this.setState(() => ({ image }));
     }
-    console.log(this.state.image)
-  }
+    console.log(this.state.image);
+  };
   handleUpload = () => {
-    const { image } = this.state
-    const uploadTask = storage.ref(`images/${image.name}`).put(image)
-    uploadTask.on('state_changed',
+    const { image } = this.state;
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
       (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
         this.setState({
-          progress
-        })
-        console.log(this.state.progress)
+          progress,
+        });
+        console.log(this.state.progress);
       },
       (error) => {
-        console.log(error)
+        console.log(error);
       },
       () => {
-        storage.ref('images').child(image.name).getDownloadURL().then(url => {
-          console.log(url);
-          this.setState({
-            url
-          })
-        })
-      })
-  }
-  onChange = e => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            console.log(url);
+            this.setState({
+              url,
+            });
+          });
+      }
+    );
+  };
+
+  onDeviceChange = (e, i) => {
+    const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    const device = deviceList[i];
+    device[e.target.name] = e.target.value;
+    deviceList.splice(i, 1, device);
+    this.setState({ deviceList });
+  };
+  onChange = (e) => {
     const state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
@@ -202,62 +224,78 @@ class NewOrder extends Component {
     this.setState({ devices });
   };
 
+  // addNewDevice = (e) => {
+  //   e.preventDefault();
+  //   const deviceId = uuid();
+  //   const newItem = {
+  //     deviceImei: this.state.deviceImei,
+  //     deviceCarrier: this.state.deviceCarrier,
+  //     comments: this.state.deviceComments,
+  //     deviceId: deviceId,
+  //     qty: this.state.deviceQty,
+  //     phoneModel: this.state.deviceModel,
+  //     price: this.state.devicePrice,
+  //     deviceTotal: this.state.devicePrice * this.state.deviceQty,
+  //   };
+  //   const newDeviceList = [...this.state.deviceList, newItem];
+  //   let poTotal = 0;
+  //   for (let i = 0; i < newDeviceList.length; i++) {
+  //     poTotal += newDeviceList[i].deviceTotal;
+  //   }
+  //   poTotal = poTotal.toFixed(2);
 
-  addNewDevice = (e) => {
-    e.preventDefault()
-    const deviceId = uuid()
-    const newItem = { deviceCarrier: this.state.deviceCarrier, comments: this.state.deviceComments, deviceId: deviceId, qty: this.state.deviceQty, phoneModel: this.state.deviceModel, price: this.state.devicePrice, deviceTotal: this.state.devicePrice * this.state.deviceQty }
-    const newDeviceList = [...this.state.deviceList, newItem]
-    let poTotal = 0
-    for (let i = 0; i < newDeviceList.length; i++) {
-      poTotal += newDeviceList[i].deviceTotal
+  //   firebase
+  //     .firestore()
+  //     .collection("devices")
+  //     .doc(deviceId)
+  //     .set(newItem)
+  //     .then((res) => {
+  //       this.setState({
+  //         deviceList: newDeviceList,
+  //         deviceQty: "",
+  //         deviceModel: "",
+  //         devicePrice: "",
+  //         deviceComments: "",
+  //         deviceCarrier: "",
+  //         deviceImei: "",
+  //         poTotal,
+  //       });
+  //     });
+  // };
 
-    }
-    poTotal = poTotal.toFixed(2)
+  deleteItem = (id) => {
+    const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    console.log(id);
+    console.log("deviceList: ", deviceList.length);
+    deviceList.splice(id, 1);
+    this.setState({ deviceList });
 
-    firebase.firestore()
-      .collection("devices")
-      .doc(deviceId)
-      .set(newItem)
-      .then((res) => {
-        this.setState({
-          deviceList: newDeviceList,
-          deviceQty: "",
-          deviceModel: "",
-          devicePrice: "",
-          deviceComments: "",
-          deviceCarrier: "",
-          poTotal
-        })
-      })
-  }
+    // firebase
+    //   .firestore()
+    //   .collection("devices")
+    //   .doc(itemId)
+    //   .delete()
+    //   .then((res) => {
+    //     this.setState({
+    //       deviceList,
+    //     });
+    //   });
+  };
 
-  deleteItem = (id, itemId) => {
-    const deviceList = Object.assign([], this.state.deviceList)
-    console.log(id)
-    deviceList.splice(id, 1)
-
-
-    firebase.firestore().collection("devices").doc(itemId)
-      .delete()
-      .then((res) => {
-        this.setState({
-          deviceList
-        })
-
-      })
-  }
   addCustomer() {
-    const newCustomer = { company: this.state.company, vendorName: this.state.vendorName, email: this.state.email, phoneNumber: this.state.phoneNumber }
-    firebase.firestore().collection("customers").add(newCustomer)
-
+    const newCustomer = {
+      company: this.state.company,
+      vendorName: this.state.vendorName,
+      email: this.state.email,
+      phoneNumber: this.state.phoneNumber,
+    };
+    firebase
+      .firestore()
+      .collection("customers")
+      .add(newCustomer);
   }
 
-
-
-
-
-  onSubmit = e => {
+  onSubmit = (e) => {
     const purchaseOrderId = uuid();
     const customerId = uuid();
     e.preventDefault();
@@ -274,13 +312,11 @@ class NewOrder extends Component {
       deviceList,
       poTotal,
       url,
-      expectPayDate
-
-
-
+      expectPayDate,
     } = this.state;
-    this.addCustomer()
-    this.ref.doc(purchaseOrderId)
+    this.addCustomer();
+    this.ref
+      .doc(purchaseOrderId)
       .set({
         customerId,
         company,
@@ -294,21 +330,41 @@ class NewOrder extends Component {
         deviceList,
         poTotal,
         url,
-        expectPayDate
+        expectPayDate,
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error adding document: ", error);
       });
-
   };
-
 
   handleUrlChange = (url) => {
     this.setState({ url });
-  }
+  };
+
+  addNewDeviceRow = () => {
+    const deviceList = this.state.deviceList.slice(0);
+    deviceList.push({ ...EMPTY_DEVICE });
+    this.setState({ deviceList });
+  };
+
+  getTotal = () => {
+    const deviceList = this.state.deviceList;
+    let sum = 0;
+    console.log("deviceList: ", deviceList);
+    for (let i = 0; i < deviceList.length; i++) {
+      const { deviceQty, devicePrice } = deviceList[i];
+
+      if (deviceQty && devicePrice) {
+        sum += Number(deviceQty) * Number(devicePrice);
+      }
+    }
+
+    console.log("sum: ", sum);
+    return sum;
+  };
 
   render() {
     const {
@@ -325,19 +381,13 @@ class NewOrder extends Component {
       devicePrice,
       deviceComments,
       deviceCarrier,
-      expectPayDate
-
-
+      expectPayDate,
+      deviceImei,
     } = this.state;
 
-
-
     return (
-
       <Container style={classes.maincontainer}>
-
-
-        <Paper style={classes.paperMain} >
+        <Paper style={classes.paperMain}>
           <h2>New Purchase Order </h2>
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
             <Container style={classes.topForm}>
@@ -345,7 +395,6 @@ class NewOrder extends Component {
                 required
                 label="Company"
                 InputProps={{ name: "company" }}
-
                 onChange={this.onChange}
                 value={company}
                 variant="outlined"
@@ -353,10 +402,8 @@ class NewOrder extends Component {
               />
 
               <TextField
-                required
                 label="Vendor Name"
                 InputProps={{ name: "vendorName" }}
-
                 onChange={this.onChange}
                 value={vendorName}
                 variant="outlined"
@@ -367,7 +414,6 @@ class NewOrder extends Component {
                 required
                 label="PO Number"
                 InputProps={{ name: "poNumber" }}
-
                 onChange={this.onChange}
                 value={poNumber}
                 variant="outlined"
@@ -379,7 +425,6 @@ class NewOrder extends Component {
                 required
                 label="E-Mail"
                 InputProps={{ name: "email" }}
-
                 onChange={this.onChange}
                 value={email}
                 variant="outlined"
@@ -390,7 +435,6 @@ class NewOrder extends Component {
                 required
                 label="Phone Number"
                 InputProps={{ name: "phoneNumber" }}
-
                 onChange={this.onChange}
                 value={phoneNumber}
                 variant="outlined"
@@ -402,19 +446,16 @@ class NewOrder extends Component {
                 select
                 label="Status"
                 InputProps={{ name: "status" }}
-
                 value={status}
                 defaultValue={poDate}
                 onChange={this.onChange}
                 SelectProps={{
-                  MenuProps: {
-
-                  }
+                  MenuProps: {},
                 }}
                 margin="normal"
                 variant="outlined"
               >
-                {statusList.map(option => (
+                {statusList.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -427,12 +468,11 @@ class NewOrder extends Component {
                 id="poDate"
                 label="Date"
                 type="date"
-
                 InputProps={{
-                  name: "poDate"
+                  name: "poDate",
                 }}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
                 value={poDate}
                 variant="outlined"
@@ -443,36 +483,31 @@ class NewOrder extends Component {
                 id="expectPayDate"
                 label="Expected Pay Date"
                 type="date"
-
                 InputProps={{
-                  name: "expectPayDate"
+                  name: "expectPayDate",
                 }}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
                 value={expectPayDate}
                 variant="outlined"
                 onChange={this.onChange}
               />
 
-
               <TextField
                 select
                 label="Payment Type"
                 InputProps={{ name: "typePayment" }}
-
                 value={typePayment}
                 onChange={this.onChange}
                 style={{ width: 250 }}
                 SelectProps={{
-                  MenuProps: {
-
-                  }
+                  MenuProps: {},
                 }}
                 margin="normal"
                 variant="outlined"
               >
-                {payment.map(option => (
+                {payment.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -481,14 +516,15 @@ class NewOrder extends Component {
             </Container>
             <Divider />
 
-            <TableContainer style={classes.topForm} >
+            <TableContainer style={classes.topForm}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>
                     <TableCell align="right">Carrier</TableCell>
                     <TableCell align="right">MODEL</TableCell>
-                    <TableCell align="right">Comments</TableCell>
+                    <TableCell align="right">IMEI</TableCell>
+                    <TableCell align="right">COMMENTS</TableCell>
                     <TableCell align="right">PRICE</TableCell>
                     <TableCell align="right">TOTAL</TableCell>
                     <TableCell align="right">ACTIONS</TableCell>
@@ -496,142 +532,68 @@ class NewOrder extends Component {
                 </TableHead>
 
                 <TableBody>
-                  {this.state.deviceList.map((item, i) => (
-                    <TableRow key={i} >
-                      <TableCell component="th" scope="row">
-                        {item.qty}
-                      </TableCell>
-                      <TableCell align="right">{item.deviceCarrier}</TableCell>
-                      <TableCell align="right">{item.phoneModel}</TableCell>
-                      <TableCell align="right">{item.comments}</TableCell>
-                      <TableCell align="right">{item.price}</TableCell>
-                      <TableCell align="right">{item.deviceTotal}</TableCell>
-                      <TableCell>
-                        <DeleteIcon
-                          onClick={() => this.deleteItem(i, item.deviceId)}
-                          variant="contained"
-                          style={{ color: "#ff1744", cursor: "pointer" }}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  <BuyBackForm
+                    onChange={this.onDeviceChange}
+                    deviceList={this.state.deviceList}
+                    deleteItem={this.deleteItem}
+                  />
                 </TableBody>
               </Table>
             </TableContainer>
             <Divider />
             <Container style={classes.topForm}>
-              <TextField
-                required
-                label="Qty"
-                InputProps={{ name: "deviceQty" }}
-                onChange={this.onChange}
-                value={deviceQty}
-                variant="outlined"
-                style={{ width: 75 }}
-              />
-
-              <TextField
-                style={{ width: 150, marginTop: 0 }}
-                select
-                label="Carrier"
-                InputProps={{ name: "deviceCarrier" }}
-
-                value={deviceCarrier}
-                defaultValue={carriers}
-                onChange={this.onChange}
-                SelectProps={{
-                  MenuProps: {
-
-                  }
-                }}
-                margin="normal"
-                variant="outlined"
-              >
-                {carriers.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))} </TextField>
-
-
-              <TextField
-                required
-                label="Phone model"
-                InputProps={{ name: "deviceModel" }}
-
-                onChange={this.onChange}
-                value={deviceModel}
-                variant="outlined"
-                style={{ width: 175 }}
-              />
-
-              <TextField
-                required
-                label="Comments"
-                InputProps={{ name: "deviceComments" }}
-
-                onChange={this.onChange}
-                value={deviceComments}
-                variant="outlined"
-                style={{ width: 175 }}
-              />
-
-              <TextField
-                required
-                label="Price"
-                InputProps={{ name: "devicePrice" }}
-
-                onChange={this.onChange}
-                value={devicePrice}
-                variant="outlined"
-                style={{ width: 100 }}
-              />
-
-              <AddIcon
-                style={{ margin: 25, cursor: 'pointer' }}
+              <Button
+                style={{ margin: 25, cursor: "pointer" }}
                 variant="contained"
-                onClick={this.addNewDevice}
+                onClick={this.addNewDeviceRow}
                 color="primary"
-              />
+              >
+                Add New Item
+              </Button>
             </Container>
             <Divider />
             <Container style={classes.total}>
-              <Typography style={{ color: 'gray', fontSize: 30 }}>
-                Total: ${this.state.poTotal}
+              <Typography style={{ color: "gray", fontSize: 30 }}>
+                Total: ${this.getTotal()}
               </Typography>
             </Container>
             <Container style={classes.total}>
               <Button
                 variant="contained"
-
                 size="large"
                 style={classes.button}
                 startIcon={<SaveIcon />}
                 onClick={this.onSubmit}
               >
                 Save
-      </Button>
+              </Button>
             </Container>
           </form>
-
         </Paper>
 
-        <Paper style={classes.paper} >
-          <ImageUploader imageUrl={this.state.url} handleUrlChange={this.handleUrlChange} />
+        <Paper style={classes.paper}>
+          <ImageUploader
+            imageUrl={this.state.url}
+            handleUrlChange={this.handleUrlChange}
+          />
 
-          {this.state.url != null ?
+          {this.state.url != null ? (
             <div>
-              <img src={this.state.url} alt="Uploaded Images" height="200" width="200" style={{ marginTop: 15, marginLeft: 5 }} />
+              <img
+                src={this.state.url}
+                alt="Uploaded Images"
+                height="200"
+                width="200"
+                style={{ marginTop: 15, marginLeft: 5 }}
+              />
             </div>
-            :
+          ) : (
             <br />
-          }
+          )}
         </Paper>
       </Container>
-
-
     );
   }
 }
 
-export default (withRouter(NewOrder));
+export default withRouter(NewOrder);
