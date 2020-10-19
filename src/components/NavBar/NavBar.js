@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import Home from '@material-ui/icons/Home'
 import { People, ShoppingCart, StayCurrentPortrait } from '@material-ui/icons'
 import './NavBar.css'
-
+import BuildIcon from '@material-ui/icons/Build';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -161,7 +161,14 @@ class PersistentDrawerLeft extends React.Component {
                 <ListItemText primary="Tracking" />
               </ListItemIcon>
             </ListItem>
+            <ListItem button component={Link} to="/tools">
+              <ListItemIcon>
+                <BuildIcon className="icon" />
+                <ListItemText primary="Tools" />
+              </ListItemIcon>
+            </ListItem>
           </List>
+          
         </Drawer>
 
       </div>

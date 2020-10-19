@@ -16,7 +16,7 @@ import NavBar from './components/NavBar/NavBar'
 import EditTracking from './components/tracking/edit-tracking'
 import EditOrder from './components/PurchaseOrders/EditOrder'
 import UnlockediPhones from './components/CellphonePrices/UnlockediPhones'
-
+import Tools from './components/Tools/Tools'
 ReactDOM.render(
   <Router>
     <div>
@@ -35,6 +35,7 @@ ReactDOM.render(
       <Route exact path='/tracking/edit/:id' component={EditTracking} />
       <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
       <Route exact path="/UnlockediPhones/" component={UnlockediPhones} />
+      <Route exact path="/Tools/" component={Tools} />
     </div>
   </Router>,
   document.getElementById("root")
