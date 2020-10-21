@@ -136,7 +136,7 @@ const classes = {
     color: "white",
   },
   importedList: {
-    maxHeight: 200,
+    height: 2,
     width: "100%",
     overflow: "auto",
   },
@@ -188,6 +188,7 @@ class EditOrder extends Component {
       .doc(this.props.match.params.id);
     ref.get().then((doc) => {
       if (doc.exists) {
+        console.log("Loading");
         const purchaseOrders = doc.data();
         const deviceList = doc.data().deviceList;
         const newDeviceList = [...deviceList];
@@ -219,6 +220,8 @@ class EditOrder extends Component {
   }
   deleteItem = (id) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    console.log(id);
+    console.log("deviceList: ", deviceList.length);
     deviceList.splice(id, 1);
     this.setState({ deviceList });
 
@@ -339,6 +342,8 @@ class EditOrder extends Component {
 
   deleteItem = (id) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    console.log(id);
+    console.log("deviceList: ", deviceList.length);
     deviceList.splice(id, 1);
     this.setState({ deviceList });
 
@@ -357,22 +362,36 @@ class EditOrder extends Component {
     e.preventDefault();
     // body: `Invoiceno=15964`,
     const poNumber = this.state.poNumber;
-    const IMEI = "359483083018809";
-
+    const deviceList = this.state.deviceList;
     try {
       const getInfo = await axios.post(`${apiEndpoint}/phonecheck`, {
         type: "GetAllDevices",
         body: `Invoiceno=${poNumber}`,
       });
-      const { data } = getInfo;
 
-      this.setState({
-        importedDeviceList: data,
-      });
+      const { data } = getInfo;
+      const importedList = data;
+      console.log(importedList);
+      // let importedList = [];
+      // for (var i = 0; i < data.length; i++) {
+      //   importedList.push({
+      //     deviceImei: data[i].IMEI,
+      //     deviveCarrrier: data[i].Carrier,
+      //     deviceModel: data[i].Model,
+      //   });
+      // }
+      // console.log(importedList);
+
+      // this.setState({
+      //   deviceList: this.state.deviceList.concat(importedList),
+      // });
     } catch (e) {
       console.log("ERROR getting info: ", e);
     }
+
+    console.log(deviceList);
   };
+
   async orderProcess(e) {
     e.preventDefault();
     console.log("Received email sent");
@@ -396,6 +415,7 @@ class EditOrder extends Component {
   getTotal = () => {
     const deviceList = this.state.deviceList;
     let sum = 0;
+    console.log("deviceList: ", deviceList);
     for (let i = 0; i < deviceList.length; i++) {
       const { deviceQty, devicePrice } = deviceList[i];
 
@@ -403,6 +423,7 @@ class EditOrder extends Component {
         sum += Number(deviceQty) * Number(devicePrice);
       }
     }
+    console.log("sum: ", sum);
     return sum;
   };
 
@@ -624,21 +645,7 @@ class EditOrder extends Component {
                     <TableCell align="right">ACTIONS</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody style={classes.importedList}>
-                  {this.state.importedDeviceList.map((item, i) => (
-                    <TableRow>
-                      <TableCell>1</TableCell>
-                      <TableCell>{item.InitialCarrier}</TableCell>
-                      <TableCell>
-                        {item.Model}:{item.Memory}
-                      </TableCell>
-                      <TableCell>{item.IMEI}</TableCell>
-                      <TableCell>
-                        {item.Failed}, {item.Cosmetics}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+
                 <TableBody>
                   <BuyBackForm
                     onChange={this.onDeviceChange}
