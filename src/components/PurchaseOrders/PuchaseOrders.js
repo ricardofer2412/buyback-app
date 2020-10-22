@@ -18,7 +18,7 @@ import { Create } from "@material-ui/icons";
 import NavBar from "../NavBar/NavBar";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
-
+import "./po.css";
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -98,103 +98,99 @@ class PurchaseOrders extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <div>
         <NavBar />
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Container>
-            <Container className={classes.container}>
-              <Fab
-                component={Link}
-                to="/neworder"
-                color="secondary"
-                aria-label="Add"
-                className={classes.fab}
-              >
-                <AddIcon className={classes.extendedIcon} />
-              </Fab>
-            </Container>
-            <Paper>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>PO# </TableCell>
-                    <TableCell>Vendor </TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.state.purchaseOrders.map((purchaseOrder) => (
-                    <TableRow>
-                      <TableCell>{purchaseOrder.poNumber}</TableCell>
-                      <TableCell>{purchaseOrder.vendorName}</TableCell>
+        <div className="purchaseOrder_table">
+          <Fab
+            component={Link}
+            to="/neworder"
+            color="secondary"
+            aria-label="Add"
+            className={classes.fab}
+          >
+            <AddIcon className={classes.extendedIcon} />
+          </Fab>
 
-                      {purchaseOrder.status === "Paid" ? (
-                        <TableCell
-                          style={{ backgroundColor: "#e91e63", color: "white" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      ) : purchaseOrder.status === "Received" ? (
-                        <TableCell
-                          style={{ backgroundColor: "#ffeb3b", color: "black" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      ) : purchaseOrder.status === "Tested" ? (
-                        <TableCell
-                          style={{ backgroundColor: "#ff9800", color: "white" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      ) : purchaseOrder.status === "Entered" ? (
-                        <TableCell
-                          style={{ backgroundColor: "#f44336", color: "white" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      ) : purchaseOrder.status === "Complete" ? (
-                        <TableCell
-                          style={{ backgroundColor: "#4caf50", color: "white" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      ) : (
-                        <TableCell
-                          style={{ backgroundColor: "white", color: "gray" }}
-                        >
-                          {purchaseOrder.status}
-                        </TableCell>
-                      )}
-                      <TableCell>
-                        <IconButton
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "Are you sure you want to delete this PO"
-                              )
-                            ) {
-                              this.delete(purchaseOrder);
-                            }
-                          }}
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton
-                          component={Link}
-                          to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
-                        >
-                          <Create />
-                        </IconButton>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>PO# </TableCell>
+                  <TableCell>Vendor </TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.purchaseOrders.map((purchaseOrder) => (
+                  <TableRow>
+                    <TableCell>{purchaseOrder.poNumber}</TableCell>
+                    <TableCell>{purchaseOrder.vendorName}</TableCell>
+
+                    {purchaseOrder.status === "Paid" ? (
+                      <TableCell
+                        style={{ backgroundColor: "#e91e63", color: "white" }}
+                      >
+                        {purchaseOrder.status}
                       </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-          </Container>
-        </main>
+                    ) : purchaseOrder.status === "Received" ? (
+                      <TableCell
+                        style={{ backgroundColor: "#ffeb3b", color: "black" }}
+                      >
+                        {purchaseOrder.status}
+                      </TableCell>
+                    ) : purchaseOrder.status === "Tested" ? (
+                      <TableCell
+                        style={{ backgroundColor: "#ff9800", color: "white" }}
+                      >
+                        {purchaseOrder.status}
+                      </TableCell>
+                    ) : purchaseOrder.status === "Entered" ? (
+                      <TableCell
+                        style={{ backgroundColor: "#f44336", color: "white" }}
+                      >
+                        {purchaseOrder.status}
+                      </TableCell>
+                    ) : purchaseOrder.status === "Complete" ? (
+                      <TableCell
+                        style={{ backgroundColor: "#4caf50", color: "white" }}
+                      >
+                        {purchaseOrder.status}
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ backgroundColor: "white", color: "gray" }}
+                      >
+                        {purchaseOrder.status}
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <IconButton
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this PO"
+                            )
+                          ) {
+                            this.delete(purchaseOrder);
+                          }
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        component={Link}
+                        to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
+                      >
+                        <Create />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
       </div>
     );
   }

@@ -49,23 +49,13 @@ function BuyBackForm({ deviceList, onChange, deleteItem }) {
           </TableCell>
           <TableCell align="right">
             <TextField
-              style={{ width: 150, marginTop: 0 }}
-              select
+              required
               InputProps={{ name: "deviceCarrier" }}
-              value={item.deviceCarrier}
               onChange={(e) => onChange(e, i)}
-              SelectProps={{
-                MenuProps: {},
-              }}
-              margin="normal"
+              value={item.deviceCarrier}
               variant="standard"
-            >
-              {carriers.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}{" "}
-            </TextField>
+              style={{ width: 75 }}
+            />
           </TableCell>
           <TableCell align="right">
             <TextField

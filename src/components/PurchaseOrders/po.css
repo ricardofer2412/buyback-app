@@ -1,14 +1,47 @@
-.button__email__div{
+.button__email__div {
   padding: 10px;
 }
 
-
 .button__email {
   background-color: #00e676;
-  border-color: #00e676
+  border-color: #00e676;
 }
 .button__email:hover {
   background-color: green;
   border-color: black;
-  color: white
+  color: white;
+}
+
+.purchaseOrder_table {
+  padding: 30px;
+  margin-top: 50px;
+}
+
+.newOrder_container {
+  background-color: "#f7f7f7";
+  height: 100vh;
+}
+.newOrder_paper {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.purchaseOrder_title {
+  padding-top: 50px;
+  padding-left: 20px;
+}
+
+.customerInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.title {
+  font-weight: 200;
+}
+
+.buttom_bar {
+  margin: 20px;
+  padding: 20px;
 }

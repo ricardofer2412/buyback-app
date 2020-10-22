@@ -22,7 +22,7 @@ import ImageUploader from "../ImageUploader/ImageUploader";
 import { storage } from "../firebase/Firebase";
 import SaveIcon from "@material-ui/icons/Save";
 import BuyBackForm from "../BuyBackForm";
-
+import "./po.css";
 const uuid = require("uuid");
 const carriers = [
   {
@@ -386,11 +386,13 @@ class NewOrder extends Component {
     } = this.state;
 
     return (
-      <Container style={classes.maincontainer}>
-        <Paper style={classes.paperMain}>
-          <h2>New Purchase Order </h2>
+      <div className="newOrder_container">
+        <div className="purchaseOrder_title">
+          <h2 className="title">New Purchase Order </h2>
+        </div>
+        <Paper className="newOrder_paper">
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
-            <Container style={classes.topForm}>
+            <div className="customerInfo">
               <TextField
                 required
                 label="Company"
@@ -419,8 +421,8 @@ class NewOrder extends Component {
                 variant="outlined"
                 style={{ width: 250 }}
               />
-            </Container>
-            <Container style={classes.topForm}>
+            </div>
+            <div className="customerInfo">
               <TextField
                 required
                 label="E-Mail"
@@ -461,8 +463,8 @@ class NewOrder extends Component {
                   </MenuItem>
                 ))}
               </TextField>
-            </Container>
-            <Container style={classes.topForm}>
+            </div>
+            <div className="customerInfo">
               <TextField
                 style={{ width: 250 }}
                 id="poDate"
@@ -513,7 +515,7 @@ class NewOrder extends Component {
                   </MenuItem>
                 ))}
               </TextField>
-            </Container>
+            </div>
             <Divider />
 
             <TableContainer style={classes.topForm}>
@@ -521,13 +523,13 @@ class NewOrder extends Component {
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>
-                    <TableCell align="right">Carrier</TableCell>
-                    <TableCell align="right">MODEL</TableCell>
-                    <TableCell align="right">IMEI</TableCell>
-                    <TableCell align="right">COMMENTS</TableCell>
-                    <TableCell align="right">PRICE</TableCell>
-                    <TableCell align="right">TOTAL</TableCell>
-                    <TableCell align="right">ACTIONS</TableCell>
+                    <TableCell align="center">Carrier</TableCell>
+                    <TableCell align="center">MODEL</TableCell>
+                    <TableCell align="center">IMEI</TableCell>
+                    <TableCell align="center">COMMENTS</TableCell>
+                    <TableCell align="center">PRICE</TableCell>
+                    <TableCell align="center">TOTAL</TableCell>
+                    <TableCell align="center">ACTIONS</TableCell>
                   </TableRow>
                 </TableHead>
 
@@ -550,13 +552,12 @@ class NewOrder extends Component {
               >
                 Add New Item
               </Button>
-            </Container>
-            <Divider />
-            <Container style={classes.total}>
               <Typography style={{ color: "gray", fontSize: 30 }}>
                 Total: ${this.getTotal()}
               </Typography>
             </Container>
+            <Divider />
+            <Container style={classes.total}></Container>
             <Container style={classes.total}>
               <Button
                 variant="contained"
@@ -571,7 +572,7 @@ class NewOrder extends Component {
           </form>
         </Paper>
 
-        <Paper style={classes.paper}>
+        <Paper className="buttom_bar">
           <ImageUploader
             imageUrl={this.state.url}
             handleUrlChange={this.handleUrlChange}
@@ -591,7 +592,7 @@ class NewOrder extends Component {
             <br />
           )}
         </Paper>
-      </Container>
+      </div>
     );
   }
 }

@@ -164,6 +164,7 @@ class EditOrder extends Component {
       deviceCarrier: "",
       deviceModel: "",
       deviceImei: "",
+      deviceInvoiceNum: "",
       vendorName: "",
       deviceList: [{ ...EMPTY_DEVICE }],
       importedDeviceList: [],
@@ -370,26 +371,25 @@ class EditOrder extends Component {
       });
 
       const { data } = getInfo;
-      const importedList = data;
-      console.log(importedList);
-      // let importedList = [];
-      // for (var i = 0; i < data.length; i++) {
-      //   importedList.push({
-      //     deviceImei: data[i].IMEI,
-      //     deviveCarrrier: data[i].Carrier,
-      //     deviceModel: data[i].Model,
-      //   });
-      // }
-      // console.log(importedList);
 
-      // this.setState({
-      //   deviceList: this.state.deviceList.concat(importedList),
-      // });
+      let importedList = [];
+      for (var i = 0; i < data.length; i++) {
+        importedList.push({
+          deviceImei: data[i].IMEI,
+          deviceCarrier: data[i].Carrier,
+          deviceQty: "1",
+          devicePrice: "0",
+          deviceModel: data[i].Model,
+          deviceComments: data[i].Cosmetics,
+        });
+      }
+
+      this.setState({
+        deviceList: this.state.deviceList.concat(importedList),
+      });
     } catch (e) {
       console.log("ERROR getting info: ", e);
     }
-
-    console.log(deviceList);
   };
 
   async orderProcess(e) {
@@ -415,7 +415,6 @@ class EditOrder extends Component {
   getTotal = () => {
     const deviceList = this.state.deviceList;
     let sum = 0;
-    console.log("deviceList: ", deviceList);
     for (let i = 0; i < deviceList.length; i++) {
       const { deviceQty, devicePrice } = deviceList[i];
 
@@ -423,7 +422,6 @@ class EditOrder extends Component {
         sum += Number(deviceQty) * Number(devicePrice);
       }
     }
-    console.log("sum: ", sum);
     return sum;
   };
 
