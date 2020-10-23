@@ -24,6 +24,9 @@ import axios from "axios";
 import { apiEndpoint } from "../../config.js";
 import "./po.css";
 import BuyBackForm from "../BuyBackForm/index";
+import Modal from '@material-ui/core/Modal';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 const carriers = [
   {
@@ -140,6 +143,15 @@ const classes = {
     width: "100%",
     overflow: "auto",
   },
+  gridList: {
+    width: 500,
+    height: 450,
+  },
+  paper: {
+ 
+
+    outline: 'none',
+  },
 };
 
 class EditOrder extends Component {
@@ -175,6 +187,9 @@ class EditOrder extends Component {
       receivedEmailDate: "",
       processEmailDate: "",
       paymentEmailDate: "",
+      pictureGallery: [], 
+      open: false,
+      pictureGalleryCount:""
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this);
@@ -275,7 +290,15 @@ class EditOrder extends Component {
       });
   };
   handleUrlChange = (url) => {
-    this.setState({ url });
+    const newUrl = {
+      url:this.state.url
+    }
+    const newImageGallery =  [...this.state.pictureGallery, newUrl]
+    this.setState({ 
+      pictureGallery: newImageGallery,
+      url, 
+      pictureGalleryCount: newImageGallery.length });
+      console.log(this.state.pictureGallery)
   };
 
   handleDateChange = (date) => {
@@ -339,6 +362,13 @@ class EditOrder extends Component {
     const deviceList = this.state.deviceList.slice(0);
     deviceList.push({ ...EMPTY_DEVICE });
     this.setState({ deviceList });
+  };
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   deleteItem = (id) => {
@@ -698,6 +728,41 @@ class EditOrder extends Component {
             handleUrlChange={this.handleUrlChange}
           />
 
+          <div>
+        
+        <Button onClick={this.handleOpen}>See All Pictures</Button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+     <div  className={classes.paper}>
+                 <GridList cellHeight={160} className={classes.gridList} cols={3}>
+            {this.state.pictureGallery.map((tile) => (
+          <GridListTile key={tile.img} cols={tile.cols || 1}>
+          <img src={tile.url}  alt="Uploaded Images"
+                height="200"
+                width="200"
+                style={{ marginTop: 15, marginLeft: 5 }} />
+          </GridListTile>
+        ))}
+      </GridList>
+          </div>
+        </Modal>
+        </div> 
+        <div>
+        
+             {/* {this.state.pictureGallery.map((tile) => (
+        
+            <img src={tile.url} alt="Uploaded Images"
+            height="200"
+            width="200"
+            style={{ marginTop: 15, marginLeft: 5 }}  />
+      
+        ))} */}
+  
+          </div>
           {this.state.url != null ? (
             <div>
               <img

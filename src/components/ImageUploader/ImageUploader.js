@@ -26,7 +26,8 @@ class ImageUploader extends React.Component {
     this.state = {
       image: null,
       progress: 0,
-      isLoading: false
+      isLoading: false, 
+      imageGallery: []
     }
 
 
@@ -38,9 +39,11 @@ class ImageUploader extends React.Component {
     }
     console.log(this.state.image)
   }
+
   disableUpload = () => {
     alert('Please select file')
   }
+
   handleUpload = () => {
 
     const { image } = this.state
@@ -51,7 +54,8 @@ class ImageUploader extends React.Component {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
         this.setState({
           isLoading: true,
-          progress
+          progress, 
+          imageGallery: []
         })
         console.log(this.state.progress)
       },
@@ -60,10 +64,11 @@ class ImageUploader extends React.Component {
       },
       () => {
         storage.ref('images').child(image.name).getDownloadURL().then(url => {
-          console.log(url);
+               
           this.props.handleUrlChange(url)
           this.setState({
             isLoading: false
+            
           })
         })
       })
