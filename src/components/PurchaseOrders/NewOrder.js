@@ -162,6 +162,10 @@ class NewOrder extends Component {
       progress: 0,
       typePayment: "",
       phoneNumber: "",
+      pictureGallery: [],
+      receivedEmailDate: "",
+      processEmailDate: "",
+      paymentEmailDate: "",
     };
   }
   componentDidMount = () => {};
@@ -294,6 +298,21 @@ class NewOrder extends Component {
       .collection("customers")
       .add(newCustomer);
   }
+  handleUrlChange = (url) => {
+    const newImage = {
+      url: url,
+    };
+    console.log(newImage);
+    this.setState({
+      url: this.state.newImage,
+    });
+    const newImageGallery = [...this.state.pictureGallery, newImage];
+    this.setState({
+      pictureGallery: newImageGallery,
+      pictureGalleryCount: this.state.pictureGallery.length + 1,
+    });
+    console.log(this.state.pictureGallery);
+  };
 
   onSubmit = (e) => {
     const purchaseOrderId = uuid();
@@ -311,8 +330,11 @@ class NewOrder extends Component {
       poDate,
       deviceList,
       poTotal,
-      url,
       expectPayDate,
+      pictureGallery,
+      receivedEmailDate,
+      processEmailDate,
+      paymentEmailDate,
     } = this.state;
     this.addCustomer();
     this.ref
@@ -329,8 +351,11 @@ class NewOrder extends Component {
         poDate,
         deviceList,
         poTotal,
-        url,
         expectPayDate,
+        pictureGallery,
+        receivedEmailDate,
+        processEmailDate,
+        paymentEmailDate,
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -338,10 +363,6 @@ class NewOrder extends Component {
       .catch((error) => {
         console.error("Error adding document: ", error);
       });
-  };
-
-  handleUrlChange = (url) => {
-    this.setState({ url });
   };
 
   addNewDeviceRow = () => {
@@ -578,18 +599,20 @@ class NewOrder extends Component {
             handleUrlChange={this.handleUrlChange}
           />
 
-          {this.state.url != null ? (
+          {this.state.pictureGallery != null ? (
             <div>
-              <img
-                src={this.state.url}
-                alt="Uploaded Images"
-                height="200"
-                width="200"
-                style={{ marginTop: 15, marginLeft: 5 }}
-              />
+              {this.state.pictureGallery.map((tile) => (
+                <img
+                  src={tile.url}
+                  alt="Uploaded Images"
+                  height="200"
+                  width="200"
+                  style={{ marginTop: 15, marginLeft: 5 }}
+                />
+              ))}
             </div>
           ) : (
-            <br />
+            <div> </div>
           )}
         </Paper>
       </div>

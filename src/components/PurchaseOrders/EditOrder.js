@@ -24,9 +24,17 @@ import axios from "axios";
 import { apiEndpoint } from "../../config.js";
 import "./po.css";
 import BuyBackForm from "../BuyBackForm/index";
-import Modal from '@material-ui/core/Modal';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import Modal from "@material-ui/core/Modal";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import { PlayCircleFilledWhite, Computer } from "@material-ui/icons";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+import ComputerIcon from "@material-ui/icons/Computer";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import SaveIcon from "@material-ui/icons/Save";
+import BackspaceIcon from "@material-ui/icons/Backspace";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const carriers = [
   {
@@ -105,11 +113,6 @@ const EMPTY_DEVICE = {
   deviceTotal: "",
 };
 const classes = {
-  maincontainer: {
-    display: "flex",
-    flexDiretion: "column",
-    marginTop: 100,
-  },
   topForm: {
     display: "flex",
     flexDiretion: "row",
@@ -122,10 +125,7 @@ const classes = {
     flexDiretion: "row",
     justifyContent: "flex-end",
   },
-  paperMain: {
-    marginRight: 20,
-    width: "100%",
-  },
+
   backButton: {
     marginRight: 15,
     marginTop: 15,
@@ -146,11 +146,6 @@ const classes = {
   gridList: {
     width: 500,
     height: 450,
-  },
-  paper: {
- 
-
-    outline: 'none',
   },
 };
 
@@ -187,9 +182,9 @@ class EditOrder extends Component {
       receivedEmailDate: "",
       processEmailDate: "",
       paymentEmailDate: "",
-      pictureGallery: [], 
+      pictureGallery: [],
       open: false,
-      pictureGalleryCount:""
+      pictureGalleryCount: "0",
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this);
@@ -198,41 +193,46 @@ class EditOrder extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
   componentDidMount() {
-    const ref = firebase
-      .firestore()
-      .collection("purchaseOrders")
-      .doc(this.props.match.params.id);
-    ref.get().then((doc) => {
-      if (doc.exists) {
-        console.log("Loading");
-        const purchaseOrders = doc.data();
-        const deviceList = doc.data().deviceList;
-        const newDeviceList = [...deviceList];
-        this.setState({
-          purchaseOrderId: doc.id,
-          company: purchaseOrders.company,
-          poDate: purchaseOrders.poDate,
-          poNumber: purchaseOrders.poNumber,
-          poTotal: purchaseOrders.poTotal,
-          email: purchaseOrders.email,
-          address: purchaseOrders.address,
-          expectDeliver: purchaseOrders.expectDeliver,
-          status: purchaseOrders.status,
-          typePayment: purchaseOrders.typePayment,
-          phoneNumber: purchaseOrders.phoneNumber,
-          deviceList: newDeviceList,
-          vendorName: purchaseOrders.vendorName,
-          deviceTotal: purchaseOrders.deviceTotal,
-          url: purchaseOrders.url,
-          expectPayDate: purchaseOrders.expectPayDate,
-          receivedEmailDate: purchaseOrders.receivedEmailDate,
-          processEmailDate: purchaseOrders.processEmailDate,
-          paymentEmailDate: purchaseOrders.paymentEmailDate,
-        });
-      } else {
-        console.log("Order does not exist!");
-      }
-    });
+    try {
+      const ref = firebase
+        .firestore()
+        .collection("purchaseOrders")
+        .doc(this.props.match.params.id);
+      ref.get().then((doc) => {
+        if (doc.exists) {
+          console.log("Loading");
+          const purchaseOrders = doc.data();
+          const deviceList = doc.data().deviceList;
+          const newDeviceList = [...deviceList];
+          this.setState({
+            purchaseOrderId: doc.id,
+            company: purchaseOrders.company,
+            poDate: purchaseOrders.poDate,
+            poNumber: purchaseOrders.poNumber,
+            poTotal: purchaseOrders.poTotal,
+            email: purchaseOrders.email,
+            address: purchaseOrders.address,
+            expectDeliver: purchaseOrders.expectDeliver,
+            status: purchaseOrders.status,
+            typePayment: purchaseOrders.typePayment,
+            phoneNumber: purchaseOrders.phoneNumber,
+            deviceList: newDeviceList,
+            vendorName: purchaseOrders.vendorName,
+            deviceTotal: purchaseOrders.deviceTotal,
+            url: purchaseOrders.url,
+            expectPayDate: purchaseOrders.expectPayDate,
+            receivedEmailDate: purchaseOrders.receivedEmailDate,
+            processEmailDate: purchaseOrders.processEmailDate,
+            paymentEmailDate: purchaseOrders.paymentEmailDate,
+            pictureGallery: purchaseOrders.pictureGallery,
+          });
+        } else {
+          console.log("Order does not exist!");
+        }
+      });
+    } catch (e) {
+      console.log("ERROR getting info: ", e);
+    }
   }
   deleteItem = (id) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
@@ -289,16 +289,21 @@ class EditOrder extends Component {
         });
       });
   };
+
   handleUrlChange = (url) => {
-    const newUrl = {
-      url:this.state.url
-    }
-    const newImageGallery =  [...this.state.pictureGallery, newUrl]
-    this.setState({ 
+    const newImage = {
+      url: url,
+    };
+    console.log(newImage);
+    this.setState({
+      url: this.state.newImage,
+    });
+    const newImageGallery = [...this.state.pictureGallery, newImage];
+    this.setState({
       pictureGallery: newImageGallery,
-      url, 
-      pictureGalleryCount: newImageGallery.length });
-      console.log(this.state.pictureGallery)
+      pictureGalleryCount: this.state.pictureGallery.length + 1,
+    });
+    console.log(this.state.pictureGallery);
   };
 
   handleDateChange = (date) => {
@@ -321,7 +326,7 @@ class EditOrder extends Component {
   async receivedOrderEmail(e) {
     e.preventDefault();
     console.log("Received email sent");
-    const { email, vendorName, url } = this.state;
+    const { email, vendorName, pictureGallery } = this.state;
 
     const receivedEmail = await axios.post(apiEndpoint, {
       path: "/api/receivedEmail",
@@ -329,7 +334,7 @@ class EditOrder extends Component {
       body: {
         email,
         vendorName,
-        url,
+        pictureGallery,
       },
     });
     this.setState({
@@ -457,12 +462,17 @@ class EditOrder extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    console.log(this.getTotal());
+    const poTotal = this.getTotal();
+    this.setState({
+      poTotal,
+    });
+
     const {
       company,
       purchaseOrderId,
       poDate,
       poNumber,
-      poTotal,
       quantity,
       email,
       status,
@@ -470,8 +480,9 @@ class EditOrder extends Component {
       phoneNumber,
       vendorName,
       deviceList,
-      url,
       expectPayDate,
+      pictureGallery,
+      receivedEmailDate,
     } = this.state;
 
     firebase
@@ -491,8 +502,9 @@ class EditOrder extends Component {
         phoneNumber,
         vendorName,
         deviceList,
-        url,
         expectPayDate,
+        pictureGallery,
+        receivedEmailDate,
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -500,6 +512,7 @@ class EditOrder extends Component {
       .catch((error) => {
         console.error("Error adding customer: ", error);
       });
+    console.log(this.state.receivedEmailDate);
   };
 
   render() {
@@ -512,14 +525,14 @@ class EditOrder extends Component {
     } = this.state;
 
     return (
-      <Container style={classes.maincontainer}>
-        <Paper style={classes.paperMain}>
-          <form
-            onSubmit={this.onSubmit.bind(this)}
-            className={classes.container}
-            noValidate
-          >
-            <Container style={classes.topForm}>
+      <div>
+        <div className="top-form">
+          <div className="bottom-form-widget">
+            <div className="widget-title">
+              <h3 className="widget-title-text">Customer Info</h3>
+            </div>
+
+            <div className="customer-info">
               <TextField
                 required
                 label="Company"
@@ -530,7 +543,6 @@ class EditOrder extends Component {
                 variant="outlined"
                 style={{ width: 250 }}
               />
-
               <TextField
                 required
                 label="Vendor Name"
@@ -541,19 +553,8 @@ class EditOrder extends Component {
                 variant="outlined"
                 style={{ width: 250 }}
               />
-
-              <TextField
-                required
-                label="PO Number"
-                InputProps={{ name: "poNumber" }}
-                className={classes.textField}
-                onChange={this.onChange}
-                value={this.state.poNumber}
-                variant="outlined"
-                style={{ width: 250 }}
-              />
-            </Container>
-            <Container style={classes.topForm}>
+            </div>
+            <div className="customer-info">
               <TextField
                 required
                 label="E-Mail"
@@ -564,7 +565,6 @@ class EditOrder extends Component {
                 variant="outlined"
                 style={{ width: 250 }}
               />
-
               <TextField
                 required
                 label="Phone Number"
@@ -575,7 +575,25 @@ class EditOrder extends Component {
                 variant="outlined"
                 style={{ width: 250 }}
               />
+            </div>
+          </div>
 
+          <div className="bottom-form-widget">
+            <div className="widget-title">
+              <h3 className="widget-title-text">Status</h3>
+            </div>
+
+            <div className="customer-info">
+              <TextField
+                required
+                label="PO Number"
+                InputProps={{ name: "poNumber" }}
+                className={classes.textField}
+                onChange={this.onChange}
+                value={this.state.poNumber}
+                variant="outlined"
+                style={{ width: 250 }}
+              />
               <TextField
                 select
                 label="Status"
@@ -599,8 +617,8 @@ class EditOrder extends Component {
                   </MenuItem>
                 ))}
               </TextField>
-            </Container>
-            <Container style={classes.topForm}>
+            </div>
+            <div className="customer-info">
               <TextField
                 id="poDate"
                 label="Date"
@@ -633,7 +651,8 @@ class EditOrder extends Component {
                 variant="outlined"
                 onChange={this.onChange}
               />
-
+            </div>
+            <div className="customer-info">
               <TextField
                 select
                 label="Payment Type"
@@ -657,8 +676,16 @@ class EditOrder extends Component {
                   </MenuItem>
                 ))}
               </TextField>
-            </Container>
-            <Divider />
+            </div>
+          </div>
+        </div>
+
+        <div className="newOrder_container_po">
+          <form
+            onSubmit={this.onSubmit.bind(this)}
+            className={classes.container}
+            noValidate
+          >
             <TableContainer style={classes.topForm}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -691,6 +718,8 @@ class EditOrder extends Component {
                 onClick={this.addNewDeviceRow}
                 color="primary"
               >
+                {" "}
+                <AddCircleIcon />
                 Add New Item
               </Button>
             </Container>
@@ -707,6 +736,8 @@ class EditOrder extends Component {
                 component={Link}
                 to="/purchaseorders/"
               >
+                {" "}
+                <BackspaceIcon />
                 Back
               </Button>
               <Button
@@ -717,90 +748,82 @@ class EditOrder extends Component {
                 onClick={this.onSubmit}
                 color="primary"
               >
+                {" "}
+                <SaveIcon />
                 Save
               </Button>
             </Container>
           </form>
-        </Paper>
-        <Paper style={classes.paper}>
-          <ImageUploader
-            imageUrl={this.state.url}
-            handleUrlChange={this.handleUrlChange}
-          />
-
-          <div>
-        
-        <Button onClick={this.handleOpen}>See All Pictures</Button>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-     <div  className={classes.paper}>
-                 <GridList cellHeight={160} className={classes.gridList} cols={3}>
-            {this.state.pictureGallery.map((tile) => (
-          <GridListTile key={tile.img} cols={tile.cols || 1}>
-          <img src={tile.url}  alt="Uploaded Images"
-                height="200"
-                width="200"
-                style={{ marginTop: 15, marginLeft: 5 }} />
-          </GridListTile>
-        ))}
-      </GridList>
-          </div>
-        </Modal>
-        </div> 
-        <div>
-        
-             {/* {this.state.pictureGallery.map((tile) => (
-        
-            <img src={tile.url} alt="Uploaded Images"
-            height="200"
-            width="200"
-            style={{ marginTop: 15, marginLeft: 5 }}  />
-      
-        ))} */}
-  
-          </div>
-          {this.state.url != null ? (
-            <div>
-              <img
-                src={this.state.url}
-                alt="Uploaded Images"
-                height="200"
-                width="200"
-                style={{ marginTop: 15, marginLeft: 5 }}
-              />
+        </div>
+        <div className="bottom-form">
+          <div className="bottom-form-widget">
+            <ImageUploader
+              imageUrl={this.state.url}
+              handleUrlChange={this.handleUrlChange}
+            />
+            <div className="modal__content">
+              <Button onClick={this.handleOpen}>See All Pictures</Button>
+              {this.state.pictureGallery != null ? (
+                <div>
+                  {this.state.pictureGallery.map((tile) => (
+                    <img
+                      src={tile.url}
+                      alt="Uploaded Images"
+                      height="200"
+                      width="200"
+                      style={{ marginTop: 15, marginLeft: 5 }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div> </div>
+              )}
             </div>
-          ) : (
             <div></div>
-          )}
-          <div className="button__email__div">
-            <button className="button__email" onClick={this.receivedOrderEmail}>
-              Recived Order
-            </button>
-            <p>{this.state.receivedEmailDate}</p>
+            {this.state.url != null ? (
+              <div>
+                <img
+                  src={this.state.url}
+                  alt="Uploaded Images"
+                  height="200"
+                  width="200"
+                  style={{ marginTop: 15, marginLeft: 5 }}
+                />
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
-          <div className="button__email__div">
-            <button className="button__email" onClick={this.orderProcess}>
-              Order Process
-            </button>
-            <p>{this.state.processEmailDate}</p>
+          <div className="bottom-form-widget">
+            <div className="button__email__div">
+              <button
+                className="button__email"
+                onClick={this.receivedOrderEmail}
+              >
+                <LocalShippingIcon /> Recived Order
+              </button>
+              <p>{this.state.receivedEmailDate}</p>
+            </div>
+            <div className="button__email__div">
+              <button className="button__email" onClick={this.orderProcess}>
+                <ComputerIcon /> Order Process
+              </button>
+              <p>{this.state.processEmailDate}</p>
+            </div>
+            <div className="button__email__div">
+              <button className="button__email" onClick={this.paymentEmail}>
+                <MonetizationOnIcon /> Payment Sent
+              </button>
+              <p>{this.state.paymentEmailDate}</p>
+            </div>
+            <div className="button__email__div">
+              <button className="button__email" onClick={this.deviceInfo}>
+                <GetAppIcon /> Get Info
+              </button>
+            </div>
           </div>
-          <div className="button__email__div">
-            <button className="button__email" onClick={this.paymentEmail}>
-              Payment Sent
-            </button>
-            <p>{this.state.paymentEmailDate}</p>
-          </div>
-          <div className="button__email__div">
-            <button className="button__email" onClick={this.deviceInfo}>
-              Get Info
-            </button>
-          </div>
-        </Paper>
-      </Container>
+        </div>
+      </div>
     );
   }
 }

@@ -18,8 +18,55 @@
 }
 
 .newOrder_container {
-  background-color: "#f7f7f7";
+  background-color: gray;
   height: 100vh;
+}
+.newOrder_container_po {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  padding-top: 50px;
+  border: 1px solid;
+  border-color: lightgray;
+  border-radius: 5px;
+}
+
+.bottom-form {
+  display: flex;
+  justify-content: space-evenly;
+}
+.top-form {
+  margin-top: 75px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.widget-title-text {
+  color: gray;
+}
+.widget-title {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin-left: 10px;
+}
+.customer-info {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
+}
+.bottom-form-widget {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  padding-top: 10px;
+  border: 1px solid;
+  border-color: lightgray;
+  border-radius: 5px;
+  width: 50%;
 }
 .newOrder_paper {
   margin-left: 20px;
@@ -44,4 +91,13 @@
 .buttom_bar {
   margin: 20px;
   padding: 20px;
+}
+
+.paper {
+  margin: 100px;
+  background-color: white;
+}
+.maincontainer {
+  margin-left: 10px;
+  margin-right: 10px;
 }
