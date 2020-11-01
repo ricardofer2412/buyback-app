@@ -20,10 +20,6 @@ import Home from "@material-ui/icons/Home";
 import { People, ShoppingCart, StayCurrentPortrait } from "@material-ui/icons";
 import "./NavBar.css";
 import BuildIcon from "@material-ui/icons/Build";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-
-const drawerWidth = 240;
-
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -83,7 +79,7 @@ const styles = (theme) => ({
   },
 });
 
-class PersistentDrawerLeft extends React.Component {
+class SideBar extends React.Component {
   state = {
     open: false,
   };
@@ -95,42 +91,14 @@ class PersistentDrawerLeft extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-
   render() {
-    const { classes, theme } = this.props;
-    const { open } = this.state;
-
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          style={{ backgroundColor: "white" }}
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              className="nav-menu-icon"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography className="nav-title" noWrap>
-              MOBILESOURCE - DASHBOARD
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
+      <div>
         <Drawer
           variant="persistent"
           anchor="left"
           open={open}
           onClose={this.handleDrawerClose}
-          onClickAway={this.handleDrawerClose}
           classes={{
             paper: classes.drawerPaper,
           }}
@@ -194,4 +162,4 @@ class PersistentDrawerLeft extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(PersistentDrawerLeft);
+export default SideBar;

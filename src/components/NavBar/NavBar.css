@@ -1,7 +1,27 @@
 .ListItemText {
-     color: '#FFFFFF'
+  color: white;
 }
 
 .icon {
-     padding: 25 !important;
+  margin-right: 20px;
+  color: white;
+}
+
+.menu-row {
+  margin-top: 20px;
+}
+
+.left-icon {
+  color: white;
+  font-size: 30px !important;
+}
+.nav-title {
+  color: gray;
+}
+.nav-menu-icon {
+  color: gray;
+}
+.nav-menu-icon:hover {
+  color: red;
+  background-color: gray;
 }

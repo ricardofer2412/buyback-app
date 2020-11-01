@@ -53,7 +53,7 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className="main">
         <Typography
           component="h1"
           variant="h3"

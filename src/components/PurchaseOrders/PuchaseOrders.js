@@ -43,6 +43,8 @@ const styles = (theme) => ({
   },
   fab: {
     marginBottom: 15,
+    backgroundColor: "#01579B",
+    color: "white",
   },
 });
 class PurchaseOrders extends React.Component {
@@ -98,13 +100,11 @@ class PurchaseOrders extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
-        <NavBar />
+      <div className="main">
         <div className="purchaseOrder_table">
           <Fab
             component={Link}
             to="/neworder"
-            color="secondary"
             aria-label="Add"
             className={classes.fab}
           >
@@ -135,25 +135,25 @@ class PurchaseOrders extends React.Component {
                       </TableCell>
                     ) : purchaseOrder.status === "Received" ? (
                       <TableCell
-                        style={{ backgroundColor: "#ffeb3b", color: "black" }}
+                        style={{ backgroundColor: "#FFD600", color: "black" }}
                       >
                         {purchaseOrder.status}
                       </TableCell>
                     ) : purchaseOrder.status === "Tested" ? (
                       <TableCell
-                        style={{ backgroundColor: "#ff9800", color: "white" }}
+                        style={{ backgroundColor: "#E65100", color: "white" }}
                       >
                         {purchaseOrder.status}
                       </TableCell>
                     ) : purchaseOrder.status === "Entered" ? (
                       <TableCell
-                        style={{ backgroundColor: "#f44336", color: "white" }}
+                        style={{ backgroundColor: "#F50057", color: "white" }}
                       >
                         {purchaseOrder.status}
                       </TableCell>
                     ) : purchaseOrder.status === "Complete" ? (
                       <TableCell
-                        style={{ backgroundColor: "#4caf50", color: "white" }}
+                        style={{ backgroundColor: "#2E7D32", color: "white" }}
                       >
                         {purchaseOrder.status}
                       </TableCell>

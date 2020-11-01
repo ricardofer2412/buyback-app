@@ -18,7 +18,7 @@
 }
 
 .newOrder_container {
-  background-color: gray;
+  background-color: #eceff1;
   height: 100vh;
 }
 .newOrder_container_po {
@@ -38,9 +38,10 @@
   justify-content: space-evenly;
 }
 .top-form {
-  margin-top: 75px;
+  margin-top: 65px;
   display: flex;
   justify-content: space-evenly;
+  background-color: #eceff1;
 }
 .widget-title-text {
   color: gray;
@@ -100,4 +101,9 @@
 .maincontainer {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.main {
+  background-color: #eceff1;
+  height: 100vh;
 }

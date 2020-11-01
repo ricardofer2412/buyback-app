@@ -164,7 +164,7 @@ class NewOrder extends Component {
       phoneNumber: "",
       pictureGallery: [],
       receivedEmailDate: "",
-      processEmailDate: "",
+      processOrderDate: "",
       paymentEmailDate: "",
     };
   }
@@ -227,65 +227,13 @@ class NewOrder extends Component {
     devices[idx] = e.target.value;
     this.setState({ devices });
   };
-
-  // addNewDevice = (e) => {
-  //   e.preventDefault();
-  //   const deviceId = uuid();
-  //   const newItem = {
-  //     deviceImei: this.state.deviceImei,
-  //     deviceCarrier: this.state.deviceCarrier,
-  //     comments: this.state.deviceComments,
-  //     deviceId: deviceId,
-  //     qty: this.state.deviceQty,
-  //     phoneModel: this.state.deviceModel,
-  //     price: this.state.devicePrice,
-  //     deviceTotal: this.state.devicePrice * this.state.deviceQty,
-  //   };
-  //   const newDeviceList = [...this.state.deviceList, newItem];
-  //   let poTotal = 0;
-  //   for (let i = 0; i < newDeviceList.length; i++) {
-  //     poTotal += newDeviceList[i].deviceTotal;
-  //   }
-  //   poTotal = poTotal.toFixed(2);
-
-  //   firebase
-  //     .firestore()
-  //     .collection("devices")
-  //     .doc(deviceId)
-  //     .set(newItem)
-  //     .then((res) => {
-  //       this.setState({
-  //         deviceList: newDeviceList,
-  //         deviceQty: "",
-  //         deviceModel: "",
-  //         devicePrice: "",
-  //         deviceComments: "",
-  //         deviceCarrier: "",
-  //         deviceImei: "",
-  //         poTotal,
-  //       });
-  //     });
-  // };
-
   deleteItem = (id) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
     console.log(id);
     console.log("deviceList: ", deviceList.length);
     deviceList.splice(id, 1);
     this.setState({ deviceList });
-
-    // firebase
-    //   .firestore()
-    //   .collection("devices")
-    //   .doc(itemId)
-    //   .delete()
-    //   .then((res) => {
-    //     this.setState({
-    //       deviceList,
-    //     });
-    //   });
   };
-
   addCustomer() {
     const newCustomer = {
       company: this.state.company,
@@ -332,9 +280,6 @@ class NewOrder extends Component {
       poTotal,
       expectPayDate,
       pictureGallery,
-      receivedEmailDate,
-      processEmailDate,
-      paymentEmailDate,
     } = this.state;
     this.addCustomer();
     this.ref
@@ -353,9 +298,9 @@ class NewOrder extends Component {
         poTotal,
         expectPayDate,
         pictureGallery,
-        receivedEmailDate,
-        processEmailDate,
-        paymentEmailDate,
+        receivedEmailDate: "No Sent Yet",
+        processOrderDate: "No Sent Yet",
+        paymentEmailDate: "No Sent Yet",
       })
       .then(() => {
         this.props.history.push("/purchaseorders");

@@ -180,7 +180,7 @@ class EditOrder extends Component {
       progress: 0,
       expectPayDate: "",
       receivedEmailDate: "",
-      processEmailDate: "",
+      processOrderDate: "",
       paymentEmailDate: "",
       pictureGallery: [],
       open: false,
@@ -222,7 +222,7 @@ class EditOrder extends Component {
             url: purchaseOrders.url,
             expectPayDate: purchaseOrders.expectPayDate,
             receivedEmailDate: purchaseOrders.receivedEmailDate,
-            processEmailDate: purchaseOrders.processEmailDate,
+            processOrderDate: purchaseOrders.processOrderDate,
             paymentEmailDate: purchaseOrders.paymentEmailDate,
             pictureGallery: purchaseOrders.pictureGallery,
           });
@@ -340,7 +340,19 @@ class EditOrder extends Component {
     this.setState({
       receivedEmailDate: new Date().toLocaleString(),
     });
+    console.log(this.state.receivedEmailDate);
     alert("Email Was Sent!");
+
+    firebase
+      .firestore()
+      .collection("purchaseOrders")
+      .doc(this.props.match.params.id)
+      .update({
+        receivedEmailDate: this.state.receivedEmailDate,
+      })
+      .catch((error) => {
+        console.error("Error adding customer: ", error);
+      });
   }
 
   async paymentEmail(e) {
@@ -361,7 +373,18 @@ class EditOrder extends Component {
     this.setState({
       paymentEmailDate: new Date().toLocaleString(),
     });
+    console.log(this.state.paymentEmailDate);
     alert("Email Was Sent!");
+    firebase
+      .firestore()
+      .collection("purchaseOrders")
+      .doc(this.props.match.params.id)
+      .update({
+        paymentEmailDate: this.state.paymentEmailDate,
+      })
+      .catch((error) => {
+        console.error("Error adding customer: ", error);
+      });
   }
   addNewDeviceRow = () => {
     const deviceList = this.state.deviceList.slice(0);
@@ -442,9 +465,21 @@ class EditOrder extends Component {
       },
     });
     this.setState({
-      processOrdeDate: new Date().toLocaleString(),
+      processOrderDate: new Date().toLocaleString(),
     });
     alert("Email Was Sent!");
+    console.log(this.state.processOrderDate);
+
+    firebase
+      .firestore()
+      .collection("purchaseOrders")
+      .doc(this.props.match.params.id)
+      .update({
+        processOrderDate: this.state.processOrderDate,
+      })
+      .catch((error) => {
+        console.error("Error adding customer: ", error);
+      });
   }
 
   getTotal = () => {
@@ -482,14 +517,13 @@ class EditOrder extends Component {
       deviceList,
       expectPayDate,
       pictureGallery,
-      receivedEmailDate,
     } = this.state;
 
     firebase
       .firestore()
       .collection("purchaseOrders")
       .doc(this.props.match.params.id)
-      .set({
+      .update({
         company,
         purchaseOrderId,
         poDate,
@@ -504,7 +538,6 @@ class EditOrder extends Component {
         deviceList,
         expectPayDate,
         pictureGallery,
-        receivedEmailDate,
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -808,7 +841,7 @@ class EditOrder extends Component {
               <button className="button__email" onClick={this.orderProcess}>
                 <ComputerIcon /> Order Process
               </button>
-              <p>{this.state.processEmailDate}</p>
+              <p>{this.state.processOrderDate}</p>
             </div>
             <div className="button__email__div">
               <button className="button__email" onClick={this.paymentEmail}>
