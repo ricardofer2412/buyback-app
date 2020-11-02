@@ -744,48 +744,46 @@ class EditOrder extends Component {
               </Table>
             </TableContainer>
             <Divider />
-            <Container style={classes.topForm}>
-              <Button
-                style={{ margin: 25, cursor: "pointer" }}
-                variant="contained"
-                onClick={this.addNewDeviceRow}
-                color="primary"
-              >
-                {" "}
-                <AddCircleIcon />
-                Add New Item
-              </Button>
-            </Container>
-            <Container style={classes.total}>
-              <Typography style={{ color: "gray", fontSize: 30 }}>
-                Total: ${this.getTotal()}
-              </Typography>
-            </Container>
-            <Container style={classes.total}>
-              <Button
-                style={classes.backButton}
-                variant="contained"
-                color="secondary"
-                component={Link}
-                to="/purchaseorders/"
-              >
-                {" "}
-                <BackspaceIcon />
-                Back
-              </Button>
-              <Button
-                style={classes.saveButton}
-                type="submit"
-                variant="contained"
-                className={classes.submit}
-                onClick={this.onSubmit}
-                color="primary"
-              >
-                {" "}
-                <SaveIcon />
-                Save
-              </Button>
-            </Container>
+            <div></div>
+
+            <Button
+              style={{ margin: 25, cursor: "pointer" }}
+              variant="contained"
+              onClick={this.addNewDeviceRow}
+              color="primary"
+            >
+              {" "}
+              <AddCircleIcon className="button__icon" />
+              Add Item
+            </Button>
+
+            <Typography style={{ color: "gray", fontSize: 30 }}>
+              Total: ${this.getTotal()}
+            </Typography>
+
+            <Button
+              style={classes.backButton}
+              variant="contained"
+              color="secondary"
+              component={Link}
+              to="/purchaseorders/"
+            >
+              {" "}
+              <BackspaceIcon className="button__icon" />
+              Back
+            </Button>
+            <Button
+              style={classes.saveButton}
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+              onClick={this.onSubmit}
+              color="primary"
+            >
+              {" "}
+              <SaveIcon className="button__icon" />
+              Save
+            </Button>
           </form>
         </div>
         <div className="bottom-form">
@@ -833,25 +831,25 @@ class EditOrder extends Component {
                 className="button__email"
                 onClick={this.receivedOrderEmail}
               >
-                <LocalShippingIcon /> Recived Order
+                <LocalShippingIcon className="button__icon" /> Recived Order
               </button>
               <p>{this.state.receivedEmailDate}</p>
             </div>
             <div className="button__email__div">
               <button className="button__email" onClick={this.orderProcess}>
-                <ComputerIcon /> Order Process
+                <ComputerIcon className="button__icon" /> Order Process
               </button>
               <p>{this.state.processOrderDate}</p>
             </div>
             <div className="button__email__div">
               <button className="button__email" onClick={this.paymentEmail}>
-                <MonetizationOnIcon /> Payment Sent
+                <MonetizationOnIcon className="button__icon" /> Payment Sent
               </button>
               <p>{this.state.paymentEmailDate}</p>
             </div>
             <div className="button__email__div">
               <button className="button__email" onClick={this.deviceInfo}>
-                <GetAppIcon /> Get Info
+                <GetAppIcon className="button__icon" /> Get Info
               </button>
             </div>
           </div>

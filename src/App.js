@@ -1,91 +1,72 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import VendorCount from "./components/Dashboard/VendorCount";
-import PoCount from "./components/Dashboard/PoCount";
-import TrackingCount from "./components/Dashboard/TrackingCount";
-import CustomerListDash from "./components/Dashboard/CustomerListDash";
-import "./app.css";
-const styles = (theme) => ({
-  root: {
-    display: "flex",
-  },
-  fixedHeight: {
-    height: 125,
-  },
-  container: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    width: "100%",
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-    textAlign: "center",
-    justify: "center",
-  },
-  AccountCircleIcon: {
-    color: "red",
-    justify: "center",
-    fontSize: 30,
-  },
-
-  title: {
-    margin: 5,
-    color: "#708096",
-    fontSize: 35,
-  },
-});
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "./index.css";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Edit from "./components/Vendors/Edit";
+import Create from "./components/Vendors/Create";
+import Show from "./components//Vendors/Show";
+import CustomerList from "./components/Vendors/CustomerList";
+import PurchaseOrders from "./components/PurchaseOrders/PuchaseOrders";
+import NewOrder from "./components/PurchaseOrders/NewOrder.js";
+import TrackingList from "./components/tracking/tracking-list";
+import NewTracking from "./components/tracking/new-tracking";
+import NavBar from "./components/NavBar/NavBar";
+import EditTracking from "./components/tracking/edit-tracking";
+import EditOrder from "./components/PurchaseOrders/EditOrder";
+import UnlockediPhones from "./components/CellphonePrices/UnlockediPhones";
+import Tools from "./components/Tools/Tools";
+import Login from "./components/Login/index";
+import firebase from "./components/firebase/Firebase";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+    };
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+  authListener() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
   render() {
-    const { classes } = this.props;
+    console.log(this.state.user);
     return (
-      <div className="main">
-        <Typography
-          component="h1"
-          variant="h3"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          Dashboard
-        </Typography>
-        <div className="cards">
-          <Grid container spacing={4}>
-            <Grid item sm>
-              <Paper>
-                <VendorCount />
-              </Paper>
-            </Grid>
-            <Grid item sm>
-              <Paper>
-                <PoCount />
-              </Paper>
-            </Grid>
-            <Grid item sm>
-              <Paper>
-                <TrackingCount />
-              </Paper>
-            </Grid>
-          </Grid>
-        </div>
-        <Box pt={4}></Box>
+      <div>
+        {this.state.user === null ? (
+          <Router>
+            <Route path="/" component={Login} />
+          </Router>
+        ) : (
+          <Router>
+            <Route path="/" component={NavBar} />
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/vendors" component={CustomerList} />
+            <Route exact path="/edit/:id" component={Edit} />
+            <Route exact path="/vendors/new" component={Create} />
+            <Route exact path="/show/:id" component={Show} />
+            <Route exact path="/purchaseorders" component={PurchaseOrders} />
+            <Route exact path="/neworder" component={NewOrder} />
+            <Route exact path="/tracking" component={TrackingList} />
+            <Route exact path="/tracking/new/" component={NewTracking} />
+            <Route exact path="/tracking/edit/:id" component={EditTracking} />
+            <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
+            <Route exact path="/UnlockediPhones/" component={UnlockediPhones} />
+            <Route exact path="/Tools/" component={Tools} />
+          </Router>
+        )}
       </div>
     );
   }
 }
-
-export default withStyles(styles)(withRouter(App));
+export default App;
