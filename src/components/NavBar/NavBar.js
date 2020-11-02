@@ -21,6 +21,8 @@ import { People, ShoppingCart, StayCurrentPortrait } from "@material-ui/icons";
 import "./NavBar.css";
 import BuildIcon from "@material-ui/icons/Build";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import firebase from "../firebase/Firebase";
+import Button from "@material-ui/core/Button";
 
 const drawerWidth = 240;
 
@@ -33,6 +35,7 @@ const styles = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    display: "flex",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -86,6 +89,40 @@ const styles = (theme) => ({
 class PersistentDrawerLeft extends React.Component {
   state = {
     open: false,
+    user: null,
+    userName: "",
+    userId: "",
+    currentUserId: "",
+  };
+
+  componentDidMount() {
+    this.getCurrentUser();
+  }
+
+  async getUserName() {
+    const ref = await firebase
+      .firestore()
+      .collection("Users")
+      .doc();
+    ref.get().then((doc) => {
+      if (doc.exists) {
+        const userData = doc.data();
+        console.log(userData);
+      }
+    });
+  }
+
+  getCurrentUser = () => {
+    const userId = this.state;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        userId = user.uid;
+        this.setState({
+          currentUserId: this.userId,
+        });
+      }
+    });
+    console.log(this.state.currentUserId);
   };
 
   handleDrawerOpen = () => {
@@ -95,11 +132,21 @@ class PersistentDrawerLeft extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+  onLogOut() {
+    firebase.auth().signOut();
+    console.log("user logged out!");
+  }
 
   render() {
+    const user = this.state;
     const { classes, theme } = this.props;
     const { open } = this.state;
-
+    console.log("USER ID: " + this.state.currentUserId);
+    if (user) {
+      console.log("user logged in");
+    } else {
+      console.log("No user logged in");
+    }
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -122,6 +169,14 @@ class PersistentDrawerLeft extends React.Component {
             <Typography className="nav-title" noWrap>
               MOBILESOURCE - DASHBOARD
             </Typography>
+
+            {!user ? (
+              <Typography>No login</Typography>
+            ) : (
+              <Button id="log_out_button" onClick={this.onLogOut}>
+                Log Out
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
 

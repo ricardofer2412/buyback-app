@@ -25,3 +25,12 @@
   color: red;
   background-color: gray;
 }
+
+.logout {
+  display: flex;
+  justify-content: right;
+}
+
+.logout-text {
+  font-size: 15px;
+}

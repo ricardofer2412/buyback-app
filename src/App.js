@@ -40,16 +40,16 @@ class App extends React.Component {
     });
   }
   render() {
-    console.log(this.state.user);
     return (
       <div>
         {this.state.user === null ? (
           <Router>
+            <Route path="/" render={() => <NavBar user={this.state.user} />} />
             <Route path="/" component={Login} />
           </Router>
         ) : (
           <Router>
-            <Route path="/" component={NavBar} />
+            <Route path="/" render={() => <NavBar user={this.state.user} />} />
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/vendors" component={CustomerList} />
             <Route exact path="/edit/:id" component={Edit} />
