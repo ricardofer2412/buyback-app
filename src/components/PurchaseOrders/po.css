@@ -111,3 +111,20 @@
 .button__icon {
   margin-right: 10px;
 }
+
+.iconsBar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchBar {
+}
+
+.searchBar__paper {
+}
+
+.searchBar__text {
+  margin-left: 5px;
+  border: "solid 0px" !important;
+  border-color: "white" !important;
+}

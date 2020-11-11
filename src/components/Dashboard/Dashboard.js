@@ -9,6 +9,8 @@ import Box from "@material-ui/core/Box";
 import VendorCount from "./VendorCount";
 import PoCount from "./PoCount";
 import TrackingCount from "./TrackingCount";
+import "./app.css";
+
 const styles = (theme) => ({
   root: {
     display: "flex",

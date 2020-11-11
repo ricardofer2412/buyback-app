@@ -141,7 +141,7 @@ class NewOrder extends Component {
       purchaseOrderId: "",
       company: "",
       deviceTotal: "",
-      poDate: new Date(),
+      poDate: new Date().toLocaleString(),
       poNumber: "",
       poTotal: "0.00",
       email: "",
@@ -263,7 +263,6 @@ class NewOrder extends Component {
   };
 
   onSubmit = (e) => {
-    const purchaseOrderId = uuid();
     const customerId = uuid();
     e.preventDefault();
 
@@ -283,7 +282,7 @@ class NewOrder extends Component {
     } = this.state;
     this.addCustomer();
     this.ref
-      .doc(purchaseOrderId)
+      .doc(poNumber)
       .set({
         customerId,
         company,

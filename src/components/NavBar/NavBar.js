@@ -148,7 +148,7 @@ class PersistentDrawerLeft extends React.Component {
       console.log("No user logged in");
     }
     return (
-      <div className={classes.root}>
+      <div className="root">
         <CssBaseline />
         <AppBar
           style={{ backgroundColor: "white" }}
@@ -166,17 +166,22 @@ class PersistentDrawerLeft extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className="nav-title" noWrap>
-              MOBILESOURCE - DASHBOARD
-            </Typography>
-
-            {!user ? (
-              <Typography>No login</Typography>
-            ) : (
-              <Button id="log_out_button" onClick={this.onLogOut}>
-                Log Out
-              </Button>
-            )}
+            <div className="navTitle">
+              <div>
+                <Typography className="nav-title" noWrap>
+                  MOBILESOURCE - DASHBOARD
+                </Typography>
+              </div>
+              <div>
+                {!user ? (
+                  <Typography>No login</Typography>
+                ) : (
+                  <Button id="log_out_button" onClick={this.onLogOut}>
+                    Log Out
+                  </Button>
+                )}
+              </div>
+            </div>
           </Toolbar>
         </AppBar>
 

@@ -19,6 +19,10 @@ import NavBar from "../NavBar/NavBar";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import "./po.css";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+import TextField from "@material-ui/core/TextField";
+import SearchPo from "./SearchBar";
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -54,13 +58,20 @@ class PurchaseOrders extends React.Component {
     this.unsubscribe = null;
     this.state = {
       purchaseOrders: [],
+      poNumber: "15879",
     };
   }
 
   onCollectionUpdate = (querySnapshot) => {
     const purchaseOrders = [];
     querySnapshot.forEach((doc) => {
-      const { poNumber, company, vendorName, status } = doc.data();
+      const {
+        poNumber,
+        company,
+        vendorName,
+        status,
+        expectPayDate,
+      } = doc.data();
       purchaseOrders.push({
         purchaseOrderId: doc.id,
         doc,
@@ -68,6 +79,7 @@ class PurchaseOrders extends React.Component {
         company,
         vendorName,
         status,
+        expectPayDate,
       });
     });
 
@@ -97,19 +109,40 @@ class PurchaseOrders extends React.Component {
       });
   };
 
+  searchPo(poNumber) {
+    console.log("Searching for PO");
+    firebase
+      .firestore()
+      .collection("purchaseOrders")
+      .doc(poNumber)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log(doc.data());
+        }
+      });
+  }
+
+  searchResults() {}
+
   render() {
     const { classes } = this.props;
     return (
       <div className="main">
         <div className="purchaseOrder_table">
-          <Fab
-            component={Link}
-            to="/neworder"
-            aria-label="Add"
-            className={classes.fab}
-          >
-            <AddIcon className={classes.extendedIcon} />
-          </Fab>
+          <div className="iconsBar">
+            <Fab
+              component={Link}
+              to="/neworder"
+              aria-label="Add"
+              className={classes.fab}
+            >
+              <AddIcon className={classes.extendedIcon} />
+            </Fab>
+            <div className="searchBar">
+              <SearchPo poNumber={this.state.poNumber} />
+            </div>
+          </div>
 
           <Paper>
             <Table>
@@ -117,6 +150,7 @@ class PurchaseOrders extends React.Component {
                 <TableRow>
                   <TableCell>PO# </TableCell>
                   <TableCell>Vendor </TableCell>
+                  <TableCell>E.P.D</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -126,6 +160,7 @@ class PurchaseOrders extends React.Component {
                   <TableRow>
                     <TableCell>{purchaseOrder.poNumber}</TableCell>
                     <TableCell>{purchaseOrder.vendorName}</TableCell>
+                    <TableCell>{purchaseOrder.expectPayDate}</TableCell>
 
                     {purchaseOrder.status === "Paid" ? (
                       <TableCell

@@ -26,11 +26,15 @@
   background-color: gray;
 }
 
-.logout {
-  display: flex;
-  justify-content: right;
-}
-
 .logout-text {
   font-size: 15px;
+}
+
+.root {
+  display: flex;
+}
+
+.navTitle {
+  display: flex;
+  justify-content: space-between;
 }
