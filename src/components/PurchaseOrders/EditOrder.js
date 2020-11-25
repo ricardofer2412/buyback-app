@@ -111,6 +111,7 @@ const EMPTY_DEVICE = {
   phoneModel: "",
   devicePrice: "",
   deviceTotal: "",
+  deviceMemory: ''
 };
 const classes = {
   topForm: {
@@ -171,6 +172,7 @@ class EditOrder extends Component {
       deviceCarrier: "",
       deviceModel: "",
       deviceImei: "",
+      deviceMemory: "", 
       deviceInvoiceNum: "",
       vendorName: "",
       deviceList: [{ ...EMPTY_DEVICE }],
@@ -191,6 +193,7 @@ class EditOrder extends Component {
     this.paymentEmail = this.paymentEmail.bind(this);
     this.orderProcess = this.orderProcess.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.getPrice = this.getPrice.bind(this)
   }
   componentDidMount() {
     try {
@@ -225,6 +228,7 @@ class EditOrder extends Component {
             processOrderDate: purchaseOrders.processOrderDate,
             paymentEmailDate: purchaseOrders.paymentEmailDate,
             pictureGallery: purchaseOrders.pictureGallery,
+            deviceMemory: purchaseOrders.deviceMemory
           });
         } else {
           console.log("Order does not exist!");
@@ -264,6 +268,7 @@ class EditOrder extends Component {
       phoneModel: this.state.deviceModel,
       price: this.state.devicePrice,
       deviceTotal: this.state.devicePrice * this.state.deviceQty,
+      deviceMemory: this.state.deviceMemory
     };
     const newDeviceList = [...this.state.deviceList, newItem];
     let poTotal = 0;
@@ -285,6 +290,7 @@ class EditOrder extends Component {
           devicePrice: "",
           deviceComments: "",
           deviceCarrier: "",
+          deviceMemory: '', 
           poTotal,
         });
       });
@@ -353,6 +359,37 @@ class EditOrder extends Component {
       .catch((error) => {
         console.error("Error adding customer: ", error);
       });
+  }
+  async getPrice( e,carrier, model) {
+    e.preventDefault()
+
+    const phoneModel = model
+    console.log('Model: ', model)
+    const phoneCarrier =  carrier.toLowerCase()
+    const phoneMemory = "64GB"
+
+    if( phoneCarrier === 'sprint') {
+      console.log('Carrier is sprint')
+        const phoneCarrier =  phoneCarrier.charAt(0).toUpperCase() + phoneCarrier.slice(1);
+        return phoneCarrier
+    } else if (phoneCarrier === "verizon") {
+        const newCarrier =  phoneCarrier.charAt(0).toUpperCase() + phoneCarrier.slice(1);
+    } else {
+      return null
+    }
+  
+   
+    console.log('Carrier: ', phoneCarrier)
+    
+    const newUrl = apiEndpoint + "/price";
+    const body = { phone: `${phoneModel}-${this.newCarrier}?capacity=${phoneMemory}` };
+    try {
+      const response = await axios.post(newUrl, body);
+      const { data } = response;
+      console.log("data: ", data);
+    } catch (e) {
+      console.log("ERrror getting price: ", e);
+    }
   }
 
   async paymentEmail(e) {
@@ -439,6 +476,7 @@ class EditOrder extends Component {
           devicePrice: "0",
           deviceModel: data[i].Model,
           deviceComments: data[i].Cosmetics,
+          deviceMemory: data[i].Memory
         });
       }
 
@@ -517,6 +555,7 @@ class EditOrder extends Component {
       deviceList,
       expectPayDate,
       pictureGallery,
+      deviceMemory
     } = this.state;
 
     firebase
@@ -538,6 +577,7 @@ class EditOrder extends Component {
         deviceList,
         expectPayDate,
         pictureGallery,
+        deviceMemory
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -727,10 +767,12 @@ class EditOrder extends Component {
                     <TableCell align="right">Carrier</TableCell>
                     <TableCell align="right">MODEL</TableCell>
                     <TableCell align="right">IMEI</TableCell>
-                    <TableCell align="right">Comments</TableCell>
+                    <TableCell align="right">MEMORY</TableCell>
+                    <TableCell align="right">COMMENTS</TableCell>
                     <TableCell align="right">PRICE</TableCell>
                     <TableCell align="right">TOTAL</TableCell>
                     <TableCell align="right">ACTIONS</TableCell>
+                 
                   </TableRow>
                 </TableHead>
 
@@ -739,6 +781,7 @@ class EditOrder extends Component {
                     onChange={this.onDeviceChange}
                     deviceList={this.state.deviceList}
                     deleteItem={this.deleteItem}
+                    getPrice={this.getPrice}
                   />
                 </TableBody>
               </Table>
@@ -832,6 +875,9 @@ class EditOrder extends Component {
                 onClick={this.receivedOrderEmail}
               >
                 <LocalShippingIcon className="button__icon" /> Recived Order
+              </button>
+              <button className="button__email" onClick={this.getPrice}>
+                <LocalShippingIcon className="button__icon" /> Get Price
               </button>
               <p>{this.state.receivedEmailDate}</p>
             </div>

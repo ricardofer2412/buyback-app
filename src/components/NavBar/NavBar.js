@@ -87,42 +87,54 @@ const styles = (theme) => ({
 });
 
 class PersistentDrawerLeft extends React.Component {
-  state = {
-    open: false,
-    user: null,
-    userName: "",
-    userId: "",
-    currentUserId: "",
-  };
-
-  componentDidMount() {
-    this.getCurrentUser();
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      user: null,
+      userName: "",
+      userId: "",
+      currentUserId: "",
+    };
   }
 
-  async getUserName() {
-    const ref = await firebase
+  componentDidUpdate = () => {
+    this.getCurrentUser();
+  };
+
+  getUserName(userId) {
+    let userName;
+    const ref = firebase
       .firestore()
       .collection("Users")
-      .doc();
+      .doc(userId);
     ref.get().then((doc) => {
       if (doc.exists) {
         const userData = doc.data();
-        console.log(userData);
+        const currentUserName = doc.data().userName;
+
+ 
       }
     });
+
+    console.log("Current User: ", this.state.userName);
+  }
+  authListener() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+    console.log(this.state.user);
   }
 
   getCurrentUser = () => {
-    const userId = this.state;
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        userId = user.uid;
-        this.setState({
-          currentUserId: this.userId,
-        });
-      }
-    });
-    console.log(this.state.currentUserId);
+    if (this.props.user) {
+      console.log("userId: ", this.props.user.uid);
+      this.getUserName(this.props.user.uid);
+    }
   };
 
   handleDrawerOpen = () => {
@@ -138,15 +150,11 @@ class PersistentDrawerLeft extends React.Component {
   }
 
   render() {
-    const user = this.state;
+    const user = this.props;
+
     const { classes, theme } = this.props;
     const { open } = this.state;
-    console.log("USER ID: " + this.state.currentUserId);
-    if (user) {
-      console.log("user logged in");
-    } else {
-      console.log("No user logged in");
-    }
+    console.log(this.userName);
     return (
       <div className="root">
         <CssBaseline />
@@ -172,15 +180,21 @@ class PersistentDrawerLeft extends React.Component {
                   MOBILESOURCE - DASHBOARD
                 </Typography>
               </div>
-              <div>
-                {!user ? (
-                  <Typography>No login</Typography>
-                ) : (
-                  <Button id="log_out_button" onClick={this.onLogOut}>
-                    Log Out
-                  </Button>
-                )}
-              </div>
+
+              {!this.props.user ? (
+                <div></div>
+              ) : (
+                <div className="logout-button">
+                  <div>
+                    <h3>{this.userName}</h3>
+                  </div>
+                  <div>
+                    <Button id="log_out_button" onClick={this.onLogOut}>
+                      Log Out
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </Toolbar>
         </AppBar>

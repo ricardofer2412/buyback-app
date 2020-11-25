@@ -37,4 +37,8 @@
 .navTitle {
   display: flex;
   justify-content: space-between;
+  width: 90%;
+}
+.logout-button {
+  margin-right: 10px;
 }

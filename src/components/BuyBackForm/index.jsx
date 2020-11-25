@@ -7,6 +7,9 @@ import {
   Table,
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+
 
 const carriers = [
   {
@@ -32,7 +35,7 @@ const carriers = [
   },
 ];
 
-function BuyBackForm({ deviceList, onChange, deleteItem }) {
+function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice }) {
   return (
     <React.Fragment>
       {deviceList.map((item, i) => (
@@ -77,6 +80,16 @@ function BuyBackForm({ deviceList, onChange, deleteItem }) {
               style={{ width: 175 }}
             />
           </TableCell>
+           <TableCell align="right">
+            <TextField
+              required
+              InputProps={{ name: "deviceMemory" }}
+              onChange={(e) => onChange(e, i)}
+              value={item.deviceMemory}
+              variant="standard"
+              style={{ width: 175 }}
+            />
+          </TableCell>
           <TableCell align="right">
             <TextField
               required
@@ -110,7 +123,14 @@ function BuyBackForm({ deviceList, onChange, deleteItem }) {
               disabled={i === 0}
               style={{ color: "#ff1744", cursor: "pointer" }}
             />
+              <AttachMoneyIcon
+             onClick={(e) => getPrice( e, item.deviceCarrier, item.deviceModel)}
+              variant="contained"
+              disabled={i === 0}
+              style={{ color: "#ff1744", cursor: "pointer" }}
+            />
           </TableCell>
+         
         </TableRow>
       ))}
     </React.Fragment>

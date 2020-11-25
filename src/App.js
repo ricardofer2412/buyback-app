@@ -23,7 +23,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
+      user: null,
     };
   }
 
@@ -42,14 +42,19 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {this.state.user === null ? (
+        {this.state.user === null || !this.state.user.uid ? (
           <Router>
             <Route path="/" render={() => <NavBar user={this.state.user} />} />
             <Route path="/" component={Login} />
           </Router>
         ) : (
           <Router>
-            <Route path="/" render={() => <NavBar user={this.state.user} />} />
+            <Route
+              path="/"
+              render={() => (
+                <NavBar userId={this.state.user.uid} user={this.state.user} />
+              )}
+            />
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/vendors" component={CustomerList} />
             <Route exact path="/edit/:id" component={Edit} />
