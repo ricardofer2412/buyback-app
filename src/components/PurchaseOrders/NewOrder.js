@@ -279,6 +279,7 @@ class NewOrder extends Component {
       poTotal,
       expectPayDate,
       pictureGallery,
+      
     } = this.state;
     this.addCustomer();
     this.ref
@@ -491,6 +492,8 @@ class NewOrder extends Component {
                     <TableCell align="center">Carrier</TableCell>
                     <TableCell align="center">MODEL</TableCell>
                     <TableCell align="center">IMEI</TableCell>
+                    <TableCell align="right">MEMORY</TableCell>
+
                     <TableCell align="center">COMMENTS</TableCell>
                     <TableCell align="center">PRICE</TableCell>
                     <TableCell align="center">TOTAL</TableCell>

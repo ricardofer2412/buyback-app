@@ -187,6 +187,7 @@ class EditOrder extends Component {
       pictureGallery: [],
       open: false,
       pictureGalleryCount: "0",
+      buybackResults: []
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this);
@@ -229,6 +230,7 @@ class EditOrder extends Component {
             paymentEmailDate: purchaseOrders.paymentEmailDate,
             pictureGallery: purchaseOrders.pictureGallery,
             deviceMemory: purchaseOrders.deviceMemory
+   
           });
         } else {
           console.log("Order does not exist!");
@@ -268,7 +270,8 @@ class EditOrder extends Component {
       phoneModel: this.state.deviceModel,
       price: this.state.devicePrice,
       deviceTotal: this.state.devicePrice * this.state.deviceQty,
-      deviceMemory: this.state.deviceMemory
+      deviceMemory: this.state.deviceMemory,
+      buybackResults: this.state.buybackResults
     };
     const newDeviceList = [...this.state.deviceList, newItem];
     let poTotal = 0;
@@ -360,36 +363,39 @@ class EditOrder extends Component {
         console.error("Error adding customer: ", error);
       });
   }
-  async getPrice( e,carrier, model) {
+  async getPrice( e,carrier, model, phoneMemory) {
     e.preventDefault()
-
-    const phoneModel = model
+    let phoneModel = model
     console.log('Model: ', model)
-    const phoneCarrier =  carrier.toLowerCase()
-    const phoneMemory = "64GB"
-
-    if( phoneCarrier === 'sprint') {
-      console.log('Carrier is sprint')
-        const phoneCarrier =  phoneCarrier.charAt(0).toUpperCase() + phoneCarrier.slice(1);
-        return phoneCarrier
-    } else if (phoneCarrier === "verizon") {
-        const newCarrier =  phoneCarrier.charAt(0).toUpperCase() + phoneCarrier.slice(1);
-    } else {
-      return null
-    }
-  
+    let phoneCarrier = carrier
+    console.log(phoneCarrier)
+    console.log(phoneMemory)
    
-    console.log('Carrier: ', phoneCarrier)
+
     
     const newUrl = apiEndpoint + "/price";
-    const body = { phone: `${phoneModel}-${this.newCarrier}?capacity=${phoneMemory}` };
+    const body = { phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}` };
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
       console.log("data: ", data);
+
+      let all = data.filter(data=> data.condition==='good')
+      this.setState({
+        buybackResults: all
+      })
+      // for (let i = 0; i < data.length; i++) {
+      //   if(data[i].condition === "good" && data[i].vendor === "The Whiz Cells"){
+      //     console.log
+      //   }
+      // } 
+
+      
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
+
+    console.log(this.state.buybackResults)
   }
 
   async paymentEmail(e) {
@@ -477,6 +483,7 @@ class EditOrder extends Component {
           deviceModel: data[i].Model,
           deviceComments: data[i].Cosmetics,
           deviceMemory: data[i].Memory
+        
         });
       }
 
@@ -555,7 +562,6 @@ class EditOrder extends Component {
       deviceList,
       expectPayDate,
       pictureGallery,
-      deviceMemory
     } = this.state;
 
     firebase
@@ -577,7 +583,7 @@ class EditOrder extends Component {
         deviceList,
         expectPayDate,
         pictureGallery,
-        deviceMemory
+        
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -780,6 +786,7 @@ class EditOrder extends Component {
                   <BuyBackForm
                     onChange={this.onDeviceChange}
                     deviceList={this.state.deviceList}
+                    buybackResults={this.state.buybackResults}
                     deleteItem={this.deleteItem}
                     getPrice={this.getPrice}
                   />
