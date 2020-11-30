@@ -128,3 +128,15 @@
   border: "solid 0px" !important;
   border-color: "white" !important;
 }
+
+.delete-button {
+  color: red !important;
+  border: "1px solid #484850" !important;
+  border-radius: "5px 5px 0 0" !important;
+}
+
+.edit-button {
+  color: red !important;
+  border: "1px solid #484850" !important;
+  border-radius: "5px 5px 0 0" !important;
+}

@@ -48,9 +48,15 @@ const styles = (theme) => ({
   menuButton: {
     marginLeft: 12,
     marginRight: 20,
+    '&:hover': {
+      background: "#3b5998",
+    }
   },
   hide: {
     display: "none",
+    '&:hover': {
+      background: 'white',
+    }
   },
   drawer: {
     width: drawerWidth,
@@ -67,6 +73,7 @@ const styles = (theme) => ({
     padding: "0 8px",
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
+     
   },
   content: {
     flexGrow: 1,
@@ -175,7 +182,7 @@ class PersistentDrawerLeft extends React.Component {
               <MenuIcon />
             </IconButton>
             <div className="navTitle">
-              <div>
+              <div className="nav-title-div">
                 <Typography className="nav-title" noWrap>
                   MOBILESOURCE - DASHBOARD
                 </Typography>
@@ -185,9 +192,9 @@ class PersistentDrawerLeft extends React.Component {
                 <div></div>
               ) : (
                 <div className="logout-button">
-                  <div>
+                  {/* <div>
                     <h3>{this.userName}</h3>
-                  </div>
+                  </div> */}
                   <div>
                     <Button id="log_out_button" onClick={this.onLogOut}>
                       Log Out

@@ -15,9 +15,7 @@
   color: white;
   font-size: 30px !important;
 }
-.nav-title {
-  color: gray;
-}
+
 .nav-menu-icon {
   color: gray;
 }
@@ -39,6 +37,16 @@
   justify-content: space-between;
   width: 90%;
 }
+.nav-title-div {
+  width: 75%;
+  padding-top: 7px;
+  padding-left: 5px;
+}
 .logout-button {
-  margin-right: 10px;
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
+}
+.nav-title {
+  color: gray;
 }

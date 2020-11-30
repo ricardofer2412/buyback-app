@@ -23,6 +23,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import TextField from "@material-ui/core/TextField";
 import SearchPo from "./SearchBar";
+import Tooltip from '@material-ui/core/Tooltip';
+
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -131,6 +133,7 @@ class PurchaseOrders extends React.Component {
       <div className="main">
         <div className="purchaseOrder_table">
           <div className="iconsBar">
+           <Tooltip title="Create New Order">
             <Fab
               component={Link}
               to="/neworder"
@@ -139,9 +142,12 @@ class PurchaseOrders extends React.Component {
             >
               <AddIcon className={classes.extendedIcon} />
             </Fab>
-            <div className="searchBar">
+            {/* <div className="searchBar">
               <SearchPo poNumber={this.state.poNumber} />
-            </div>
+            </div> */}
+                                   </Tooltip>
+
+          
           </div>
 
           <Paper>
@@ -200,7 +206,10 @@ class PurchaseOrders extends React.Component {
                       </TableCell>
                     )}
                     <TableCell>
+                     <Tooltip title="Delete">
+
                       <IconButton
+                    
                         onClick={() => {
                           if (
                             window.confirm(
@@ -211,14 +220,19 @@ class PurchaseOrders extends React.Component {
                           }
                         }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon className="delete-button" fontSize="small" />
                       </IconButton>
-                      <IconButton
+                      </Tooltip>
+                       <Tooltip title="Edit">
+ <IconButton
+                        className="edit-button"
                         component={Link}
                         to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
                       >
                         <Create />
                       </IconButton>
+                       </Tooltip>
+                     
                     </TableCell>
                   </TableRow>
                 ))}

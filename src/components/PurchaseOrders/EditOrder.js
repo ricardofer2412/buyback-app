@@ -793,10 +793,7 @@ class EditOrder extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Divider />
-            <div></div>
-
-            <Button
+             <Button
               style={{ margin: 25, cursor: "pointer" }}
               variant="contained"
               onClick={this.addNewDeviceRow}
@@ -806,7 +803,8 @@ class EditOrder extends Component {
               <AddCircleIcon className="button__icon" />
               Add Item
             </Button>
-
+            <Divider />
+            <div>
             <Typography style={{ color: "gray", fontSize: 30 }}>
               Total: ${this.getTotal()}
             </Typography>
@@ -834,6 +832,11 @@ class EditOrder extends Component {
               <SaveIcon className="button__icon" />
               Save
             </Button>
+            </div>
+
+           
+
+           
           </form>
         </div>
         <div className="bottom-form">
@@ -883,9 +886,9 @@ class EditOrder extends Component {
               >
                 <LocalShippingIcon className="button__icon" /> Recived Order
               </button>
-              <button className="button__email" onClick={this.getPrice}>
+              {/* <button className="button__email" onClick={this.getPrice}>
                 <LocalShippingIcon className="button__icon" /> Get Price
-              </button>
+              </button> */}
               <p>{this.state.receivedEmailDate}</p>
             </div>
             <div className="button__email__div">
