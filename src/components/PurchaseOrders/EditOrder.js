@@ -187,7 +187,6 @@ class EditOrder extends Component {
       pictureGallery: [],
       open: false,
       pictureGalleryCount: "0",
-      buybackResults: []
     };
 
     this.receivedOrderEmail = this.receivedOrderEmail.bind(this);
@@ -363,27 +362,31 @@ class EditOrder extends Component {
         console.error("Error adding customer: ", error);
       });
   }
-  async getPrice( e,carrier, model, phoneMemory) {
+  async getPrice( e,carrier, model, phoneMemory, i) {
     e.preventDefault()
+    const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    const device = deviceList[i]
+    console.log(device)
     let phoneModel = model
     console.log('Model: ', model)
     let phoneCarrier = carrier
     console.log(phoneCarrier)
     console.log(phoneMemory)
-   
-
-    
     const newUrl = apiEndpoint + "/price";
     const body = { phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}` };
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
-      console.log("data: ", data);
 
-      let all = data.filter(data=> data.condition==='good')
-      this.setState({
-        buybackResults: all
-      })
+      const buybackResults = data.filter(data=> data.condition==='good')
+      
+      let newList = {...device,buybackResults}
+      console.log(newList)
+
+      
+      // this.setState({
+      //  deviceList: addToList
+      // })
       // for (let i = 0; i < data.length; i++) {
       //   if(data[i].condition === "good" && data[i].vendor === "The Whiz Cells"){
       //     console.log
@@ -394,8 +397,8 @@ class EditOrder extends Component {
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
+      console.log(this.state.deviceList)
 
-    console.log(this.state.buybackResults)
   }
 
   async paymentEmail(e) {

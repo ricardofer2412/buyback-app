@@ -35,7 +35,7 @@ const carriers = [
   },
 ];
 
-function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, buybackResults }) {
+function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, }) {
   return (
     <React.Fragment>
       {deviceList.map((item, i) => (
@@ -124,21 +124,28 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, buybackRes
               style={{ color: "#ff1744", cursor: "pointer" }}
             />
               <AttachMoneyIcon
-             onClick={(e) => getPrice( e, item.deviceCarrier, item.deviceModel, item.deviceMemory)}
+             onClick={(e) => getPrice( e, item.deviceCarrier, item.deviceModel, item.deviceMemory, i)}
               variant="contained"
               disabled={i === 0}
               style={{ color: "#ff1744", cursor: "pointer" }}
             />
           </TableCell>
-          <TableCell>
-            {buybackResults.map((results) => (
-            <p>{results.vendor}: {results.price}</p>
+          {item.buybackResults == null ? (
+            <p></p> 
+          ): (
+                 <TableCell>
+            {item.buybackResults.map((phone, i) => (
+            <p>{phone.vendor}</p>
             ))}
           </TableCell>
+          )
+
+          }
+     
          
         </TableRow>
       ))}
-    </React.Fragment>
+    </React.Fragment> 
   );
 }
 
