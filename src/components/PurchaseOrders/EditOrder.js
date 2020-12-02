@@ -380,18 +380,15 @@ class EditOrder extends Component {
 
       const buybackResults = data.filter(data=> data.condition==='good')
       
-      let newList = {...device,buybackResults}
-      console.log(newList)
+      let newDevice = {...device,buybackResults}
 
+      const newDeviceList = [...this.state.deviceList];
+      newDeviceList.splice(i, 1, newDevice)
+      console.log('newlist', newDeviceList)
+     
       
-      // this.setState({
-      //  deviceList: addToList
-      // })
-      // for (let i = 0; i < data.length; i++) {
-      //   if(data[i].condition === "good" && data[i].vendor === "The Whiz Cells"){
-      //     console.log
-      //   }
-      // } 
+      this.setState({ deviceList: newDeviceList });
+    
 
       
     } catch (e) {
@@ -781,6 +778,7 @@ class EditOrder extends Component {
                     <TableCell align="right">PRICE</TableCell>
                     <TableCell align="right">TOTAL</TableCell>
                     <TableCell align="right">ACTIONS</TableCell>
+                    <TableCell align="right">BUYBACKS</TableCell>
                  
                   </TableRow>
                 </TableHead>
@@ -789,7 +787,6 @@ class EditOrder extends Component {
                   <BuyBackForm
                     onChange={this.onDeviceChange}
                     deviceList={this.state.deviceList}
-                    buybackResults={this.state.buybackResults}
                     deleteItem={this.deleteItem}
                     getPrice={this.getPrice}
                   />

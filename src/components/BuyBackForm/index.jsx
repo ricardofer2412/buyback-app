@@ -130,17 +130,21 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, }) {
               style={{ color: "#ff1744", cursor: "pointer" }}
             />
           </TableCell>
-          {item.buybackResults == null ? (
-            <p></p> 
-          ): (
-                 <TableCell>
-            {item.buybackResults.map((phone, i) => (
-            <p>{phone.vendor}</p>
-            ))}
-          </TableCell>
-          )
-
-          }
+         
+          <TableCell> 
+            {item.buybackResults != null ? (
+              <div>
+              {item.buybackResults.map((bb) => (
+                     <p>{bb.vendor}: {bb.price}</p>
+          ))}
+          </div>
+            ) :  (
+             <div></div>
+            )
+            }
+         
+            </TableCell>
+        
      
          
         </TableRow>

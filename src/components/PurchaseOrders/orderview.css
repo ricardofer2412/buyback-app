@@ -1,0 +1,23 @@
+.paper {
+    height: 100vh;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+  padding: 10px;
+  padding-left: 50px
+}
+.poNumber {
+    padding-top:20px;
+    padding-right: 50px
+
+}
+.poNumber_text {
+    font-size: 50px;
+    color: gray;
+    font-weight: 300;
+}

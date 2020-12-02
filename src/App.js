@@ -14,6 +14,7 @@ import NewTracking from "./components/tracking/new-tracking";
 import NavBar from "./components/NavBar/NavBar";
 import EditTracking from "./components/tracking/edit-tracking";
 import EditOrder from "./components/PurchaseOrders/EditOrder";
+import OrderView from "./components/PurchaseOrders/OrderView";
 import UnlockediPhones from "./components/CellphonePrices/UnlockediPhones";
 import Tools from "./components/Tools/Tools";
 import Login from "./components/Login/index";
@@ -66,6 +67,7 @@ class App extends React.Component {
             <Route exact path="/tracking/new/" component={NewTracking} />
             <Route exact path="/tracking/edit/:id" component={EditTracking} />
             <Route exact path="/purchaseorder/edit/:id" component={EditOrder} />
+            <Route exact path="/purchaseorder/view/:id" component={OrderView} />
             <Route exact path="/UnlockediPhones/" component={UnlockediPhones} />
             <Route exact path="/Tools/" component={Tools} />
           </Router>

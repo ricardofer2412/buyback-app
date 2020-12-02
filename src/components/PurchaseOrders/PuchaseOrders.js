@@ -24,7 +24,7 @@ import InputBase from "@material-ui/core/InputBase";
 import TextField from "@material-ui/core/TextField";
 import SearchPo from "./SearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
-
+import VisibilityIcon from '@material-ui/icons/Visibility';
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -224,12 +224,21 @@ class PurchaseOrders extends React.Component {
                       </IconButton>
                       </Tooltip>
                        <Tooltip title="Edit">
- <IconButton
+                            <IconButton
                         className="edit-button"
                         component={Link}
                         to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
                       >
                         <Create />
+                      </IconButton>
+                       </Tooltip>
+                       <Tooltip title="View">
+                        <IconButton
+                        className="edit-button"
+                        component={Link}
+                        to={`/purchaseorder/view/${purchaseOrder.purchaseOrderId}`}
+                      >
+                        <VisibilityIcon/>
                       </IconButton>
                        </Tooltip>
                      

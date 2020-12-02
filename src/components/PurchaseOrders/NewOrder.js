@@ -23,6 +23,8 @@ import { storage } from "../firebase/Firebase";
 import SaveIcon from "@material-ui/icons/Save";
 import BuyBackForm from "../BuyBackForm";
 import "./po.css";
+import axios from "axios";
+import { apiEndpoint } from "../../config.js";
 const uuid = require("uuid");
 const carriers = [
   {
@@ -168,8 +170,14 @@ class NewOrder extends Component {
       processOrderDate: "",
       paymentEmailDate: "",
     };
+    this.getPrice = this.getPrice.bind(this)
+
   }
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    this.setState({
+      deviceList: this.state.deviceList
+    })
+  };
 
   handleChangeImg = (e) => {
     if (e.target.files[0]) {
@@ -209,7 +217,42 @@ class NewOrder extends Component {
       }
     );
   };
+  async getPrice( e,carrier, model, phoneMemory, i) {
+    e.preventDefault()
+  
+    const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
+    const device = deviceList[i]
+    console.log(device)
+    let phoneModel = model
+    console.log('Model: ', model)
+    let phoneCarrier = carrier
+    console.log(phoneCarrier)
+    console.log(phoneMemory)
+    const newUrl = apiEndpoint + "/price";
+    const body = { phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}` };
+    try {
+      const response = await axios.post(newUrl, body);
+      const { data } = response;
 
+      const buybackResults = data.filter(data=> data.condition==='good')
+      
+      let newDevice = {...device,buybackResults}
+
+      const newDeviceList = [...this.state.deviceList];
+      newDeviceList.splice(i, 1, newDevice)
+      console.log('newlist', newDeviceList)
+     
+      
+      this.setState({ deviceList: newDeviceList });
+    
+
+      
+    } catch (e) {
+      console.log("ERrror getting price: ", e);
+    }
+      console.log(this.state.deviceList)
+
+  }
   onDeviceChange = (e, i) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
     const device = deviceList[i];
@@ -507,6 +550,8 @@ class NewOrder extends Component {
                     onChange={this.onDeviceChange}
                     deviceList={this.state.deviceList}
                     deleteItem={this.deleteItem}
+                    getPrice={this.getPrice}
+
                   />
                 </TableBody>
               </Table>
