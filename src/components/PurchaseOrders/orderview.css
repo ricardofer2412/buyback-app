@@ -1,23 +1,38 @@
 .paper {
-    height: 100vh;
 }
 
-.header{
-    display: flex;
-    justify-content: space-between;
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .logo {
   padding: 10px;
-  padding-left: 50px
+  padding-left: 60px;
 }
 .poNumber {
-    padding-top:20px;
-    padding-right: 50px
-
+  padding-top: 20px;
+  padding-right: 70px;
 }
 .poNumber_text {
-    font-size: 50px;
-    color: gray;
-    font-weight: 300;
+  font-size: 30px;
+  color: gray;
+  font-weight: 300;
+}
+.table_div {
+  padding-top: 30px;
+}
+.total_div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+.main {
+  height: 100%;
+}
+.note-div {
+  border: 1px solid lightgray;
+  padding: 10px;
+  margin: 10px;
 }

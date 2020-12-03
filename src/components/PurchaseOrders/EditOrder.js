@@ -194,6 +194,7 @@ class EditOrder extends Component {
     this.orderProcess = this.orderProcess.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.getPrice = this.getPrice.bind(this)
+    this.rowTotal = this.rowTotal.bind(this)
   }
   componentDidMount() {
     try {
@@ -245,17 +246,6 @@ class EditOrder extends Component {
     console.log("deviceList: ", deviceList.length);
     deviceList.splice(id, 1);
     this.setState({ deviceList });
-
-    // firebase
-    //   .firestore()
-    //   .collection("devices")
-    //   .doc(itemId)
-    //   .delete()
-    //   .then((res) => {
-    //     this.setState({
-    //       deviceList,
-    //     });
-    //   });
   };
 
   addNewDevice = (e) => {
@@ -526,6 +516,14 @@ class EditOrder extends Component {
         console.error("Error adding customer: ", error);
       });
   }
+  rowTotal(i, deviceQty, devicePrice){
+
+    const deviceTotal = Number(deviceQty) * Number(devicePrice)
+
+    return deviceTotal
+  
+
+  }
 
   getTotal = () => {
     const deviceList = this.state.deviceList;
@@ -789,6 +787,7 @@ class EditOrder extends Component {
                     deviceList={this.state.deviceList}
                     deleteItem={this.deleteItem}
                     getPrice={this.getPrice}
+                    rowTotal={this.rowTotal}
                   />
                 </TableBody>
               </Table>

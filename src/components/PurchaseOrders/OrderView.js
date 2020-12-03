@@ -27,7 +27,7 @@ import BuyBackForm from "../BuyBackForm/index";
 import Modal from "@material-ui/core/Modal";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import { PlayCircleFilledWhite, Computer } from "@material-ui/icons";
+import { PlayCircleFilledWhite, Computer, ImportExport } from "@material-ui/icons";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ComputerIcon from "@material-ui/icons/Computer";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
@@ -273,14 +273,75 @@ class ViewOrder extends Component {
              <div className="customerInfo">
                  <div className='mobilesourceInfo'>
                     <h3>MobileSource Corp.</h3>
-                    <p style={{fontSize: '20px'}}>3500 NW 2nd Ave <br></br>Suite# 603<br></br> Boca Raton, FL, 33431</p>
+                    <p style={{fontSize: '16px'}}>3500 NW 2nd Ave <br></br>Suite# 603<br></br> Boca Raton, FL, 33431<br></br>561.416.7224
+                    <br></br>www.mobilesource.com</p>
                  </div>
-                 <div className='customerInfo'>
-                   <p>Company: {this.state.company} <br></br> Vendor Name:{this.state.vendorName}<br></br> {this.state.phoneNumber}<br></br>{this.state.email}</p>
+                 <div className='customerInfo_data'>
+                     <h3>Vendor's Info</h3>
+                      <p style={{fontSize: '16px'}}>
+                      <strong>Vendor: </strong>{this.state.company}/{this.state.vendorName} <br></br>
+                      <strong>E-mail: </strong>{this.state.email}<br></br> 
+                      <strong>Phone Number: </strong>{this.state.phoneNumber}<br></br>
+                      <strong>PO Date: </strong>{this.state.poDate}<br></br>
+                      <strong>Valid Date: </strong>{this.state.expectDeliver}
+                      </p>
+
                  </div>
+             </div>
+             <Divider/>
+             <div className="table_div">
+               <TableContainer component={Paper}>
+           <Table  aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="right">Qty</TableCell>
+            <TableCell align="right">Carrier</TableCell>
+            <TableCell align="right">Model</TableCell>
+            <TableCell align="right">IMEI</TableCell>
+            <TableCell align="right">Memory</TableCell>
+            <TableCell align="right">Comments</TableCell>
+                        <TableCell align="right">Unit Price</TableCell>
+
+            <TableCell align="right">Total</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {this.state.deviceList.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell align="right">{item.deviceQty}</TableCell>
+              <TableCell align="right">{item.deviceCarrier}</TableCell>
+              <TableCell align="right">{item.deviceModel}</TableCell>
+              <TableCell align="right">{item.deviceImei}</TableCell>
+              <TableCell align="right">{item.deviceMemory}</TableCell>
+               <TableCell align="right">{item.deviceComments}</TableCell>
+                              <TableCell align="right">${item.devicePrice}</TableCell>
+
+              <TableCell align="right">${item.deviceQty*item.devicePrice}</TableCell>
+            </TableRow>
+          ))}
+           
+         
+        </TableBody>
+        <div className="total_div">
+          <h3 style={{fontWeight: 200}}><strong>Total:</strong> ${this.state.poTotal}</h3>
+        </div>
+      </Table>
+    </TableContainer>
 
              </div>
-
+             <div className="note-div">
+               <p>
+                 Quote valid for 30 days from date shown on PO <br></br>
+**Apple ID and/or Google Accounts need to be removed (see link below for instructions) **<br></br>
+Deductions will be made for damaged screens, cracks, screen burn on Samsung phones, etc. and you will have the choice to accept or have the
+phone(s) returned<br></br>
+Financed phones will be quoted at a lower price returned if you prefer<br></br>
+Normal wear and tear is fine; any deep scratches or chips may result in a slight deductions<br></br>
+Remove Apple ID: https://support.apple.com/en-us/HT201441<br></br>
+Remove Google Account https://www.quora.com/How-can-I-remove-my-Gmail-account-from-a-device<br></br>
+Remove Samsung account: https://www.wikihow.tech/Delete-a-Samsung-Account-on-Samsung-Galaxy<br></br>
+               </p>
+             </div>
          </div>
       </div>
     );

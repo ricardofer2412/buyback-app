@@ -35,7 +35,7 @@ const carriers = [
   },
 ];
 
-function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, }) {
+function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }) {
   return (
     <React.Fragment>
       {deviceList.map((item, i) => (
@@ -113,7 +113,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, }) {
             </TextField>
           </TableCell>
           <TableCell>
-            <p>${item.devicePrice * item.deviceQty}</p>
+            <p>${rowTotal(i, item.deviceQty, item.devicePrice)}</p>
           </TableCell>
           
           <TableCell>
