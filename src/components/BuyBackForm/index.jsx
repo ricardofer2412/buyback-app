@@ -113,9 +113,28 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
             </TextField>
           </TableCell>
           <TableCell>
-            <p>${rowTotal(i, item.deviceQty, item.devicePrice)}</p>
+            <p style={{fontSize: '16px', paddingTop: '20px'}}>${rowTotal(i, item.deviceQty, item.devicePrice)}</p>
           </TableCell>
-          
+          {/* <TextField
+          id="standard-select-currency"
+          select
+          label="Select"
+          value={item.deviceCarrier}
+          onChange={(e) => onChange(e, i)}
+          SelectProps={{
+            MenuProps: {
+
+            },
+          }}
+          helperText="Carrier"
+          margin="normal"
+        >
+          {carriers.map(option => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField> */}
           <TableCell>
             <Delete
               onClick={() => deleteItem(i)}
@@ -135,7 +154,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
             {item.buybackResults != null ? (
               <div>
               {item.buybackResults.map((bb) => (
-                     <p>{bb.vendor}: {bb.price}</p>
+                     <p >{bb.vendor}: {bb.price}</p>
           ))}
           </div>
             ) :  (

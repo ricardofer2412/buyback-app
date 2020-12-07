@@ -42,7 +42,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div >
         {this.state.user === null || !this.state.user.uid ? (
           <Router>
             <Route path="/" render={() => <NavBar user={this.state.user} />} />

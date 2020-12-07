@@ -171,6 +171,7 @@ class NewOrder extends Component {
       paymentEmailDate: "",
     };
     this.getPrice = this.getPrice.bind(this)
+    this.rowTotal = this.rowTotal.bind(this)
 
   }
   componentDidMount = () => {
@@ -305,6 +306,14 @@ class NewOrder extends Component {
     });
     console.log(this.state.pictureGallery);
   };
+  rowTotal(i, deviceQty, devicePrice){
+
+    const deviceTotal = Number(deviceQty) * Number(devicePrice)
+
+    return deviceTotal
+  
+
+  }
 
   onSubmit = (e) => {
     const customerId = uuid();
@@ -551,7 +560,7 @@ class NewOrder extends Component {
                     deviceList={this.state.deviceList}
                     deleteItem={this.deleteItem}
                     getPrice={this.getPrice}
-
+                    rowTotal={this.rowTotal}
                   />
                 </TableBody>
               </Table>
