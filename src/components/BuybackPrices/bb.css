@@ -1,0 +1,10 @@
+.main {
+    background-color: #eceff1;
+    height: 100vh;
+}
+
+.paper {
+    background-color: white;
+    margin-top: 100px;
+    margin-left: 60px;
+}
