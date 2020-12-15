@@ -24,9 +24,7 @@ class BuybackiPhone extends React.Component {
         this.ref =  firebase.firestore().collection("unlockedBbList")
         this.state = {
             unlockedBbList: [], 
-            theWhizBb: '',
-            buybackWorld: '', 
-            decluttrBb: ''
+      
         }
      
 
@@ -37,7 +35,7 @@ class BuybackiPhone extends React.Component {
       }
  
   async getPrice( e,carrier, model, phoneMemory, i) {
-    e.preventDefault()
+    // e.preventDefault()
     const unlockedBbList = JSON.parse(JSON.stringify(this.state.unlockedBbList));
     const device = unlockedBbList[i]
     console.log(device)
@@ -53,22 +51,30 @@ class BuybackiPhone extends React.Component {
       const { data } = response;
 
       const buybackResults = data.filter(data=> data.condition==='good')
-      
+       
       let newDevice = {...device,buybackResults}
 
       const newDeviceList = [...this.state.unlockedBbList];
       newDeviceList.splice(i, 1, newDevice)
       console.log('newlist', newDeviceList)
      
+      console.log(buybackResults)
       
       this.setState({ unlockedBbList: newDeviceList });
-    
+      firebase
+      .firestore()
+      .collection("unlockedBbList")
+      .set({
+        unlockedBbList: newDeviceList
+      })
+      .catch((error) => {
+        console.error("Error adding customer: ", error);
+      });
 
       
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
-      console.log(this.state.unlockedBbList)
 
   }
     onCollectionUpdate = (querySnapshot) => {
@@ -124,9 +130,7 @@ class BuybackiPhone extends React.Component {
             <TableCell align="left">Carrier</TableCell>
             <TableCell align="left">Memory</TableCell>
             <TableCell align="left">MobileSource BB</TableCell>
-            <TableCell align="left">The Whiz Cell</TableCell>
-            <TableCell align="left">BuyBack World</TableCell>
-            <TableCell align="left">Decluttr</TableCell>
+            <TableCell align='left'>Others</TableCell>
             <TableCell align="left">ACTIONS</TableCell>
 
           </TableRow>
@@ -138,16 +142,20 @@ class BuybackiPhone extends React.Component {
                  <TableCell>{item.carrier}</TableCell>
                  <TableCell>{item.memory}</TableCell>
                  <TableCell>${item.buybackMs}</TableCell>
+                  
+                 <TableCell>
                  {item.buybackResults != null ? (
-                    <TableCell>$0</TableCell>
-                 ) : (
-                   <TableCell key={1}>{item.buybackResults.price}</TableCell>
-                 )
-            
-                 }
-                 <TableCell>$0</TableCell>
-                 <TableCell>$0</TableCell>
-                 <TableCell>$0</TableCell>
+              <div>
+              {item.buybackResults.map((bb) => (
+                     <p >{bb.vendor}: {bb.price}</p>
+          ))}
+          </div>
+            ) :  (
+             <div></div>
+            )
+            }
+                 </TableCell>
+               
                  <TableCell>
                        <AttachMoneyIcon
                         onClick={(e) => this.getPrice( e, item.carrier, item.model, item.memory, i)}
