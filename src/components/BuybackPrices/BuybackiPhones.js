@@ -21,7 +21,7 @@ class BuybackiPhone extends React.Component {
     constructor(props) {
         super(props);
  this.getPrice = this.getPrice.bind(this)
-        this.ref =  firebase.firestore().collection("unlockedBbList")
+        this.ref =  firebase.firestore().collection("unlockedBbList").orderBy('id')
         this.state = {
             unlockedBbList: [], 
       
@@ -61,6 +61,7 @@ class BuybackiPhone extends React.Component {
       console.log(buybackResults)
       
       this.setState({ unlockedBbList: newDeviceList });
+      
       firebase
       .firestore()
       .collection("unlockedBbList")

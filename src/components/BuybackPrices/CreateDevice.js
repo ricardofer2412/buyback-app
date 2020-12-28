@@ -111,7 +111,9 @@ class CreateDevice extends Component {
       model: '', 
       carrier: '', 
       memory: '', 
-      buybackMs: ''
+      buybackMs: '', 
+      deviceId: '', 
+      retailPrice: '', 
     };
 
   }
@@ -132,15 +134,19 @@ class CreateDevice extends Component {
 
 
   onSubmit = (e) => {
-
+    
     e.preventDefault();
 
+
+    const id = parseInt(this.state.deviceId, 10) 
     const {
 
      model, 
      carrier, 
      memory, 
-     buybackMs
+     buybackMs, 
+     deviceId, 
+     retailPrice
 
     } = this.state;
 
@@ -150,7 +156,9 @@ class CreateDevice extends Component {
         model, 
         carrier, 
         memory, 
-        buybackMs
+        buybackMs, 
+        id,
+        retailPrice
     }).then((docRef) => {
 
       this.setState({
@@ -158,7 +166,10 @@ class CreateDevice extends Component {
         model: '', 
         carrier: '', 
         memory: '', 
-        buybackMs: ''
+        buybackMs: '', 
+        buybackMs: '', 
+        deviceId: id, 
+        retailPrice: '', 
 
       });
 
@@ -182,7 +193,9 @@ class CreateDevice extends Component {
      model, 
      carrier, 
      memory, 
-     buybackMs
+     buybackMs, 
+     deviceId, 
+     retailPrice
 
     } = this.state;
 
@@ -203,6 +216,19 @@ class CreateDevice extends Component {
             <Grid container spacing={2}>
 
               <Grid item xs={12}>
+                <TextField
+                  required
+                  label="ID"
+                  InputProps={{ name: 'deviceId' }}
+                  className={classes.textField}
+                  onChange={this.onChange}
+                  value={deviceId}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+
                 <TextField
                   required
                   label="Device Model"
@@ -278,46 +304,20 @@ class CreateDevice extends Component {
                   fullWidth
                 />
               </Grid>
+              <Grid item xs={12}>
 
-              {/* <Grid item xs={12}>
-                <Button onClick={this.openDialog.bind(this)}>New Vendor</Button>
-                <Dialog open={this.state.open} onClose={this.state.open} onEnter={console.log("Hey.")}>
-                  <Create />
-                  <Button onClick={this.closeDialog.bind(this)} color="primary">
-                    Cancel
-            </Button>
-                </Dialog>
-              </Grid> */}
+<TextField
+    required
+    label="Retail Price"
+    InputProps={{ name: 'retailPrice' }}
+    className={classes.textField}
+    onChange={this.onChange}
+    value={retailPrice}
+    variant="outlined"
+    fullWidth
+  />
+</Grid>
 
-
-              {/* <Grid item xs={12}>
-                <TextField
-                  select
-                  label="Vendor"
-                  value={this.state.currentCustomer}
-                  className={classes.textField}
-                  onChange={this.handleCustomerChange}
-                  fullWidth
-                  SelectProps={{
-                    MenuProps: {
-                      className: classes.menu,
-                    },
-                  }}
-                  helperText="Please select "
-                  margin="normal"
-                  variant="outlined"
-                >
-                  {this.state.customers.map(customer => (
-                    <MenuItem value={customer.vendorName}>{customer.vendorName}
-                      {customer.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-
-              </Grid>
-
-            </Grid> */}
             <Button
               type="submit"
               fullWidth
