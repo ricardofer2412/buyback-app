@@ -31,7 +31,7 @@ class BuybackiPhone extends React.Component {
     }
     
     componentDidMount() {
-        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+          this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
       }
  
   async getPrice( e,carrier, model, phoneMemory, i) {
@@ -51,17 +51,17 @@ class BuybackiPhone extends React.Component {
       const { data } = response;
 
       const buybackResults = data.filter(data=> data.condition==='good')
-       
+      
+      
+      console.log('this is bb', buybackResults)
       let newDevice = {...device,buybackResults}
 
       const newDeviceList = [...this.state.unlockedBbList];
       newDeviceList.splice(i, 1, newDevice)
-      console.log('newlist', newDeviceList)
      
-      console.log(buybackResults)
       
       this.setState({ unlockedBbList: newDeviceList });
-      
+      console.log(newDeviceList)
       firebase
       .firestore()
       .collection("unlockedBbList")
@@ -85,7 +85,8 @@ class BuybackiPhone extends React.Component {
             model, 
              carrier, 
              memory, 
-             buybackMs
+             buybackMs, 
+             retailPrice
           } = doc.data();
           
           unlockedBbList.push({
@@ -94,6 +95,7 @@ class BuybackiPhone extends React.Component {
             carrier, 
             memory, 
             buybackMs,
+            retailPrice
      
           });
         });
@@ -130,7 +132,10 @@ class BuybackiPhone extends React.Component {
             <TableCell align="left">Model</TableCell>
             <TableCell align="left">Carrier</TableCell>
             <TableCell align="left">Memory</TableCell>
+             <TableCell align="left">Retail Price</TableCell>
             <TableCell align="left">MobileSource BB</TableCell>
+           
+
             <TableCell align='left'>Others</TableCell>
             <TableCell align="left">ACTIONS</TableCell>
 
@@ -142,7 +147,9 @@ class BuybackiPhone extends React.Component {
                  <TableCell>{item.model}</TableCell>
                  <TableCell>{item.carrier}</TableCell>
                  <TableCell>{item.memory}</TableCell>
+                <TableCell>${item.retailPrice}</TableCell>
                  <TableCell>${item.buybackMs}</TableCell>
+
                   
                  <TableCell>
                  {item.buybackResults != null ? (
