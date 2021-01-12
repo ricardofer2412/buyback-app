@@ -24,6 +24,7 @@ class BuybackiPhone extends React.Component {
         this.ref =  firebase.firestore().collection("unlockedBbList").orderBy('id')
         this.state = {
             unlockedBbList: [], 
+            averageBB : 0
       
         }
      
@@ -38,7 +39,8 @@ class BuybackiPhone extends React.Component {
     // e.preventDefault()
     const unlockedBbList = JSON.parse(JSON.stringify(this.state.unlockedBbList));
     const device = unlockedBbList[i]
-    console.log(device)
+    const deviceId =  unlockedBbList[i].unlockedBbList
+    console.log(device.uid)
     let phoneModel = model
     console.log('Model: ', model)
     let phoneCarrier = carrier
@@ -51,46 +53,56 @@ class BuybackiPhone extends React.Component {
       const { data } = response;
 
       const buybackResults = data.filter(data=> data.condition==='good')
-      
-      // let pricesList = buybackResults.map(
-      //   data => 
-      //   Number(data.price)
-        
-      // )
-      // console.log(pricesList)
+      let pricesList = buybackResults.map(
+        data => 
+       data.price
+      )
+      try {
+        const averagePriceList = []
 
-      // let total = 0
-      // for(i=0; i< pricesList.length; i++){
-      //   total += pricesList[i]
-      // }
-      // console.log('this is total', total)
-      // var buybackAvg = total / pricesList.length;
-      // console.log('BB Avg', buybackAvg)
-      let newDevice = {...device,buybackResults}
-      // console.log(buybackResults[1].price)
-      // let priceArray = []
-      
-      // for(i = 0; i<buybackResults.length; i++){
-      //   let priceList =buybackResults[i].price;
-      //   priceArray.push(priceList)
-      //   console.log(priceArray)
-      // }
-      // console.log(priceArray)
+        for(let i=0; i<pricesList.length; i++){
+          let price = pricesList[i].replace('$','')
+          var bbPrice = parseFloat(price)
+          averagePriceList.push(bbPrice)
+         
+        }
+        console.log(averagePriceList)
+        let total = 0
+        for(let i=0; i<averagePriceList.length; i++) {
+          total += averagePriceList[i]
+        }
+        let bbAvg =  total / averagePriceList.length
+        this.setState({
+          averageBB: bbAvg.toFixed(2)
+        })
+      } catch (e) {
+
+      }
+
+      let bbAvg =  this.state.averageBB;
+      let deviceNew = {...device, bbAvg }
+
+      let newDevice = {...deviceNew, buybackResults} 
+     
       const newDeviceList = [...this.state.unlockedBbList];
+
       newDeviceList.splice(i, 1, newDevice)
-      this.setState({ unlockedBbList: newDeviceList });
-      console.log(newDeviceList)
+
+      this.setState(
+        { unlockedBbList: newDeviceList 
+        });
+
+
       firebase
       .firestore()
       .collection("unlockedBbList")
+     
       .set({
         unlockedBbList: newDeviceList
       })
       .catch((error) => {
         console.error("Error adding customer: ", error);
-      });
-
-      
+      });      
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
@@ -152,8 +164,7 @@ class BuybackiPhone extends React.Component {
             <TableCell align="left">Memory</TableCell>
              <TableCell align="left">Retail Price</TableCell>
             <TableCell align="left">MobileSource BB</TableCell>
-           
-
+            <TableCell align="left">BuyBack Avg</TableCell>
             <TableCell align='left'>Others</TableCell>
             <TableCell align="left">ACTIONS</TableCell>
 
@@ -167,6 +178,7 @@ class BuybackiPhone extends React.Component {
                  <TableCell>{item.memory}</TableCell>
                 <TableCell>${item.retailPrice}</TableCell>
                  <TableCell>${item.buybackMs}</TableCell>
+                 <TableCell>${item.bbAvg}</TableCell>
 
                   
                  <TableCell>
