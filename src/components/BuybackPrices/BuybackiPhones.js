@@ -52,20 +52,20 @@ class BuybackiPhone extends React.Component {
 
       const buybackResults = data.filter(data=> data.condition==='good')
       
-      let pricesList = buybackResults.map(
-        data => 
-        Number(data.price)
+      // let pricesList = buybackResults.map(
+      //   data => 
+      //   Number(data.price)
         
-      )
-      console.log(pricesList)
+      // )
+      // console.log(pricesList)
 
-      let total = 0
-      for(i=0; i< pricesList.length; i++){
-        total += pricesList[i]
-      }
-      console.log('this is total', total)
-      var buybackAvg = total / pricesList.length;
-      console.log('BB Avg', buybackAvg)
+      // let total = 0
+      // for(i=0; i< pricesList.length; i++){
+      //   total += pricesList[i]
+      // }
+      // console.log('this is total', total)
+      // var buybackAvg = total / pricesList.length;
+      // console.log('BB Avg', buybackAvg)
       let newDevice = {...device,buybackResults}
       // console.log(buybackResults[1].price)
       // let priceArray = []
