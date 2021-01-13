@@ -14,7 +14,8 @@ import AddIcon from "@material-ui/icons/Add";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { apiEndpoint } from "../../config.js";
 import axios from "axios";
-
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 class BuybackiPhone extends React.Component {
     
@@ -33,6 +34,11 @@ class BuybackiPhone extends React.Component {
     
     componentDidMount() {
           this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+      }
+
+      getRetailPrices () {
+        console.log('get retail prices')
+        alert('Whoops, I dont do anything yet, but I will get retail prices in the future.')
       }
  
   async getPrice( e,carrier, model, phoneMemory, i) {
@@ -57,6 +63,7 @@ class BuybackiPhone extends React.Component {
         data => 
        data.price
       )
+
       try {
         const averagePriceList = []
 
@@ -78,31 +85,33 @@ class BuybackiPhone extends React.Component {
       } catch (e) {
 
       }
-
+      let mobileSourceBb = buybackResults[0].price;
       let bbAvg =  this.state.averageBB;
       let deviceNew = {...device, bbAvg }
-
       let newDevice = {...deviceNew, buybackResults} 
-     
       const newDeviceList = [...this.state.unlockedBbList];
-
       newDeviceList.splice(i, 1, newDevice)
-
+       console.log(newDeviceList)
       this.setState(
         { unlockedBbList: newDeviceList 
         });
+ 
 
 
       firebase
       .firestore()
       .collection("unlockedBbList")
-     
-      .set({
-        unlockedBbList: newDeviceList
+      .doc(deviceId)
+      .update({
+        bbAvg, 
+        buybackMs: mobileSourceBb
+
       })
       .catch((error) => {
         console.error("Error adding customer: ", error);
-      });      
+      });  
+      
+      
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
@@ -112,20 +121,25 @@ class BuybackiPhone extends React.Component {
         const unlockedBbList = [];
         querySnapshot.forEach((doc) => {
           const {
+            id,
             model, 
              carrier, 
              memory, 
              buybackMs, 
-             retailPrice
+             retailPrice,
+             bbAvg
           } = doc.data();
           
           unlockedBbList.push({
             unlockedBbList: doc.id,
+            id,
             model, 
             carrier, 
             memory, 
             buybackMs,
-            retailPrice
+            retailPrice, 
+            bbAvg
+
      
           });
         });
@@ -159,6 +173,7 @@ class BuybackiPhone extends React.Component {
       <Table >
         <TableHead>
           <TableRow>
+            <TableCell align="left">ID</TableCell>
             <TableCell align="left">Model</TableCell>
             <TableCell align="left">Carrier</TableCell>
             <TableCell align="left">Memory</TableCell>
@@ -173,11 +188,12 @@ class BuybackiPhone extends React.Component {
         <TableBody>
          {this.state.unlockedBbList.map((item, i) => (
              <TableRow key={`${i} - 1`}>
+                 <TableCell>{item.id}</TableCell>
                  <TableCell>{item.model}</TableCell>
                  <TableCell>{item.carrier}</TableCell>
                  <TableCell>{item.memory}</TableCell>
-                <TableCell>${item.retailPrice}</TableCell>
-                 <TableCell>${item.buybackMs}</TableCell>
+                 <TableCell>${item.retailPrice}</TableCell>
+                 <TableCell>{item.buybackMs}</TableCell>
                  <TableCell>${item.bbAvg}</TableCell>
 
                   
@@ -195,12 +211,23 @@ class BuybackiPhone extends React.Component {
                  </TableCell>
                
                  <TableCell>
-                       <AttachMoneyIcon
+                      <Tooltip title="Get BuyBack Prices">
+                       <MonetizationOnIcon
                         onClick={(e) => this.getPrice( e, item.carrier, item.model, item.memory, i)}
                          variant="contained"
                          disabled={i === 0}
                         style={{ color: "#ff1744", cursor: "pointer" }}
             />
+            
+            </Tooltip>
+                         <Tooltip title="Get Retail Prices">
+                       <LocalOfferIcon
+                        onClick={(e) => this.getRetailPrices()}
+                         variant="contained"
+                         disabled={i === 0}
+                        style={{ color: "#ff1744", cursor: "pointer", marginLeft: '10px'}}
+            />
+            </Tooltip>
                  </TableCell>
              </TableRow>
          ))}
