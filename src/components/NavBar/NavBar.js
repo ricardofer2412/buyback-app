@@ -23,9 +23,7 @@ import BuildIcon from "@material-ui/icons/Build";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import firebase from "../firebase/Firebase";
 import Button from "@material-ui/core/Button";
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-
-
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 const drawerWidth = 240;
 
@@ -51,15 +49,15 @@ const styles = (theme) => ({
   menuButton: {
     marginLeft: 12,
     marginRight: 20,
-    '&:hover': {
+    "&:hover": {
       background: "#3b5998",
-    }
+    },
   },
   hide: {
     display: "none",
-    '&:hover': {
-      background: 'white',
-    }
+    "&:hover": {
+      background: "white",
+    },
   },
   drawer: {
     width: drawerWidth,
@@ -76,7 +74,6 @@ const styles = (theme) => ({
     padding: "0 8px",
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
-     
   },
   content: {
     flexGrow: 1,
@@ -122,8 +119,6 @@ class PersistentDrawerLeft extends React.Component {
       if (doc.exists) {
         const userData = doc.data();
         const currentUserName = doc.data().userName;
-
- 
       }
     });
 
@@ -168,6 +163,7 @@ class PersistentDrawerLeft extends React.Component {
     return (
       <div className="root">
         <CssBaseline />
+
         <AppBar
           style={{ backgroundColor: "white" }}
           position="fixed"
@@ -184,6 +180,7 @@ class PersistentDrawerLeft extends React.Component {
             >
               <MenuIcon />
             </IconButton>
+
             <div className="navTitle">
               <div className="nav-title-div">
                 <Typography className="nav-title" noWrap>
@@ -274,7 +271,10 @@ class PersistentDrawerLeft extends React.Component {
             <ListItem button component={Link} to="/BuybackiPhones">
               <ListItemIcon className="menu-row">
                 <MonetizationOnIcon className="icon" />
-                <ListItemText primary="BuyBack Prices" className="ListItemText" />
+                <ListItemText
+                  primary="BuyBack Prices"
+                  className="ListItemText"
+                />
               </ListItemIcon>
             </ListItem>
           </List>

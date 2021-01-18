@@ -111,7 +111,7 @@ const EMPTY_DEVICE = {
   phoneModel: "",
   devicePrice: "",
   deviceTotal: "",
-  deviceMemory: ''
+  deviceMemory: "",
 };
 const classes = {
   topForm: {
@@ -172,7 +172,7 @@ class EditOrder extends Component {
       deviceCarrier: "",
       deviceModel: "",
       deviceImei: "",
-      deviceMemory: "", 
+      deviceMemory: "",
       deviceInvoiceNum: "",
       vendorName: "",
       deviceList: [{ ...EMPTY_DEVICE }],
@@ -193,8 +193,8 @@ class EditOrder extends Component {
     this.paymentEmail = this.paymentEmail.bind(this);
     this.orderProcess = this.orderProcess.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.getPrice = this.getPrice.bind(this)
-    this.rowTotal = this.rowTotal.bind(this)
+    this.getPrice = this.getPrice.bind(this);
+    this.rowTotal = this.rowTotal.bind(this);
   }
   componentDidMount() {
     try {
@@ -229,8 +229,7 @@ class EditOrder extends Component {
             processOrderDate: purchaseOrders.processOrderDate,
             paymentEmailDate: purchaseOrders.paymentEmailDate,
             pictureGallery: purchaseOrders.pictureGallery,
-            deviceMemory: purchaseOrders.deviceMemory
-   
+            deviceMemory: purchaseOrders.deviceMemory,
           });
         } else {
           console.log("Order does not exist!");
@@ -260,7 +259,7 @@ class EditOrder extends Component {
       price: this.state.devicePrice,
       deviceTotal: this.state.devicePrice * this.state.deviceQty,
       deviceMemory: this.state.deviceMemory,
-      buybackResults: this.state.buybackResults
+      buybackResults: this.state.buybackResults,
     };
     const newDeviceList = [...this.state.deviceList, newItem];
     let poTotal = 0;
@@ -282,7 +281,7 @@ class EditOrder extends Component {
           devicePrice: "",
           deviceComments: "",
           deviceCarrier: "",
-          deviceMemory: '', 
+          deviceMemory: "",
           poTotal,
         });
       });
@@ -352,40 +351,37 @@ class EditOrder extends Component {
         console.error("Error adding customer: ", error);
       });
   }
-  async getPrice( e,carrier, model, phoneMemory, i) {
-    e.preventDefault()
+  async getPrice(e, carrier, model, phoneMemory, i) {
+    e.preventDefault();
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
-    const device = deviceList[i]
-    console.log(device)
-    let phoneModel = model
-    console.log('Model: ', model)
-    let phoneCarrier = carrier
-    console.log(phoneCarrier)
-    console.log(phoneMemory)
+    const device = deviceList[i];
+    console.log(device);
+    let phoneModel = model;
+    console.log("Model: ", model);
+    let phoneCarrier = carrier;
+    console.log(phoneCarrier);
+    console.log(phoneMemory);
     const newUrl = apiEndpoint + "/price";
-    const body = { phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}` };
+    const body = {
+      phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
+    };
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
 
-      const buybackResults = data.filter(data=> data.condition==='good')
-      
-      let newDevice = {...device,buybackResults}
+      const buybackResults = data.filter((data) => data.condition === "good");
+
+      let newDevice = { ...device, buybackResults };
 
       const newDeviceList = [...this.state.deviceList];
-      newDeviceList.splice(i, 1, newDevice)
-      console.log('newlist', newDeviceList)
-     
-      
-      this.setState({ deviceList: newDeviceList });
-    
+      newDeviceList.splice(i, 1, newDevice);
+      console.log("newlist", newDeviceList);
 
-      
+      this.setState({ deviceList: newDeviceList });
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
-      console.log(this.state.deviceList)
-
+    console.log(this.state.deviceList);
   }
 
   async paymentEmail(e) {
@@ -472,8 +468,7 @@ class EditOrder extends Component {
           devicePrice: "0",
           deviceModel: data[i].Model,
           deviceComments: data[i].Cosmetics,
-          deviceMemory: data[i].Memory
-        
+          deviceMemory: data[i].Memory,
         });
       }
 
@@ -516,13 +511,10 @@ class EditOrder extends Component {
         console.error("Error adding customer: ", error);
       });
   }
-  rowTotal(i, deviceQty, devicePrice){
+  rowTotal(i, deviceQty, devicePrice) {
+    const deviceTotal = Number(deviceQty) * Number(devicePrice);
 
-    const deviceTotal = Number(deviceQty) * Number(devicePrice)
-
-    return deviceTotal
-  
-
+    return deviceTotal;
   }
 
   getTotal = () => {
@@ -581,7 +573,6 @@ class EditOrder extends Component {
         deviceList,
         expectPayDate,
         pictureGallery,
-        
       })
       .then(() => {
         this.props.history.push("/purchaseorders");
@@ -777,7 +768,6 @@ class EditOrder extends Component {
                     <TableCell align="right">TOTAL</TableCell>
                     <TableCell align="right">ACTIONS</TableCell>
                     <TableCell align="right">BUYBACKS</TableCell>
-                 
                   </TableRow>
                 </TableHead>
 
@@ -792,7 +782,7 @@ class EditOrder extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-             <Button
+            <Button
               style={{ margin: 25, cursor: "pointer" }}
               variant="contained"
               onClick={this.addNewDeviceRow}
@@ -804,38 +794,34 @@ class EditOrder extends Component {
             </Button>
             <Divider />
             <div>
-            <Typography style={{ color: "gray", fontSize: 30 }}>
-              Total: ${this.getTotal()}
-            </Typography>
+              <Typography style={{ color: "gray", fontSize: 30 }}>
+                Total: ${this.getTotal()}
+              </Typography>
 
-            <Button
-              style={classes.backButton}
-              variant="contained"
-              color="secondary"
-              component={Link}
-              to="/purchaseorders/"
-            >
-              {" "}
-              <BackspaceIcon className="button__icon" />
-              Back
-            </Button>
-            <Button
-              style={classes.saveButton}
-              type="submit"
-              variant="contained"
-              className={classes.submit}
-              onClick={this.onSubmit}
-              color="primary"
-            >
-              {" "}
-              <SaveIcon className="button__icon" />
-              Save
-            </Button>
+              <Button
+                style={classes.backButton}
+                variant="contained"
+                color="secondary"
+                component={Link}
+                to="/purchaseorders/"
+              >
+                {" "}
+                <BackspaceIcon className="button__icon" />
+                Back
+              </Button>
+              <Button
+                style={classes.saveButton}
+                type="submit"
+                variant="contained"
+                className={classes.submit}
+                onClick={this.onSubmit}
+                color="primary"
+              >
+                {" "}
+                <SaveIcon className="button__icon" />
+                Save
+              </Button>
             </div>
-
-           
-
-           
           </form>
         </div>
         <div className="bottom-form">

@@ -19,9 +19,11 @@ import UnlockediPhones from "./components/CellphonePrices/UnlockediPhones";
 import Tools from "./components/Tools/Tools";
 import Login from "./components/Login/index";
 import firebase from "./components/firebase/Firebase";
-import BuybackiPhones from './components/BuybackPrices/BuybackiPhones'
+import BuybackiPhones from "./components/BuybackPrices/BuybackiPhones";
 import CreateDevice from "./components/BuybackPrices/CreateDevice";
-import EditDevice from "./components/BuybackPrices/EditDevice"
+import EditDevice from "./components/BuybackPrices/EditDevice";
+import StocksWatch from "./components/Stocks/stocksWatch";
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div >
+      <div>
         {this.state.user === null || !this.state.user.uid ? (
           <Router>
             <Route path="/" render={() => <NavBar user={this.state.user} />} />
@@ -74,8 +76,12 @@ class App extends React.Component {
             <Route exact path="/Tools/" component={Tools} />
             <Route exact path="/BuybackiPhones/" component={BuybackiPhones} />
             <Route exact path="/buybackiPhones/new" component={CreateDevice} />
-            <Route exact path="/buybackiPhones/edit" component={EditDevice} />
-
+            <Route
+              exact
+              path="/buybackiPhones/edit/:id"
+              component={EditDevice}
+            />
+            <Route exact path="/Stocks" component={StocksWatch} />
           </Router>
         )}
       </div>
