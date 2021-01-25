@@ -44,7 +44,21 @@ class BuybackiPhone extends React.Component {
     );
   }
 
+  getPercentProfit(buying, selling) {
+    const profit = 0;
+    const buyingPrice = buying;
+    const sellingPrice = selling;
+    const sellingProfit = sellingPrice - buyingPrice;
+    const grossProfit = (sellingProfit / sellingPrice) * 100;
+
+    console.log("this is selling Profit", sellingProfit);
+    console.log("this is grossProfit %", grossProfit);
+
+    return profit;
+  }
+
   async getPrice(e, carrier, model, phoneMemory, i) {
+    this.getPercentProfit(30, 40);
     // e.preventDefault()
     const unlockedBbList = JSON.parse(
       JSON.stringify(this.state.unlockedBbList)
@@ -91,6 +105,8 @@ class BuybackiPhone extends React.Component {
       let deviceNew = { ...device, bbAvg };
       let newDevice = { ...deviceNew, buybackResults };
       const newDeviceList = [...this.state.unlockedBbList];
+      this.getPercentProfit(bbAvg, 1000);
+
       newDeviceList.splice(i, 1, newDevice);
       console.log(newDeviceList);
       this.setState({ unlockedBbList: newDeviceList });
@@ -169,6 +185,7 @@ class BuybackiPhone extends React.Component {
                   <TableCell align="left">Memory</TableCell>
                   <TableCell align="left">Retail Price</TableCell>
                   <TableCell align="left">MobileSource BB</TableCell>
+                  <TableCell align="left"> Profit Average</TableCell>
                   <TableCell align="left">BuyBack Avg</TableCell>
                   <TableCell align="left">Others</TableCell>
                   <TableCell align="left">ACTIONS</TableCell>
@@ -183,6 +200,7 @@ class BuybackiPhone extends React.Component {
                     <TableCell>{item.memory}</TableCell>
                     <TableCell>${item.retailPrice}</TableCell>
                     <TableCell>{item.buybackMs}</TableCell>
+                    <TableCell>%0</TableCell>
                     <TableCell>${item.bbAvg}</TableCell>
 
                     <TableCell>
@@ -201,11 +219,7 @@ class BuybackiPhone extends React.Component {
 
                     <TableCell>
                       <Tooltip title="Get BuyBack Prices">
-                        <IconButton
-                          component={Link}
-                          to={`/buybackiPhones/edit/${item.unlockedBbList}`}
-                          style={{ backgroundColor: "white" }}
-                        >
+                        <IconButton style={{ backgroundColor: "white" }}>
                           <MonetizationOnIcon
                             onClick={(e) =>
                               this.getPrice(
