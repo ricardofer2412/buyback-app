@@ -19,6 +19,8 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import BuildIcon from "@material-ui/icons/Build";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 class BuybackiPhone extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ class BuybackiPhone extends React.Component {
     this.state = {
       unlockedBbList: [],
       averageBB: 0,
+      loading: false,
     };
   }
 
@@ -37,6 +40,9 @@ class BuybackiPhone extends React.Component {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
+  setLoading = () => {
+    this.setState({ loading: true });
+  };
   getRetailPrices() {
     console.log("get retail prices");
     alert(
@@ -58,6 +64,8 @@ class BuybackiPhone extends React.Component {
   }
 
   async getPrice(e, carrier, model, phoneMemory, i) {
+    this.setState({ loading: true });
+
     this.getPercentProfit(30, 40);
     // e.preventDefault()
     const unlockedBbList = JSON.parse(
@@ -161,6 +169,7 @@ class BuybackiPhone extends React.Component {
     return (
       <div className="main">
         <div>Unlocked iPhone</div>
+
         <div
           style={{
             marginTop: "75px",
@@ -213,7 +222,7 @@ class BuybackiPhone extends React.Component {
                           ))}
                         </div>
                       ) : (
-                        <div></div>
+                        <div>{this.state.loading && <CircularProgress />}</div>
                       )}
                     </TableCell>
 
