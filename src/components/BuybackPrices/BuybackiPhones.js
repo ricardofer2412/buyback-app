@@ -212,7 +212,7 @@ class BuybackiPhone extends React.Component {
                     <TableCell>%0</TableCell>
                     <TableCell>${item.bbAvg}</TableCell>
 
-                    <TableCell>
+                    <TableCell key={i}>
                       {item.buybackResults != null ? (
                         <div>
                           {item.buybackResults.map((bb) => (
@@ -222,7 +222,7 @@ class BuybackiPhone extends React.Component {
                           ))}
                         </div>
                       ) : (
-                        <div>{this.state.loading && <CircularProgress />}</div>
+                        <div> - - </div>
                       )}
                     </TableCell>
 
