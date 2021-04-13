@@ -1,18 +1,18 @@
 import React from "react";
-import "./bb.css";
+import "../bb.css";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import firebase from "../firebase/Firebase";
+import firebase from '../../firebase/Firebase';
 import Tooltip from "@material-ui/core/Tooltip";
 import Fab from "@material-ui/core/Fab";
 import { Link } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import { apiEndpoint } from "../../config.js";
+import { apiEndpoint } from "../../../config.js";
 import axios from "axios";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
@@ -20,18 +20,17 @@ import BuildIcon from "@material-ui/icons/Build";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import SamsungBuyBack from "./SamsungPrices/SamsungBuyback"
 
-class BuybackiPhone extends React.Component {
+class SamsungBuyBack extends React.Component {
   constructor(props) {
     super(props);
     this.getPrice = this.getPrice.bind(this);
     this.ref = firebase
       .firestore()
-      .collection("unlockedBbList")
+      .collection("samsungPrices")
       .orderBy("id");
     this.state = {
-      unlockedBbList: [],
+      samsungPriceList: [],
       averageBB: 0,
       loading: false,
     };
@@ -41,39 +40,38 @@ class BuybackiPhone extends React.Component {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
-  setLoading = () => {
-    this.setState({ loading: true });
-  };
-  getRetailPrices() {
-    console.log("get retail prices");
-    alert(
-      "Whoops, I dont do anything yet, but I will get retail prices in the future."
-    );
-  }
+  // setLoading = () => {
+  //   this.setState({ loading: true });
+  // };
+  // getRetailPrices() {
+  //   console.log("get retail prices");
+  //   alert(
+  //     "Whoops, I dont do anything yet, but I will get retail prices in the future."
+  //   );
+  // }
 
-  getPercentProfit(buying, selling) {
-    const profit = 0;
-    const buyingPrice = buying;
-    const sellingPrice = selling;
-    const sellingProfit = sellingPrice - buyingPrice;
-    const grossProfit = (sellingProfit / sellingPrice) * 100;
+  // getPercentProfit(buying, selling) {
+  //   const profit = 0;
+  //   const buyingPrice = buying;
+  //   const sellingPrice = selling;
+  //   const sellingProfit = sellingPrice - buyingPrice;
+  //   const grossProfit = (sellingProfit / sellingPrice) * 100;
 
-    console.log("this is selling Profit", sellingProfit);
-    console.log("this is grossProfit %", grossProfit);
+  //   console.log("this is selling Profit", sellingProfit);
+  //   console.log("this is grossProfit %", grossProfit);
 
-    return profit;
-  }
+  //   return profit;
+  // }
 
   async getPrice(e, carrier, model, phoneMemory, i) {
     this.setState({ loading: true });
 
-    this.getPercentProfit(30, 40);
     // e.preventDefault()
-    const unlockedBbList = JSON.parse(
-      JSON.stringify(this.state.unlockedBbList)
+    const samsungPriceList = JSON.parse(
+      JSON.stringify(this.state.samsungPriceList)
     );
-    const device = unlockedBbList[i];
-    const deviceId = unlockedBbList[i].unlockedBbList;
+    const device = samsungPriceList[i];
+    const deviceId = samsungPriceList[i].samsungPriceList;
     console.log(device.uid);
     let phoneModel = model;
     console.log("Model: ", model);
@@ -87,7 +85,7 @@ class BuybackiPhone extends React.Component {
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
-
+      console.log('data' + data)
       const buybackResults = data.filter((data) => data.condition === "good");
       let pricesList = buybackResults.map((data) => data.price);
 
@@ -113,16 +111,16 @@ class BuybackiPhone extends React.Component {
       let bbAvg = this.state.averageBB;
       let deviceNew = { ...device, bbAvg };
       let newDevice = { ...deviceNew, buybackResults };
-      const newDeviceList = [...this.state.unlockedBbList];
+      const newDeviceList = [...this.state.samsungPriceList];
       this.getPercentProfit(bbAvg, 1000);
 
       newDeviceList.splice(i, 1, newDevice);
       console.log(newDeviceList);
-      this.setState({ unlockedBbList: newDeviceList });
+      this.setState({ samsungPriceList: newDeviceList });
 
       firebase
         .firestore()
-        .collection("unlockedBbList")
+        .collection("samsungPriceList")
         .doc(deviceId)
         .update({
           bbAvg,
@@ -136,7 +134,7 @@ class BuybackiPhone extends React.Component {
     }
   }
   onCollectionUpdate = (querySnapshot) => {
-    const unlockedBbList = [];
+    const samsungPriceList = [];
     querySnapshot.forEach((doc) => {
       const {
         uid,
@@ -149,8 +147,8 @@ class BuybackiPhone extends React.Component {
         bbAvg,
       } = doc.data();
 
-      unlockedBbList.push({
-        unlockedBbList: doc.id,
+      samsungPriceList.push({
+        samsungPriceList: doc.id,
         id,
         model,
         carrier,
@@ -163,13 +161,13 @@ class BuybackiPhone extends React.Component {
     });
 
     this.setState({
-      unlockedBbList,
+      samsungPriceList,
     });
-  };
+  }
+
   render() {
     return (
 
-   
       <div className="main">
         <div>Unlocked iPhone</div>
 
@@ -180,26 +178,11 @@ class BuybackiPhone extends React.Component {
             marginLeft: "75px",
           }}
         >
-         
-         
-          <div className="model-button"> 
-          <div> 
-            <button>iPhones</button>
-            </div> 
-            <div> 
-            <button>Samsung</button>
-            </div> 
-            <div> 
-            <button>iPads</button>
-            </div> 
-          </div> 
-
           <Tooltip title="Add Model">
             <Fab component={Link} to="/buybackiPhones/new" aria-label="Add">
               <AddIcon />
             </Fab>
           </Tooltip>
-          
         </div>
         <div className="paper">
           <TableContainer>
@@ -219,7 +202,7 @@ class BuybackiPhone extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.unlockedBbList.map((item, i) => (
+                {this.state.samsungPriceList.map((item, i) => (
                   <TableRow key={`${i} - 1`}>
                     <TableCell>{item.id}</TableCell>
                     <TableCell>{item.model}</TableCell>
@@ -266,7 +249,7 @@ class BuybackiPhone extends React.Component {
                       <Tooltip title="Edit Device">
                         <IconButton
                           component={Link}
-                          to={`/buybackiPhones/edit/${item.unlockedBbList}`}
+                          to={`/buybackiPhones/edit/${item.samsungPriceList}`}
                           style={{ backgroundColor: "white" }}
                         >
                           <EditIcon
@@ -292,4 +275,4 @@ class BuybackiPhone extends React.Component {
   }
 }
 
-export default BuybackiPhone;
+export default SamsungBuyBack;

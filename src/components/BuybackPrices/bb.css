@@ -7,4 +7,10 @@
     background-color: white;
     margin-top: 100px;
     margin-left: 60px;
+
+}
+
+.model-button {
+    display: flex;
+    justify-content: space-around;
 }
