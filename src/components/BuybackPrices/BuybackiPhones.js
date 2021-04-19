@@ -21,6 +21,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SamsungBuyBack from "./SamsungPrices/SamsungBuyback"
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 class BuybackiPhone extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class BuybackiPhone extends React.Component {
       unlockedBbList: [],
       averageBB: 0,
       loading: false,
+      lastBuyBackUpdate: ''
     };
   }
 
@@ -60,18 +62,20 @@ class BuybackiPhone extends React.Component {
 
     console.log("this is selling Profit", sellingProfit);
     console.log("this is grossProfit %", grossProfit);
-
+    const totalProfit = profit
     return profit;
+
   }
 
   async getPrice(e, carrier, model, phoneMemory, i) {
     this.setState({ loading: true });
 
-    this.getPercentProfit(30, 40);
+    // this.getPercentProfit(30, 40);
     // e.preventDefault()
     const unlockedBbList = JSON.parse(
       JSON.stringify(this.state.unlockedBbList)
     );
+    const lastTimeUpdate = new Date().toLocaleString()
     const device = unlockedBbList[i];
     const deviceId = unlockedBbList[i].unlockedBbList;
     console.log(device.uid);
@@ -87,10 +91,9 @@ class BuybackiPhone extends React.Component {
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
-
       const buybackResults = data.filter((data) => data.condition === "good");
       let pricesList = buybackResults.map((data) => data.price);
-
+//price Average
       try {
         const averagePriceList = [];
 
@@ -99,7 +102,6 @@ class BuybackiPhone extends React.Component {
           var bbPrice = parseFloat(price);
           averagePriceList.push(bbPrice);
         }
-        console.log(averagePriceList);
         let total = 0;
         for (let i = 0; i < averagePriceList.length; i++) {
           total += averagePriceList[i];
@@ -109,24 +111,33 @@ class BuybackiPhone extends React.Component {
           averageBB: bbAvg.toFixed(2),
         });
       } catch (e) {}
+
+      
       let mobileSourceBb = buybackResults[0].price;
+      console.log("MobileSource " + mobileSourceBb)
+      console.log('Device Id: ', deviceId)
       let bbAvg = this.state.averageBB;
-      let deviceNew = { ...device, bbAvg };
-      let newDevice = { ...deviceNew, buybackResults };
+      
+
+      // let deviceNew = { ...device, bbAvg  };
+      let newDevice = { ...device, buybackResults, bbAvg };
       const newDeviceList = [...this.state.unlockedBbList];
       this.getPercentProfit(bbAvg, 1000);
-
       newDeviceList.splice(i, 1, newDevice);
-      console.log(newDeviceList);
       this.setState({ unlockedBbList: newDeviceList });
 
+      this.getPercentProfit(bbAvg, device.retailPrice)
+      console.log('profit',this.totalProfit)
+
+      console.log('new device', newDevice)
       firebase
         .firestore()
         .collection("unlockedBbList")
         .doc(deviceId)
         .update({
-          bbAvg,
-          buybackMs: mobileSourceBb,
+          buybackResults: buybackResults,
+          lastBuyBackUpdate: lastTimeUpdate, 
+          // profit: profit
         })
         .catch((error) => {
           console.error("Error adding customer: ", error);
@@ -147,6 +158,8 @@ class BuybackiPhone extends React.Component {
         buybackMs,
         retailPrice,
         bbAvg,
+        buybackResults, 
+        lastBuyBackUpdate
       } = doc.data();
 
       unlockedBbList.push({
@@ -159,6 +172,8 @@ class BuybackiPhone extends React.Component {
         retailPrice,
         bbAvg,
         uid,
+        buybackResults, 
+        lastBuyBackUpdate
       });
     });
 
@@ -180,19 +195,7 @@ class BuybackiPhone extends React.Component {
             marginLeft: "75px",
           }}
         >
-         
-         
-          <div className="model-button"> 
-          <div> 
-            <button>iPhones</button>
-            </div> 
-            <div> 
-            <button>Samsung</button>
-            </div> 
-            <div> 
-            <button>iPads</button>
-            </div> 
-          </div> 
+
 
           <Tooltip title="Add Model">
             <Fab component={Link} to="/buybackiPhones/new" aria-label="Add">
@@ -212,10 +215,13 @@ class BuybackiPhone extends React.Component {
                   <TableCell align="left">Memory</TableCell>
                   <TableCell align="left">Retail Price</TableCell>
                   <TableCell align="left">MobileSource BB</TableCell>
-                  <TableCell align="left"> Profit Average</TableCell>
+                  {/* <TableCell align="left">Profit Average</TableCell> */}
                   <TableCell align="left">BuyBack Avg</TableCell>
                   <TableCell align="left">Others</TableCell>
+                  <TableCell align="left">Last Update</TableCell>
                   <TableCell align="left">ACTIONS</TableCell>
+                
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -227,8 +233,11 @@ class BuybackiPhone extends React.Component {
                     <TableCell>{item.memory}</TableCell>
                     <TableCell>${item.retailPrice}</TableCell>
                     <TableCell>{item.buybackMs}</TableCell>
-                    <TableCell>%0</TableCell>
+                    {/* <TableCell>{item.profit}</TableCell> */}
                     <TableCell>${item.bbAvg}</TableCell>
+
+                  
+
 
                     <TableCell key={i}>
                       {item.buybackResults != null ? (
@@ -243,6 +252,7 @@ class BuybackiPhone extends React.Component {
                         <div> - - </div>
                       )}
                     </TableCell>
+                    <TableCell>{item.lastBuyBackUpdate}</TableCell>
 
                     <TableCell>
                       <Tooltip title="Get BuyBack Prices">
