@@ -114,13 +114,29 @@ class CreateDevice extends Component {
       buybackMs: '', 
       deviceId: '', 
       retailPrice: '', 
+      numberOfItems: 0
     };
 
   }
 
   componentDidMount() {
-
+       this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
+
+  onCollectionUpdate = (querySnapshot) => {
+  
+   
+    let num = 0;
+
+    querySnapshot.forEach(() => {
+      num += 1;
+    })
+
+      console.log('querySnapshot: ', num);
+    this.setState({
+      numberOfItems: num,
+    });
+  };
 
   onChange = (e) => {
 
@@ -154,10 +170,11 @@ class CreateDevice extends Component {
     this.ref.add({
 
         model, 
-        carrier, 
         memory, 
+        carrier: "Unlocked",
         buybackMs, 
-        id,
+        id: this.state.numberOfItems + 1,
+        createDate: Date.now(),
         retailPrice
     }).then((docRef) => {
 
@@ -215,18 +232,7 @@ class CreateDevice extends Component {
           <form onSubmit={this.onSubmit.bind(this)} className={classes.container} noValidate>
             <Grid container spacing={2}>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  label="ID"
-                  InputProps={{ name: 'deviceId' }}
-                  className={classes.textField}
-                  onChange={this.onChange}
-                  value={deviceId}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
+            
               <Grid item xs={12}>
 
                 <TextField
@@ -240,31 +246,7 @@ class CreateDevice extends Component {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12}>
-              <TextField
-                select
-                label="Carrier"
-                InputProps={{ name: "carrier" }}
-                className={classes.textField}
-                value={this.state.carrier}
-                onChange={this.onChange}
-                style={{ width: 500 }}
-                SelectProps={{
-                  MenuProps: {
-                    
-                  },
-                }}
-                helperText="Please select "
-                margin="normal"
-                variant="outlined"
-              >
-                {carriers.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField> 
-              </Grid>
+          
               <Grid item xs={12}>
               <TextField
                 select

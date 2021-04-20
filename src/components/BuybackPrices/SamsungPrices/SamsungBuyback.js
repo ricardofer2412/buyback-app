@@ -80,8 +80,10 @@ class SamsungBuyBack extends React.Component {
     console.log(phoneMemory);
     const newUrl = apiEndpoint + "/price";
     const body = {
-      phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
+      // phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
+      phone: `${phoneModel}?carrier=${phoneCarrier}&capacity=${phoneMemory}`,
     };
+
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;

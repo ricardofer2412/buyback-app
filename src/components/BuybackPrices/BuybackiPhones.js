@@ -22,6 +22,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SamsungBuyBack from "./SamsungPrices/SamsungBuyback"
 import { ContactSupportOutlined } from "@material-ui/icons";
+import { NativeSelect } from "@material-ui/core";
 
 class BuybackiPhone extends React.Component {
   constructor(props) {
@@ -30,12 +31,13 @@ class BuybackiPhone extends React.Component {
     this.ref = firebase
       .firestore()
       .collection("unlockedBbList")
-      .orderBy("id");
+      .orderBy("createDate");
     this.state = {
       unlockedBbList: [],
       averageBB: 0,
       loading: false,
-      lastBuyBackUpdate: ''
+      lastBuyBackUpdate: '',
+      loadingIdx: false
     };
   }
 
@@ -69,6 +71,7 @@ class BuybackiPhone extends React.Component {
 
   async getPrice(e, carrier, model, phoneMemory, i) {
     this.setState({ loading: true });
+    this.setState({loadingIdx: i});
 
     // this.getPercentProfit(30, 40);
     // e.preventDefault()
@@ -110,13 +113,17 @@ class BuybackiPhone extends React.Component {
         this.setState({
           averageBB: bbAvg.toFixed(2),
         });
-      } catch (e) {}
+      } catch (e) {
+      }
 
       
       let mobileSourceBb = buybackResults[0].price;
+
+      mobileSourceBb = mobileSourceBb.replace("$", '')
+      mobileSourceBb = Number(mobileSourceBb)
       console.log("MobileSource " + mobileSourceBb)
       console.log('Device Id: ', deviceId)
-      let bbAvg = this.state.averageBB;
+      let bbAvg = parseFloat(this.state.averageBB);
       
 
       // let deviceNew = { ...device, bbAvg  };
@@ -124,7 +131,7 @@ class BuybackiPhone extends React.Component {
       const newDeviceList = [...this.state.unlockedBbList];
       this.getPercentProfit(bbAvg, 1000);
       newDeviceList.splice(i, 1, newDevice);
-      this.setState({ unlockedBbList: newDeviceList });
+      this.setState({ unlockedBbList: newDeviceList, loadingIdx: false });
 
       this.getPercentProfit(bbAvg, device.retailPrice)
       console.log('profit',this.totalProfit)
@@ -137,6 +144,8 @@ class BuybackiPhone extends React.Component {
         .update({
           buybackResults: buybackResults,
           lastBuyBackUpdate: lastTimeUpdate, 
+          newUpdateBuyBack: mobileSourceBb,
+          carrier: newDevice.carrier
           // profit: profit
         })
         .catch((error) => {
@@ -159,7 +168,8 @@ class BuybackiPhone extends React.Component {
         retailPrice,
         bbAvg,
         buybackResults, 
-        lastBuyBackUpdate
+        lastBuyBackUpdate, 
+        newUpdateBuyBack
       } = doc.data();
 
       unlockedBbList.push({
@@ -173,15 +183,57 @@ class BuybackiPhone extends React.Component {
         bbAvg,
         uid,
         buybackResults, 
-        lastBuyBackUpdate
+        lastBuyBackUpdate,
+        newUpdateBuyBack
       });
     });
+
+    unlockedBbList.reverse();
 
     this.setState({
       unlockedBbList,
     });
   };
+
+  handleOnChangeType = (e) => {
+    const { value } = e.target;
+    if (value === 'iphone') {
+      // LOAD IPHONE
+           this.unsubscribe();
+      this.ref = firebase
+      .firestore()
+      .collection("unlockedBbList")
+      .orderBy("id");
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    }
+    if (value === 'samsung') {
+      this.unsubscribe();
+      this.ref = firebase
+      .firestore()
+      .collection("samsungPrices")
+      .orderBy("id");
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+      // LOAD SAUSMUNG
+    }
+
+    if (value === 'ipad') {
+      // LOAD IPAD
+    }
+
+  }
+
+
+  handleCarrierChange = (e, i) => {
+    const { value }  = e.target;
+    const copy = this.state.unlockedBbList.slice(0);
+    const newItem = { ...copy[i], carrier: value };
+    copy.splice(i, 1, newItem);
+    this.setState({
+      unlockedBbList: copy
+    })
+  }
   render() {
+    console.log('unlockedBbList', this.state.unlockedBbList);
     return (
 
    
@@ -202,6 +254,11 @@ class BuybackiPhone extends React.Component {
               <AddIcon />
             </Fab>
           </Tooltip>
+          <NativeSelect style={{ marginLeft: 20 }} onChange={this.handleOnChangeType}>
+            <option value="iphone">iPhone</option>
+            <option value="samsung">Samsung</option>
+            <option value="ipad">iPad</option>
+          </NativeSelect>
           
         </div>
         <div className="paper">
@@ -214,7 +271,8 @@ class BuybackiPhone extends React.Component {
                   <TableCell align="left">Carrier</TableCell>
                   <TableCell align="left">Memory</TableCell>
                   <TableCell align="left">Retail Price</TableCell>
-                  <TableCell align="left">MobileSource BB</TableCell>
+                  <TableCell align="left">MobileSource BB Old</TableCell>
+                  <TableCell align="left">MobileSource BB New</TableCell>
                   {/* <TableCell align="left">Profit Average</TableCell> */}
                   <TableCell align="left">BuyBack Avg</TableCell>
                   <TableCell align="left">Others</TableCell>
@@ -227,12 +285,20 @@ class BuybackiPhone extends React.Component {
               <TableBody>
                 {this.state.unlockedBbList.map((item, i) => (
                   <TableRow key={`${i} - 1`}>
-                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.model}</TableCell>
-                    <TableCell>{item.carrier}</TableCell>
+                    <TableCell>
+                      <NativeSelect onChange={(e) => this.handleCarrierChange(e, i)} value={item.carrier}>
+                        <option value="Unlocked">Unlocked</option>
+                        <option value="Sprint">Sprint</option>
+                        <option value="AT-T">AT&T</option>
+                        <option value="T-Mobile">T-Mobile</option>
+                      </NativeSelect>
+                    </TableCell>
                     <TableCell>{item.memory}</TableCell>
                     <TableCell>${item.retailPrice}</TableCell>
                     <TableCell>{item.buybackMs}</TableCell>
+                    <TableCell>{item.newUpdateBuyBack}</TableCell>
                     {/* <TableCell>{item.profit}</TableCell> */}
                     <TableCell>${item.bbAvg}</TableCell>
 
@@ -240,25 +306,30 @@ class BuybackiPhone extends React.Component {
 
 
                     <TableCell key={i}>
-                      {item.buybackResults != null ? (
-                        <div>
-                          {item.buybackResults.map((bb) => (
-                            <p>
-                              {bb.vendor}: {bb.price}
-                            </p>
-                          ))}
-                        </div>
-                      ) : (
-                        <div> - - </div>
-                      )}
+                    {this.state.loadingIdx !== false && this.state.loadingIdx === i ? (
+                      <CircularProgress />
+                    ) : (
+                      <React.Fragment>
+
+                        {item.buybackResults != null ? (
+                          <div>
+                            {item.buybackResults.map((bb) => (
+                              <p>
+                                {bb.vendor}: {bb.price}
+                              </p>
+                            ))}
+                          </div>
+                        ) : (
+                          <div> - - </div>
+                        )}
+                      </React.Fragment>
+                    )}
                     </TableCell>
                     <TableCell>{item.lastBuyBackUpdate}</TableCell>
 
                     <TableCell>
                       <Tooltip title="Get BuyBack Prices">
-                        <IconButton style={{ backgroundColor: "white" }}>
-                          <MonetizationOnIcon
-                            onClick={(e) =>
+                        <IconButton  onClick={(e) =>
                               this.getPrice(
                                 e,
                                 item.carrier,
@@ -266,7 +337,9 @@ class BuybackiPhone extends React.Component {
                                 item.memory,
                                 i
                               )
-                            }
+                            } style={{ backgroundColor: "white" }}>
+                          <MonetizationOnIcon
+                           
                             variant="contained"
                             disabled={i === 0}
                             style={{ color: "#ff1744", cursor: "pointer" }}
