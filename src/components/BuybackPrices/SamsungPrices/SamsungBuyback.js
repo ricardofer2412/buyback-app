@@ -180,11 +180,11 @@ class SamsungBuyBack extends React.Component {
             marginLeft: "75px",
           }}
         >
-          <Tooltip title="Add Model">
+          {/* <Tooltip title="Add Model">
             <Fab component={Link} to="/buybackiPhones/new" aria-label="Add">
               <AddIcon />
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         <div className="paper">
           <TableContainer>

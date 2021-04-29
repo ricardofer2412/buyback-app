@@ -373,7 +373,7 @@ class CreateDevice extends Component {
 //                 </Dialog>
 //               </div>
 //               <div>
-//                 <select onChange={this.handleCustomerChange} value={this.state.currentCustomer}>
+//                  onChange={this.handleCustomerChange} value={this.state.currentCustomer}>
 //                   {this.state.customers.map(customer => (
 //                     <option value={customer.vendorName}>{customer.vendorName}</option>
 //                   ))}
