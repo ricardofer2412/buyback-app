@@ -20,6 +20,7 @@ import BuildIcon from "@material-ui/icons/Build";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import QuickQuote from "../../QuickQuote/QuickQuote";
 
 class SamsungBuyBack extends React.Component {
   constructor(props) {
@@ -265,6 +266,7 @@ class SamsungBuyBack extends React.Component {
                           />
                         </IconButton>
                       </Tooltip>
+                      <QuickQuote phoneData={item} /> 
                     </TableCell>
                   </TableRow>
                 ))}

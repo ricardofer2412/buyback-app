@@ -25,6 +25,7 @@ import { ContactSupportOutlined } from "@material-ui/icons";
 import { NativeSelect, Tab } from "@material-ui/core";
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
+import QuickQuote from "../QuickQuote/QuickQuote";
 class BuybackiPhone extends React.Component {
   constructor(props) {
     super(props);
@@ -387,8 +388,11 @@ class BuybackiPhone extends React.Component {
                               marginLeft: "10px",
                             }}
                           />
+                       
                         </IconButton>
+
                       </Tooltip>
+                      <QuickQuote phoneData={item} /> 
                     </TableCell>
                   </TableRow>
                 ))}
