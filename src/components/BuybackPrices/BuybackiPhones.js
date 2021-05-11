@@ -52,7 +52,7 @@ class BuybackiPhone extends React.Component {
     this.setState({ loading: true });
   };
   getRetailPrices() {
-    console.log("get retail prices");
+   
     alert(
       "Whoops, I dont do anything yet, but I will get retail prices in the future."
     );
@@ -65,11 +65,10 @@ class BuybackiPhone extends React.Component {
     const sellingProfit = sellingPrice - buyingPrice;
     const grossProfit = (sellingProfit / sellingPrice) * 100;
 
-    console.log("this is selling Profit", sellingProfit);
-    console.log("this is grossProfit %", grossProfit);
+ 
     const totalProfit = grossProfit
 
-    console.log("This is profit", grossProfit)
+
     this.setState({
       profit: totalProfit.toFixed(2)
     })
@@ -88,12 +87,11 @@ class BuybackiPhone extends React.Component {
     const lastTimeUpdate = new Date().toLocaleString()
     const device = unlockedBbList[i];
     const deviceId = unlockedBbList[i].unlockedBbList;
-    console.log(device.uid);
+    
     let phoneModel = model;
-    console.log("Model: ", model);
+ 
     let phoneCarrier = carrier;
-    console.log(phoneCarrier);
-    console.log(phoneMemory);
+
     const newUrl = apiEndpoint + "/price";
     const body = {
       phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
@@ -134,8 +132,7 @@ class BuybackiPhone extends React.Component {
 
       mobileSourceBb = mobileSourceBb.replace("$", '')
       mobileSourceBb = Number(mobileSourceBb)
-      console.log("MobileSource " + mobileSourceBb)
-      console.log('Device Id: ', deviceId)
+
       let bbAvg = parseFloat(this.state.averageBB);
       let newDevice = { ...device, buybackResults, bbAvg };
       const newDeviceList = [...this.state.unlockedBbList];
@@ -253,7 +250,7 @@ class BuybackiPhone extends React.Component {
     })
   }
   render() {
-    console.log('unlockedBbList', this.state.unlockedBbList);
+   
     return (
 
    

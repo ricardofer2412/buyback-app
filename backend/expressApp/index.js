@@ -161,3 +161,43 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server listing on port ${PORT}`);
 });
+
+app.post("/api/emailQuickQuote", (req, res) => {
+  nodemailer.createTestAccount((err, account) => {
+    const htmlEmail = `
+       <p> EMAIL SENT </p> 
+      `;
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "donot-reply@mobilesource.com", // generated ethereal user
+        pass: "M@bile2020", // generated ethereal password
+      },
+    });
+    let mailOptions = {
+      from: "donot-reply@mobilesource.com",
+      to: `${req.body.customerEmail}`,
+      subject: "Your buy-back order has arrived!",
+      html: htmlEmail,
+    };
+
+    console.log("rq.body", req.body);
+
+    if (req.body.pictureGallery) {
+      mailOptions.attachments = req.body.pictureGallery.map((picture) => ({
+        path: picture.url,
+      }));
+    }
+
+    console.log("mailOoptions ", mailOptions);
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        return console.log(err);
+      }
+      console.log("Message Sent!!!");
+    });
+  });
+});

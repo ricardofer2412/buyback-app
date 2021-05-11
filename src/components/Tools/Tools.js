@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import { apiEndpoint } from "../../config.js";
 import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const carrier = [
   {
@@ -48,6 +49,7 @@ class Tools extends React.Component {
       imeiStatus: "",
       deviceCarrier: "",
       devicetype: "",
+      loadingiCloud: false, 
     };
   }
 
@@ -57,7 +59,12 @@ class Tools extends React.Component {
     this.setState({ purchaseOrder: state });
   };
 
+  setLoading = () => {
+    this.setState({ loadingiCloud: true });
+  };
+
   getiCloud = async (e) => {
+    this.setLoading()
     e.preventDefault();
     console.log("test for iCloud");
     // body: `Invoiceno=15964`,
@@ -76,6 +83,7 @@ class Tools extends React.Component {
       this.setState({
         deviceInfo: data,
         deviceStatus: deviceStatus,
+        loadingiCloud: false
       });
     } catch (e) {
       console.log("ERROR getting info: ", e);
@@ -99,6 +107,7 @@ class Tools extends React.Component {
       const { data } = getInfo;
       this.setState({
         deviceInfo: data,
+
       });
     } catch (e) {
       console.log("ERROR getting info: ", e);
@@ -136,14 +145,24 @@ class Tools extends React.Component {
               Check
             </Button>
           </div>
-          <div>
-            ICLOUD STATUS:
+          ICLOUD STATUS:
+
+          {this.state.loadingiCloud !== false ? (
+              <CircularProgress />
+          ) :
+          (
+            <div>
             {this.state.deviceStatus === "OFF" ? (
               <h4 style={{ color: "green" }}>{this.state.deviceStatus}</h4>
             ) : (
               <h4 style={{ color: "red" }}>{this.state.deviceStatus}</h4>
             )}
           </div>
+       
+
+          )}
+
+        
         </div>
 
         <div className="tools__container">

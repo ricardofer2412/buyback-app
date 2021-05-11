@@ -6,6 +6,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Axios from "axios";
+import { apiEndpoint } from "../../config";
 
 export default class QuickQuote extends React.Component {
   constructor(props) {
@@ -13,12 +15,13 @@ export default class QuickQuote extends React.Component {
 
     this.sendQuote = this.sendQuote.bind(this);
 
+
     this.state = {
       phoneModel: this.props.phoneData,
       open: false,
       customerName: "",
       customerEmail: "",
-      customePhoneNumber: "",
+      customerPhoneNumber: "",
       customerQuote: "",
     };
   }
@@ -32,11 +35,33 @@ export default class QuickQuote extends React.Component {
   };
 
   sendQuote() {
-    this.handleClose();
+   
     console.log("New Price Sent");
+    console.log("This is myName: " + this.state.customerName)
+    console.log("This is my Email: " + this.state.customerEmail)
+    console.log("This is my Phone: " + this.state.customerPhoneNumber)
+    console.log("This is my Quote: " + this.state.customerQuote)
+
+    const { customerPhoneNumber, customerEmail, customerQuote, customerName} = this.state;
+
+    const emailQuickQuote = await axios.post(apiEndpoint, {
+        path:'/api/emailQuickQuote',
+        method: 'post', 
+        body: {
+            customerEmail, 
+            customerName, 
+            customerPhoneNumber, 
+            customerQuote
+        }
+    })
+    console.log('Email Quick Quote')
+
+
+    this.handleClose();
+ 
   }
 
-  saveQuote() {}
+
 
   onChange = (e) => {
     const state = this.state;
@@ -51,7 +76,7 @@ export default class QuickQuote extends React.Component {
       customerEmail,
       customerQuote,
     } = this.state;
-    console.log(this.state.phoneModel)
+
     return (
       <div>
         <Button
@@ -73,25 +98,23 @@ export default class QuickQuote extends React.Component {
               {this.state.phoneModel.memory}
             </DialogContentText>
             <TextField
-              autoFocus
-              margin="dense"
+                  required
+                  margin="dense"
               id="name"
               label="Name"
               InputProps={{ name: "customerName" }}
               onChange={this.onChange}
               value={customerName}
-              type="email"
               fullWidth
             />
             <TextField
-              autoFocus
+              required
               margin="dense"
               id="name"
               label="PhoneNumber"
               InputProps={{ name: "customerPhoneNumber" }}
               onChange={this.onChange}
               value={customerPhoneNumber}
-              type="email"
               fullWidth
             />
             <TextField
@@ -101,7 +124,6 @@ export default class QuickQuote extends React.Component {
               label="Email"
               InputProps={{ name: "customerEmail" }}
               onChange={this.onChange}
-              type="email"
               fullWidth
             />
             <TextField
@@ -112,7 +134,6 @@ export default class QuickQuote extends React.Component {
               InputProps={{ name: "customerQuote" }}
               onChange={this.onChange}
               value={customerQuote}
-              type="email"
               fullWidth
             />
           </DialogContent>
