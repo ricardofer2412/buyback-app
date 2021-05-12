@@ -101,6 +101,8 @@ Thank you</p>
     let mailOptions = {
       from: "donot-reply@mobilesource.com",
       to: `${req.body.email}`,
+      subject: "Great News!!!",
+
       text: "Your payment has been initiated!",
       html: htmlEmail,
     };
@@ -156,48 +158,70 @@ app.post("/api/orderProcess/", (req, res) => {
     });
   });
 });
-const PORT = 8080;
 
-app.listen(PORT, () => {
-  console.log(`Server listing on port ${PORT}`);
-});
+app.post('/api/emailQuickQuote', (req, res) => {
 
-app.post("/api/emailQuickQuote", (req, res) => {
   nodemailer.createTestAccount((err, account) => {
     const htmlEmail = `
-       <p> EMAIL SENT </p> 
-      `;
+        <h3><strong>HERE IS YOUR QUOTE</strong></h3>
+       
+        <p> Hello  ${req.body.customerName}
+        </p>
+        <p> Your quote for <strong> ${req.body.phoneModel.model} ${req.body.phoneModel.carrier} ${req.body.phoneModel.memory} </strong> n Good Condition
+        </p>
+        <br> 
+        <p> <strong>$${req.body.customerQuote}</strong>  
+        
+        </p>
+        <br/>
+        </p> 
+        Pending upon device inspection
+        <p> 
+        <br/>
+        <p> 
+        This offer is valid for 10 days 
+        </p> 
+        If you have questions please email our <a href = "mailto: support@mobilesource.com">Support Team</a>
+        support team.  
+        Thank you
+               </p> 
+               <p> 
+               Mobilesource Corp
+               </p> 
+               <br>
+               <p> 
+              561.416.7224
+               </p> 
+      `
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: "donot-reply@mobilesource.com", // generated ethereal user
-        pass: "M@bile2020", // generated ethereal password
+        user: 'donot-reply@mobilesource.com', // generated ethereal user
+        pass: 'M@bile2020' // generated ethereal password
       },
     });
     let mailOptions = {
-      from: "donot-reply@mobilesource.com",
+      from: 'donot-reply@mobilesource.com',
       to: `${req.body.customerEmail}`,
-      subject: "Your buy-back order has arrived!",
-      html: htmlEmail,
-    };
+      subject: "YOUR MOBILESOURCE OFFER IS READY",
 
-    console.log("rq.body", req.body);
-
-    if (req.body.pictureGallery) {
-      mailOptions.attachments = req.body.pictureGallery.map((picture) => ({
-        path: picture.url,
-      }));
+      text: "Text Received Order Email",
+      html: htmlEmail
     }
-
-    console.log("mailOoptions ", mailOptions);
-
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
-        return console.log(err);
+        return console.log(err)
       }
-      console.log("Message Sent!!!");
-    });
-  });
+      console.log('Message Sent!!!')
+    })
+  })
+})
+
+
+const PORT = 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server listing on port ${PORT}`);
 });

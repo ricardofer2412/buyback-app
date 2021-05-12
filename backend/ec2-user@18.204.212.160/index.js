@@ -1,7 +1,7 @@
 //chmod 400 emailBE.pem GETS A NEW KEY
 //./connectionAws.sh connects with server
 // ./deploy.sh deploys app
-
+//cat file index.js reads file on EC2
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -85,6 +85,8 @@ app.post('/api/paymentEmail', (req, res) => {
     let mailOptions = {
       from: 'donot-reply@mobilesource.com',
       to: `${req.body.email}`,
+      subject: "Great News!!!",
+
       text: "Text Received Order Email",
       html: htmlEmail
     }
@@ -141,6 +143,54 @@ app.post('/api/orderProcess', (req, res) => {
     })
   })
 })
+
+app.post('/api/emailQuickQuote', (req, res) => {
+
+  nodemailer.createTestAccount((err, account) => {
+    const htmlEmail = `
+        <h3><strong>We are working on your order</strong></h3>
+       
+        <p> We appreciate your patience, We have completed testing of all the devices and we are making the proper adjustments to guarantee you the best price available. 
+        </p>
+        <br> 
+        <p> 
+        If you have questions please email our <a href = "mailto: support@mobilesource.com">Support Team</a>
+        support team.  
+        Thank you
+               </p> 
+               <p> 
+               Mobilesource Corp
+               </p> 
+               <br>
+               <p> 
+              561.416.7224
+               </p> 
+      `
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: 'donot-reply@mobilesource.com', // generated ethereal user
+        pass: 'M@bile2020' // generated ethereal password
+      },
+    });
+    let mailOptions = {
+      from: 'donot-reply@mobilesource.com',
+      to: `${req.body.customerEmail}`,
+      text: "Text Received Order Email",
+      html: htmlEmail
+    }
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        return console.log(err)
+      }
+      console.log('Message Sent!!!')
+    })
+  })
+})
+
+
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
