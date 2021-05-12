@@ -8,6 +8,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { apiEndpoint } from "../../config";
+import ReceiptIcon from '@material-ui/icons/Receipt';
+
+
 
 export default class QuickQuote extends React.Component {
   constructor(props) {
@@ -36,13 +39,8 @@ export default class QuickQuote extends React.Component {
 
   async sendQuote() {
    
-    console.log("New Price Sent");
-    console.log("This is myName: " + this.state.customerName)
-    console.log("This is my Email: " + this.state.customerEmail)
-    console.log("This is my Phone: " + this.state.customerPhoneNumber)
-    console.log("This is my Quote: " + this.state.customerQuote)
 
-    const { customerPhoneNumber, customerEmail, customerQuote, customerName} = this.state;
+    const { phoneModel, customerPhoneNumber, customerEmail, customerQuote, customerName} = this.state;
 
     const emailQuickQuote = await axios.post(apiEndpoint, {
         path:'/api/emailQuickQuote',
@@ -51,14 +49,16 @@ export default class QuickQuote extends React.Component {
             customerEmail, 
             customerName, 
             customerPhoneNumber, 
-            customerQuote
+            customerQuote, 
+            phoneModel
+            
         }
     })
     console.log('Email Quick Quote')
 
 
     this.handleClose();
- 
+    alert("Email Was Sent!");
   }
 
 
@@ -79,13 +79,16 @@ export default class QuickQuote extends React.Component {
 
     return (
       <div>
-        <Button
+        <ReceiptIcon
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
-        >
-          Send Quote
-        </Button>
+          style={{
+            color: "#ff1744",
+            cursor: "pointer",
+            marginLeft: "10px",
+          }}
+        />
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

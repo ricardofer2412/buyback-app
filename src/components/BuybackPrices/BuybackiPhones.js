@@ -26,6 +26,9 @@ import { NativeSelect, Tab } from "@material-ui/core";
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import QuickQuote from "../QuickQuote/QuickQuote";
+import ReceiptIcon from '@material-ui/icons/Receipt';
+
+
 class BuybackiPhone extends React.Component {
   constructor(props) {
     super(props);
@@ -389,7 +392,13 @@ class BuybackiPhone extends React.Component {
                         </IconButton>
 
                       </Tooltip>
+                      <Tooltip title="Send Quote">
+                      <IconButton>
                       <QuickQuote phoneData={item} /> 
+                      </IconButton>
+                     
+                      </Tooltip>
+                    
                     </TableCell>
                   </TableRow>
                 ))}
