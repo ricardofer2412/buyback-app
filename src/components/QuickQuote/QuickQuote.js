@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { apiEndpoint } from "../../config";
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 
@@ -26,6 +27,7 @@ export default class QuickQuote extends React.Component {
       customerEmail: "",
       customerPhoneNumber: "",
       customerQuote: "",
+      loading: false
     };
   }
 
@@ -37,9 +39,13 @@ export default class QuickQuote extends React.Component {
     this.setState({ open: false });
   };
 
+  setLoading = () => {
+    this.setState({ loading: true})
+  }
+
   async sendQuote() {
    
-
+    this.setLoading()
     const { phoneModel, customerPhoneNumber, customerEmail, customerQuote, customerName} = this.state;
 
     const emailQuickQuote = await axios.post(apiEndpoint, {
@@ -148,6 +154,16 @@ export default class QuickQuote extends React.Component {
               Send
             </Button>
           </DialogActions>
+          <div> 
+
+          {this.state.loading === false ? (
+               <div> </div>
+
+          ) : (<LinearProgress />)
+          }
+            </div> 
+
+       
         </Dialog>
       </div>
     );

@@ -167,7 +167,7 @@ app.post('/api/emailQuickQuote', (req, res) => {
        
         <p> Hello  ${req.body.customerName}
         </p>
-        <p> Your quote for <strong> ${req.body.phoneModel.model} ${req.body.phoneModel.carrier} ${req.body.phoneModel.memory} </strong> n Good Condition
+        <p> Your quote for <strong> ${req.body.phoneModel.model} ${req.body.phoneModel.carrier} ${req.body.phoneModel.memory} </strong> in Good Condition
         </p>
         <br> 
         <p> <strong>$${req.body.customerQuote}</strong>  
