@@ -6,7 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Axios from "axios";
+import axios from "axios";
 import { apiEndpoint } from "../../config";
 
 export default class QuickQuote extends React.Component {
@@ -34,7 +34,7 @@ export default class QuickQuote extends React.Component {
     this.setState({ open: false });
   };
 
-  sendQuote() {
+  async sendQuote() {
    
     console.log("New Price Sent");
     console.log("This is myName: " + this.state.customerName)

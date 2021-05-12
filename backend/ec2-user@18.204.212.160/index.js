@@ -1,3 +1,8 @@
+//chmod 400 emailBE.pem GETS A NEW KEY
+//./connectionAws.sh connects with server
+// ./deploy.sh deploys app
+
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const nodemailer = require("nodemailer")
