@@ -27,6 +27,7 @@ export default class QuickQuote extends React.Component {
       customerEmail: "",
       customerPhoneNumber: "",
       customerQuote: "",
+      customerCustomNote: '',
       loading: false
     };
   }
@@ -46,7 +47,7 @@ export default class QuickQuote extends React.Component {
   async sendQuote() {
    
     this.setLoading()
-    const { phoneModel, customerPhoneNumber, customerEmail, customerQuote, customerName} = this.state;
+    const { phoneModel, customerPhoneNumber, customerEmail, customerQuote, customerName, customerCustomNote} = this.state;
 
     const emailQuickQuote = await axios.post(apiEndpoint, {
         path:'/api/emailQuickQuote',
@@ -56,7 +57,8 @@ export default class QuickQuote extends React.Component {
             customerName, 
             customerPhoneNumber, 
             customerQuote, 
-            phoneModel
+            phoneModel, 
+            customerCustomNote
             
         }
     })
@@ -81,6 +83,7 @@ export default class QuickQuote extends React.Component {
       customerName,
       customerEmail,
       customerQuote,
+      customerCustomNote
     } = this.state;
 
     return (
@@ -108,42 +111,63 @@ export default class QuickQuote extends React.Component {
             </DialogContentText>
             <TextField
                   required
-                  margin="dense"
+         
               id="name"
               label="Name"
               InputProps={{ name: "customerName" }}
               onChange={this.onChange}
               value={customerName}
               fullWidth
+              variant="outlined"
+              style={{paddingBottom: '15px'}}
+
             />
             <TextField
               required
-              margin="dense"
+            
               id="name"
               label="PhoneNumber"
               InputProps={{ name: "customerPhoneNumber" }}
               onChange={this.onChange}
               value={customerPhoneNumber}
               fullWidth
+              variant="outlined"
+              style={{paddingBottom: '15px'}}
             />
             <TextField
               autoFocus
-              margin="dense"
+           
               id="name"
               label="Email"
               InputProps={{ name: "customerEmail" }}
               onChange={this.onChange}
               fullWidth
+              variant="outlined"
+              style={{paddingBottom: '15px'}}
             />
             <TextField
               autoFocus
-              margin="dense"
+        
               id="name"
               label="Quoted Price"
               InputProps={{ name: "customerQuote" }}
               onChange={this.onChange}
               value={customerQuote}
               fullWidth
+              variant="outlined"
+              style={{paddingBottom: '15px'}}
+            />
+            <TextField
+              autoFocus
+              id="name"
+              rowsMax={4}
+              label="Notes  "
+              InputProps={{ name: "customerCustomNote" }}
+              onChange={this.onChange}
+              value={customerCustomNote}
+              fullWidth
+              variant="outlined"
+              style={{paddingBottom: '15px'}}
             />
           </DialogContent>
           <DialogActions>

@@ -178,6 +178,8 @@ app.post('/api/emailQuickQuote', (req, res) => {
         Pending upon device inspection
         <p> 
         <br/>
+        <p><strong> NOTES: </strong> ${req.body.customerCustomNote}.
+        <br/>
         <p> 
         This offer is valid for 10 days 
         </p> 
