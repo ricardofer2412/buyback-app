@@ -8,17 +8,17 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { apiEndpoint } from "../../config";
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 export default class QuickQuote extends React.Component {
   constructor(props) {
     super(props);
 
     this.sendQuote = this.sendQuote.bind(this);
-
 
     this.state = {
       phoneModel: this.props.phoneData,
@@ -27,8 +27,9 @@ export default class QuickQuote extends React.Component {
       customerEmail: "",
       customerPhoneNumber: "",
       customerQuote: "",
-      customerCustomNote: '',
-      loading: false
+      customerCustomNote: "",
+      loading: false,
+      contactType: "",
     };
   }
 
@@ -39,37 +40,48 @@ export default class QuickQuote extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+  handleChange = (event) => {
+    this.setState({ contactType: event.target.value });
+  };
 
   setLoading = () => {
-    this.setState({ loading: true})
-  }
+    this.setState({ loading: true });
+  };
 
   async sendQuote() {
-   
-    this.setLoading()
-    const { phoneModel, customerPhoneNumber, customerEmail, customerQuote, customerName, customerCustomNote} = this.state;
+    this.setLoading();
+    console.log("This is text", this.state.contactType);
+    const {
+      phoneModel,
+      customerPhoneNumber,
+      customerEmail,
+      customerQuote,
+      customerName,
+      customerCustomNote,
+    } = this.state;
 
-    const emailQuickQuote = await axios.post(apiEndpoint, {
-        path:'/api/emailQuickQuote',
-        method: 'post', 
+    if (this.state.contactType === "Email") {
+      const emailQuickQuote = await axios.post(apiEndpoint, {
+        path: "/api/emailQuickQuote",
+        method: "post",
         body: {
-            customerEmail, 
-            customerName, 
-            customerPhoneNumber, 
-            customerQuote, 
-            phoneModel, 
-            customerCustomNote
-            
-        }
-    })
-    console.log('Email Quick Quote')
+          customerEmail,
+          customerName,
+          customerPhoneNumber,
+          customerQuote,
+          phoneModel,
+          customerCustomNote,
+        },
+      });
+      console.log("Email Quick Quote");
 
-
-    this.handleClose();
-    alert("Email Was Sent!");
+      this.handleClose();
+      alert("Email Was Sent!");
+    } else {
+      this.handleClose();
+      alert("Currently Working on this feature");
+    }
   }
-
-
 
   onChange = (e) => {
     const state = this.state;
@@ -83,7 +95,7 @@ export default class QuickQuote extends React.Component {
       customerName,
       customerEmail,
       customerQuote,
-      customerCustomNote
+      customerCustomNote,
     } = this.state;
 
     return (
@@ -110,8 +122,7 @@ export default class QuickQuote extends React.Component {
               {this.state.phoneModel.memory}
             </DialogContentText>
             <TextField
-                  required
-         
+              required
               id="name"
               label="Name"
               InputProps={{ name: "customerName" }}
@@ -119,12 +130,10 @@ export default class QuickQuote extends React.Component {
               value={customerName}
               fullWidth
               variant="outlined"
-              style={{paddingBottom: '15px'}}
-
+              style={{ paddingBottom: "15px" }}
             />
             <TextField
               required
-            
               id="name"
               label="PhoneNumber"
               InputProps={{ name: "customerPhoneNumber" }}
@@ -132,22 +141,20 @@ export default class QuickQuote extends React.Component {
               value={customerPhoneNumber}
               fullWidth
               variant="outlined"
-              style={{paddingBottom: '15px'}}
+              style={{ paddingBottom: "15px" }}
             />
             <TextField
               autoFocus
-           
               id="name"
               label="Email"
               InputProps={{ name: "customerEmail" }}
               onChange={this.onChange}
               fullWidth
               variant="outlined"
-              style={{paddingBottom: '15px'}}
+              style={{ paddingBottom: "15px" }}
             />
             <TextField
               autoFocus
-        
               id="name"
               label="Quoted Price"
               InputProps={{ name: "customerQuote" }}
@@ -155,7 +162,7 @@ export default class QuickQuote extends React.Component {
               value={customerQuote}
               fullWidth
               variant="outlined"
-              style={{paddingBottom: '15px'}}
+              style={{ paddingBottom: "15px" }}
             />
             <TextField
               autoFocus
@@ -167,8 +174,29 @@ export default class QuickQuote extends React.Component {
               value={customerCustomNote}
               fullWidth
               variant="outlined"
-              style={{paddingBottom: '15px'}}
+              style={{ paddingBottom: "15px" }}
             />
+          </DialogContent>
+          <DialogContent>
+            <RadioGroup
+              value={this.state.contactType}
+              onChange={this.handleChange}
+            >
+              <FormControlLabel
+                onChange={this.handleChange}
+                value="Email"
+                control={<Radio />}
+                label="E-Mail"
+                checked={this.state.contactType === "Email"}
+              />
+              <FormControlLabel
+                onChange={this.handleChange}
+                value="Text"
+                control={<Radio />}
+                label="Text"
+                checked={this.state.contactType === "Text"}
+              />
+            </RadioGroup>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -178,16 +206,9 @@ export default class QuickQuote extends React.Component {
               Send
             </Button>
           </DialogActions>
-          <div> 
-
-          {this.state.loading === false ? (
-               <div> </div>
-
-          ) : (<LinearProgress />)
-          }
-            </div> 
-
-       
+          <div>
+            {this.state.loading === false ? <div> </div> : <LinearProgress />}
+          </div>
         </Dialog>
       </div>
     );
