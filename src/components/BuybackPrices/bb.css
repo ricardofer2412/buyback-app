@@ -16,3 +16,10 @@
   display: flex;
   justify-content: space-around;
 }
+
+
+.actionCell {
+  display: flex;
+  justify-content: space-between;
+
+}

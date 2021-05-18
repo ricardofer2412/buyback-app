@@ -38,12 +38,14 @@ class BuybackiPhone extends React.Component {
       .collection("unlockedBbList")
       .orderBy("createDate");
     this.state = {
+      samsungPriceList: [],
       unlockedBbList: [],
       averageBB: 0,
       loading: false,
       lastBuyBackUpdate: "",
       loadingIdx: false,
       profit: 0,
+      value: 'iphone'
     };
   }
 
@@ -75,14 +77,21 @@ class BuybackiPhone extends React.Component {
   }
 
   async getPrice(e, carrier, model, phoneMemory, i) {
+
     this.setState({ loading: true });
     this.setState({ loadingIdx: i });
 
     // this.getPercentProfit(30, 40);
     // e.preventDefault()
+
+    //GEt iPhone Prices 
+    const { value } = e.target;
+    if (this.state.value === "iphone") {
+      console.log('iPhone Check')
     const unlockedBbList = JSON.parse(
       JSON.stringify(this.state.unlockedBbList)
     );
+
     const lastTimeUpdate = new Date().toLocaleString();
     const device = unlockedBbList[i];
     const deviceId = unlockedBbList[i].unlockedBbList;
@@ -158,6 +167,94 @@ class BuybackiPhone extends React.Component {
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
+  }else{
+   
+
+    console.log('Samsung Check')
+
+    // e.preventDefault()
+    const samsungPriceList = JSON.parse(
+      JSON.stringify(this.state.samsungPriceList)
+    );
+    console.log('samsung prices', samsungPriceList)
+    const lastTimeUpdate = new Date().toLocaleString();
+    const device = samsungPriceList[i];
+    const deviceId = samsungPriceList[i].samsungPriceList;
+    console.log(device)
+    let phoneModel = model;
+
+    let phoneCarrier = carrier;
+
+    const newUrl = apiEndpoint + "/price";
+    const body = {
+      phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
+    };
+
+    // firebase
+    //   .firestore()
+    //   .collection("samsungPrices")
+    //   .doc(deviceId)
+    //   .update({
+    //     samsungPriceList: device.newUpdateBuyBack,
+    //   });
+    try {
+      const response = await axios.post(newUrl, body);
+      const { data } = response;
+      console.log(data)
+      const buybackResults = data.filter((data) => data.condition === "good");
+      let pricesList = buybackResults.map((data) => data.price);
+      try {
+        const averagePriceList = [];
+
+        for (let i = 0; i < pricesList.length; i++) {
+          let price = pricesList[i].replace("$", "");
+          var bbPrice = parseFloat(price);
+          averagePriceList.push(bbPrice);
+        }
+        let total = 0;
+        for (let i = 0; i < averagePriceList.length; i++) {
+          total += averagePriceList[i];
+        }
+        let bbAvg = total / averagePriceList.length;
+        this.setState({
+          averageBB: bbAvg.toFixed(2),
+        });
+      } catch (e) {}
+
+      let mobileSourceBb = buybackResults[0].price;
+
+      mobileSourceBb = mobileSourceBb.replace("$", "");
+      mobileSourceBb = Number(mobileSourceBb);
+
+      let bbAvg = parseFloat(this.state.averageBB);
+      let newDevice = { ...device, buybackResults, bbAvg };
+      const newDeviceList = [...this.state.unlockedBbList];
+
+      newDeviceList.splice(i, 1, newDevice);
+      this.setState({ unlockedBbList: newDeviceList, loadingIdx: false });
+      this.getPercentProfit(bbAvg, device.retailPrice);
+
+      firebase
+        .firestore()
+        .collection("samsungPrices")
+        .doc(deviceId)
+        .update({
+          buybackResults: buybackResults,
+          lastBuyBackUpdate: lastTimeUpdate,
+          newUpdateBuyBack: mobileSourceBb,
+          carrier: newDevice.carrier,
+          profit: this.state.profit,
+          bbAvg: this.state.averageBB,
+
+          // profit: profit
+        })
+        .catch((error) => {
+          console.error("Error adding customer: ", error);
+        });
+    } catch (e) {
+      console.log("ERrror getting price: ", e);
+    }
+  }
   }
 
   onCollectionUpdate = (querySnapshot) => {
@@ -212,6 +309,9 @@ class BuybackiPhone extends React.Component {
         .collection("unlockedBbList")
         .orderBy("id");
       this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+      this.setState({
+        value: 'iphone'
+      })
     }
     if (value === "samsung") {
       this.unsubscribe();
@@ -220,6 +320,19 @@ class BuybackiPhone extends React.Component {
         .collection("samsungPrices")
         .orderBy("id");
       this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+        this.ref
+          .get()
+          .then(querySnapshot => {
+            const data = querySnapshot.docs.map(doc => doc.data());
+            console.log(data);
+            this.setState({ samsungPriceList: data, 
+            value:'samsung' });
+          });
+      
+  
+
+    
+      console.log(this.state.samsungPriceList)
       // LOAD SAUSMUNG
     }
 
@@ -335,7 +448,7 @@ class BuybackiPhone extends React.Component {
                     </TableCell>
                     <TableCell>{item.lastBuyBackUpdate}</TableCell>
 
-                    <TableCell>
+                    <TableCell className='actionCell'>
                       <Tooltip title="Get BuyBack Prices">
                         <IconButton
                           onClick={(e) =>
@@ -373,11 +486,8 @@ class BuybackiPhone extends React.Component {
                           />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Send Quote">
-                        <IconButton>
+                     
                           <QuickQuote phoneData={item} />
-                        </IconButton>
-                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}

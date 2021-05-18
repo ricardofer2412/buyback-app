@@ -102,9 +102,11 @@ export default class QuickQuote extends React.Component {
 
     return (
       <div>
-        <Tooltip title="Send Quote">
-        <IconButton>
-          <SendIcon
+       <Tooltip title="Send Quote">
+         <IconButton
+          style={{ backgroundColor: "white" }}
+        >
+         <SendIcon
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
@@ -114,8 +116,9 @@ export default class QuickQuote extends React.Component {
             marginLeft: "10px",
           }}
         />
-        </IconButton>
-        </Tooltip>
+         </IconButton>
+        
+      </Tooltip>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
