@@ -13,6 +13,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import SendIcon from '@material-ui/icons/Send';
+import { IconButton, Tooltip } from "@material-ui/core";
 
 export default class QuickQuote extends React.Component {
   constructor(props) {
@@ -100,7 +102,9 @@ export default class QuickQuote extends React.Component {
 
     return (
       <div>
-        <ReceiptIcon
+        <Tooltip title="Send Quote">
+        <IconButton>
+          <SendIcon
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
@@ -110,6 +114,8 @@ export default class QuickQuote extends React.Component {
             marginLeft: "10px",
           }}
         />
+        </IconButton>
+        </Tooltip>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

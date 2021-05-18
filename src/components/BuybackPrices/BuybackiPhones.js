@@ -27,6 +27,7 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import QuickQuote from "../QuickQuote/QuickQuote";
 import ReceiptIcon from "@material-ui/icons/Receipt";
+import SendIcon from '@material-ui/icons/Send';
 
 class BuybackiPhone extends React.Component {
   constructor(props) {
@@ -274,9 +275,9 @@ class BuybackiPhone extends React.Component {
                   <TableCell align="left">Retail Price</TableCell>
                   <TableCell align="left">MobileSource BB Old</TableCell>
                   <TableCell align="left">MobileSource BB New</TableCell>
-                  <TableCell align="left">Profit Average</TableCell>
+                  {/* <TableCell align="left">Profit Average</TableCell> */}
                   <TableCell align="left">BuyBack Avg</TableCell>
-                  <TableCell align="left">Trend</TableCell>
+                  {/* <TableCell align="left">Trend</TableCell> */}
                   <TableCell align="left">Others</TableCell>
                   <TableCell align="left">Last Update</TableCell>
                   <TableCell align="left">ACTIONS</TableCell>
@@ -302,15 +303,15 @@ class BuybackiPhone extends React.Component {
                     <TableCell>${item.retailPrice}</TableCell>
                     <TableCell>${item.buybackMs}</TableCell>
                     <TableCell>${item.newUpdateBuyBack}</TableCell>
-                    <TableCell>{item.profit}%</TableCell>
+                    {/* <TableCell>{item.profit}%</TableCell> */}
                     <TableCell>${item.bbAvg}</TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {item.newUpdateBuyBack > item.buybackMs ? (
                         <TrendingUpIcon style={{ color: "green" }} />
                       ) : (
                         <TrendingDownIcon style={{ color: "red" }} />
                       )}
-                    </TableCell>
+                    </TableCell> */}
 
                     <TableCell key={i}>
                       {this.state.loadingIdx !== false &&
