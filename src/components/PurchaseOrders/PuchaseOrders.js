@@ -25,6 +25,8 @@ import TextField from "@material-ui/core/TextField";
 import SearchPo from "./SearchBar";
 import Tooltip from "@material-ui/core/Tooltip";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import Button from '@material-ui/core/Button';
+
 const styles = (theme) => ({
   root: {
     display: "flex",
@@ -133,7 +135,7 @@ class PurchaseOrders extends React.Component {
       <div className="main">
         <div className="purchaseOrder_table">
           <div className="iconsBar">
-            <Tooltip title="Create New Order">
+            {/* <Tooltip title="Create New Order">
               <Fab
                 component={Link}
                 to="/neworder"
@@ -141,11 +143,20 @@ class PurchaseOrders extends React.Component {
                 className={classes.fab}
               >
                 <AddIcon className={classes.extendedIcon} />
-              </Fab>
+              </Fab> */}
               {/* <div className="searchBar">
               <SearchPo poNumber={this.state.poNumber} />
             </div> */}
-            </Tooltip>
+            {/* </Tooltip> */}
+            <Button
+            variant='primary'
+            to='/vendorlist'
+            component=
+            {Link}>
+              Create New PO</Button> 
+            <div> 
+                <SearchPo />
+            </div>
           </div>
 
           <Paper>

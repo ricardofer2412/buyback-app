@@ -31,29 +31,46 @@ const classes = {
   },
 };
 
-function SearchPo({ poNumber }) {
-  function searchPo(poNumber) {
-    console.log("Searching for PO");
-    const ref = firebase
-      .firestore()
-      .collection("purchaseOrders")
-      .doc("15879");
+class SearchPo extends React.Component {
 
-    ref.get().then((doc) => {
-      if (doc.exists) {
-        console.log(doc.data());
-      }
-    });
+
+  constructor(props){
+    super(props)
+    this.setState({
+      poNumber: this.props.poNumber
+    })
   }
 
+  // function searchPo(poNumber) {
+  //   console.log("Searching for PO");
+  //   const ref = firebase
+  //     .firestore()
+  //     .collection("purchaseOrders")
+  //     .doc("15879");
+
+  //   ref.get().then((doc) => {
+  //     if (doc.exists) {
+  //       console.log(doc.data());
+  //     }
+  //   });
+  // }
+
+
+  searchPo(){
+    alert("this is a search")
+  }
+render(){
   return (
+    
     <Paper className={classes.root} elevation={1}>
       <InputBase className={classes.input} placeholder="Search For PO" />
       <IconButton className={classes.iconButton} aria-label="Search">
-        <SearchIcon onClick={searchPo} />
+        <SearchIcon onClick={this.searchPo} />
       </IconButton>
     </Paper>
   );
+}
+  
 }
 
 export default SearchPo;

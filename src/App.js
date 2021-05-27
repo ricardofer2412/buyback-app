@@ -25,6 +25,7 @@ import EditDevice from "./components/BuybackPrices/EditDevice";
 import StocksWatch from "./components/Stocks/stocksWatch";
 import SamsungBuyBack from "./components/BuybackPrices/SamsungPrices/SamsungBuyback";
 import CreateSamsung from './components/BuybackPrices/SamsungPrices/CreateDevice';
+import VendorList from "./components/PurchaseOrders/VendorList/VendorList";
 
 
 
@@ -82,6 +83,7 @@ class App extends React.Component {
             <Route exact path="/buybackiPhones/new" component={CreateDevice} />
             <Route exact path="/samsungprices" component={SamsungBuyBack} />
             <Route exact path='/samsungprices/new' component={CreateSamsung} />
+            <Route exact path='/vendorlist' component={VendorList}/>
             <Route
               exact
               path="/buybackiPhones/edit/:id"

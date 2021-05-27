@@ -116,10 +116,11 @@ class BuybackiPhone extends React.Component {
       const { data } = response;
       const buybackResults = data.filter((data) => data.condition === "good");
       let pricesList = buybackResults.map((data) => data.price);
+      console.log("Price BB", pricesList)
       try {
         const averagePriceList = [];
 
-        for (let i = 0; i < pricesList.length; i++) {
+        for (let i = 0; i < pricesList.length -1; i++) {
           let price = pricesList[i].replace("$", "");
           var bbPrice = parseFloat(price);
           averagePriceList.push(bbPrice);
