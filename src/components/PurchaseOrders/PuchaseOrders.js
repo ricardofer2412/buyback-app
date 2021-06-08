@@ -144,19 +144,8 @@ class PurchaseOrders extends React.Component {
               >
                 <AddIcon className={classes.extendedIcon} />
               </Fab>
-              <div className="searchBar">
-              <SearchPo poNumber={this.state.poNumber} />
-            </div>
             </Tooltip>
-            {/* <Button
-            variant='primary'
-            to='/vendorlist'
-            component=
-            {Link}>
-              Create New PO</Button> 
-            <div> 
-                <SearchPo />
-            </div> */}
+         
           </div>
 
           <Paper>
