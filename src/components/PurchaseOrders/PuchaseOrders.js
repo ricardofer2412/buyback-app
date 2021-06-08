@@ -135,7 +135,7 @@ class PurchaseOrders extends React.Component {
       <div className="main">
         <div className="purchaseOrder_table">
           <div className="iconsBar">
-            {/* <Tooltip title="Create New Order">
+            <Tooltip title="Create New Order">
               <Fab
                 component={Link}
                 to="/neworder"
@@ -143,12 +143,12 @@ class PurchaseOrders extends React.Component {
                 className={classes.fab}
               >
                 <AddIcon className={classes.extendedIcon} />
-              </Fab> */}
-              {/* <div className="searchBar">
+              </Fab>
+              <div className="searchBar">
               <SearchPo poNumber={this.state.poNumber} />
-            </div> */}
-            {/* </Tooltip> */}
-            <Button
+            </div>
+            </Tooltip>
+            {/* <Button
             variant='primary'
             to='/vendorlist'
             component=
@@ -156,7 +156,7 @@ class PurchaseOrders extends React.Component {
               Create New PO</Button> 
             <div> 
                 <SearchPo />
-            </div>
+            </div> */}
           </div>
 
           <Paper>
