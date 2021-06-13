@@ -54,35 +54,17 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
       <div className="main">
-        <Typography
-          component="h1"
-          variant="h3"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          Dashboard
-        </Typography>
-        <div className="cards">
-          <Grid container spacing={4}>
-            <Grid item sm>
-              <Paper>
-                <VendorCount />
-              </Paper>
-            </Grid>
-            <Grid item sm>
-              <Paper>
-                <PoCount />
-              </Paper>
-            </Grid>
-            <Grid item sm>
-              <Paper>
-                <TrackingCount />
-              </Paper>
-            </Grid>
-          </Grid>
+        <div className="title-div">
+          <h3>Dashboard</h3>
         </div>
-        <Box pt={4}></Box>
+        <div className="cards-divs">
+          <VendorCount />
+
+          <PoCount />
+
+          <TrackingCount />
+        </div>
+        <div className="info"></div>
       </div>
     );
   }

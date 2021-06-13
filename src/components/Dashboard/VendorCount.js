@@ -6,6 +6,9 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import firebase from "../firebase/Firebase.js";
+import { Divider } from "@material-ui/core";
+import "./app.css";
+import ViewListIcon from "@material-ui/icons/ViewList";
 
 const styles = (theme) => ({
   depositContext: {
@@ -59,19 +62,15 @@ class VendorCount extends Component {
     const { classes } = this.props;
 
     return (
-      <Card>
-        <AccountCircleIcon className={classes.iconStyle} />
-        <CardContent>
-          <Typography className={classes.titleText} variant="h5" component="h2">
-            Vendors
-          </Typography>
-        </CardContent>
-        <CardContent className={classes.countTextView}>
-          <Typography className={classes.countText} component="p">
-            {this.customerCount}
-          </Typography>
-        </CardContent>
-      </Card>
+      <div className="card-div">
+        <div className="title-div-card">
+          <h3 className="title">Vendors</h3>
+          <h4 className="vendor-count">{this.customerCount}</h4>
+        </div>
+        <div className="icon-div">
+          <AccountCircleIcon className="icon" />
+        </div>
+      </div>
     );
   }
 }
