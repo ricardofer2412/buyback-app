@@ -24,6 +24,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import firebase from "../firebase/Firebase";
 import Button from "@material-ui/core/Button";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const drawerWidth = 240;
 
@@ -183,23 +184,18 @@ class PersistentDrawerLeft extends React.Component {
 
             <div className="navTitle">
               <div className="nav-title-div">
-                <Typography className="nav-title" noWrap>
-                  MOBILESOURCE - DASHBOARD
-                </Typography>
+                <h3 className="nav-title">MobileSource</h3>
               </div>
 
               {!this.props.user ? (
                 <div></div>
               ) : (
                 <div className="logout-button">
-                  {/* <div>
-                    <h3>{this.userName}</h3>
-                  </div> */}
-                  <div>
-                    <Button id="log_out_button" onClick={this.onLogOut}>
-                      Log Out
-                    </Button>
-                  </div>
+                  <ExitToAppIcon
+                    onClick={this.onLogOut}
+                    className="logout"
+                    cursor="pointer"
+                  />
                 </div>
               )}
             </div>
