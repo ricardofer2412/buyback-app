@@ -19,7 +19,6 @@
 
 .newOrder_container {
   background-color: #eceff1;
-  height: 100vh;
 }
 .newOrder_container_po {
   margin-top: 20px;
@@ -169,4 +168,20 @@
   color: whitesmoke;
   padding: 5px;
   border-radius: 5px;
+}
+
+@media (max-width: 500px) {
+  .customerInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between !important;
+    align-items: center;
+  }
+  .text-field {
+    width: 400px !important;
+    margin: 10px;
+  }
+  .text-div {
+    margin: 5px;
+  }
 }

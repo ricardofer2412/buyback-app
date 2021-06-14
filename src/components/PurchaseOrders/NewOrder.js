@@ -170,14 +170,13 @@ class NewOrder extends Component {
       processOrderDate: "",
       paymentEmailDate: "",
     };
-    this.getPrice = this.getPrice.bind(this)
-    this.rowTotal = this.rowTotal.bind(this)
-
+    this.getPrice = this.getPrice.bind(this);
+    this.rowTotal = this.rowTotal.bind(this);
   }
   componentDidMount = () => {
     this.setState({
-      deviceList: this.state.deviceList
-    })
+      deviceList: this.state.deviceList,
+    });
   };
 
   handleChangeImg = (e) => {
@@ -218,41 +217,38 @@ class NewOrder extends Component {
       }
     );
   };
-  async getPrice( e,carrier, model, phoneMemory, i) {
-    e.preventDefault()
-  
+  async getPrice(e, carrier, model, phoneMemory, i) {
+    e.preventDefault();
+
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
-    const device = deviceList[i]
-    console.log(device)
-    let phoneModel = model
-    console.log('Model: ', model)
-    let phoneCarrier = carrier
-    console.log(phoneCarrier)
-    console.log(phoneMemory)
+    const device = deviceList[i];
+    console.log(device);
+    let phoneModel = model;
+    console.log("Model: ", model);
+    let phoneCarrier = carrier;
+    console.log(phoneCarrier);
+    console.log(phoneMemory);
     const newUrl = apiEndpoint + "/price";
-    const body = { phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}` };
+    const body = {
+      phone: `${phoneModel}-${phoneCarrier}?capacity=${phoneMemory}`,
+    };
     try {
       const response = await axios.post(newUrl, body);
       const { data } = response;
 
-      const buybackResults = data.filter(data=> data.condition==='good')
-      
-      let newDevice = {...device,buybackResults}
+      const buybackResults = data.filter((data) => data.condition === "good");
+
+      let newDevice = { ...device, buybackResults };
 
       const newDeviceList = [...this.state.deviceList];
-      newDeviceList.splice(i, 1, newDevice)
-      console.log('newlist', newDeviceList)
-     
-      
-      this.setState({ deviceList: newDeviceList });
-    
+      newDeviceList.splice(i, 1, newDevice);
+      console.log("newlist", newDeviceList);
 
-      
+      this.setState({ deviceList: newDeviceList });
     } catch (e) {
       console.log("ERrror getting price: ", e);
     }
-      console.log(this.state.deviceList)
-
+    console.log(this.state.deviceList);
   }
   onDeviceChange = (e, i) => {
     const deviceList = JSON.parse(JSON.stringify(this.state.deviceList));
@@ -306,13 +302,10 @@ class NewOrder extends Component {
     });
     console.log(this.state.pictureGallery);
   };
-  rowTotal(i, deviceQty, devicePrice){
+  rowTotal(i, deviceQty, devicePrice) {
+    const deviceTotal = Number(deviceQty) * Number(devicePrice);
 
-    const deviceTotal = Number(deviceQty) * Number(devicePrice)
-
-    return deviceTotal
-  
-
+    return deviceTotal;
   }
 
   onSubmit = (e) => {
@@ -332,7 +325,6 @@ class NewOrder extends Component {
       poTotal,
       expectPayDate,
       pictureGallery,
-      
     } = this.state;
     this.addCustomer();
     this.ref
@@ -347,7 +339,7 @@ class NewOrder extends Component {
         status,
         typePayment,
         poDate,
-        deviceList, 
+        deviceList,
         poTotal,
         expectPayDate,
         pictureGallery,
@@ -412,15 +404,18 @@ class NewOrder extends Component {
         <Paper className="newOrder_paper">
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
             <div className="customerInfo">
-              <TextField
-                required
-                label="Company"
-                InputProps={{ name: "company" }}
-                onChange={this.onChange}
-                value={company}
-                variant="outlined"
-                style={{ width: 250 }}
-              />
+              <div>
+                <TextField
+                  required
+                  label="Company"
+                  InputProps={{ name: "company" }}
+                  onChange={this.onChange}
+                  value={company}
+                  variant="outlined"
+                  // style={{ width: 250 }}
+                  className="text-field"
+                />
+              </div>
 
               <TextField
                 label="Vendor Name"
@@ -428,7 +423,8 @@ class NewOrder extends Component {
                 onChange={this.onChange}
                 value={vendorName}
                 variant="outlined"
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
               />
 
               <TextField
@@ -438,7 +434,8 @@ class NewOrder extends Component {
                 onChange={this.onChange}
                 value={poNumber}
                 variant="outlined"
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
               />
             </div>
             <div className="customerInfo">
@@ -449,7 +446,8 @@ class NewOrder extends Component {
                 onChange={this.onChange}
                 value={email}
                 variant="outlined"
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
               />
 
               <TextField
@@ -459,11 +457,13 @@ class NewOrder extends Component {
                 onChange={this.onChange}
                 value={phoneNumber}
                 variant="outlined"
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
               />
 
               <TextField
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
                 select
                 label="Status"
                 InputProps={{ name: "status" }}
@@ -484,23 +484,28 @@ class NewOrder extends Component {
               </TextField>
             </div>
             <div className="customerInfo">
+              <div>
+                <TextField
+                  // style={{ width: 250 }}
+                  className="text-field"
+                  id="poDate"
+                  label="Date"
+                  type="date"
+                  InputProps={{
+                    name: "poDate",
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={poDate}
+                  variant="outlined"
+                  onChange={this.onChange}
+                />
+              </div>
+
               <TextField
-                style={{ width: 250 }}
-                id="poDate"
-                label="Date"
-                type="date"
-                InputProps={{
-                  name: "poDate",
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={poDate}
-                variant="outlined"
-                onChange={this.onChange}
-              />
-              <TextField
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
                 id="expectPayDate"
                 label="Expected Pay Date"
                 type="date"
@@ -521,7 +526,8 @@ class NewOrder extends Component {
                 InputProps={{ name: "typePayment" }}
                 value={typePayment}
                 onChange={this.onChange}
-                style={{ width: 250 }}
+                // style={{ width: 250 }}
+                className="text-field"
                 SelectProps={{
                   MenuProps: {},
                 }}
