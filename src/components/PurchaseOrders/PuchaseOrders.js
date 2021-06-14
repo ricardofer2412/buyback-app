@@ -156,7 +156,7 @@ class PurchaseOrders extends React.Component {
                 <TableCell className="table-td">Action</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody className="table-body">
               {this.state.purchaseOrders.map((purchaseOrder) => (
                 <TableRow>
                   <TableCell>{purchaseOrder.poNumber}</TableCell>

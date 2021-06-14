@@ -398,24 +398,22 @@ class NewOrder extends Component {
 
     return (
       <div className="newOrder_container">
-        <div className="purchaseOrder_title">
-          <h2 className="title">New Purchase Order </h2>
-        </div>
         <Paper className="newOrder_paper">
+          <div className="purchaseOrder_title">
+            <h2 className="title">New Purchase Order </h2>
+          </div>
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
             <div className="customerInfo">
-              <div>
-                <TextField
-                  required
-                  label="Company"
-                  InputProps={{ name: "company" }}
-                  onChange={this.onChange}
-                  value={company}
-                  variant="outlined"
-                  // style={{ width: 250 }}
-                  className="text-field"
-                />
-              </div>
+              <TextField
+                required
+                label="Company"
+                InputProps={{ name: "company" }}
+                onChange={this.onChange}
+                value={company}
+                variant="outlined"
+                // style={{ width: 250 }}
+                className="text-field"
+              />
 
               <TextField
                 label="Vendor Name"
@@ -457,12 +455,12 @@ class NewOrder extends Component {
                 onChange={this.onChange}
                 value={phoneNumber}
                 variant="outlined"
-                // style={{ width: 250 }}
+                style={{ width: 300 }}
                 className="text-field"
               />
 
               <TextField
-                // style={{ width: 250 }}
+                style={{ width: 300 }}
                 className="text-field"
                 select
                 label="Status"
@@ -544,7 +542,7 @@ class NewOrder extends Component {
             <Divider />
 
             <TableContainer style={classes.topForm}>
-              <Table className={classes.table} aria-label="simple table">
+              <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>QTY</TableCell>

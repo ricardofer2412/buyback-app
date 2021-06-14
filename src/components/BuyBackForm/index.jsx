@@ -46,8 +46,9 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceQty" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceQty}
-              variant="standard"
-              style={{ width: 75 }}
+                variant="outlined"
+                 style={{ width: 75 }}
+                 label='QTY'
             />
           </TableCell>
           <TableCell align="right">
@@ -56,7 +57,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceCarrier" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceCarrier}
-              variant="standard"
+              variant="outlined"
               style={{ width: 75 }}
             />
           </TableCell>
@@ -66,7 +67,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceModel" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceModel}
-              variant="standard"
+              variant="outlined"
               style={{ width: 175 }}
             />
           </TableCell>
@@ -76,7 +77,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceImei" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceImei}
-              variant="standard"
+              variant="outlined"
               style={{ width: 175 }}
             />
           </TableCell>
@@ -86,7 +87,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceMemory" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceMemory}
-              variant="standard"
+              variant="outlined"
               style={{ width: 175 }}
             />
           </TableCell>
@@ -96,7 +97,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "deviceComments" }}
               onChange={(e) => onChange(e, i)}
               value={item.deviceComments}
-              variant="standard"
+              variant="outlined"
               style={{ width: 175 }}
             />
           </TableCell>
@@ -106,7 +107,7 @@ function BuyBackForm({ e, deviceList, onChange, deleteItem, getPrice, rowTotal }
               InputProps={{ name: "devicePrice" }}
               onChange={(e) => onChange(e, i)}
               value={item.devicePrice}
-              variant="standard"
+              variant="outlined"
               style={{ width: 100 }}
             >
               $

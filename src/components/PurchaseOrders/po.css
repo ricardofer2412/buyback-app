@@ -19,6 +19,8 @@
 
 .newOrder_container {
   background-color: #eceff1;
+  padding: 20px;
+  margin-top: 50px;
 }
 .newOrder_container_po {
   margin-top: 20px;
@@ -74,8 +76,8 @@
 }
 
 .purchaseOrder_title {
-  padding-top: 50px;
   padding-left: 20px;
+  padding-top: 20px;
 }
 
 .customerInfo {
@@ -85,7 +87,8 @@
 }
 
 .title {
-  font-weight: 200;
+  font-weight: 300;
+  font-size: 20px;
 }
 
 .buttom_bar {
@@ -135,7 +138,7 @@
   border-radius: "5px 5px 0 0" !important;
 }
 
-@media all and (max-width: 500px) {
+@media all {
   .table-div {
     width: 100%;
     background-color: white;
@@ -162,6 +165,16 @@
     padding: 5px;
     border-radius: 5px;
   }
+  .customerInfo {
+    display: flex;
+
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  .text-field {
+    width: 300px !important;
+    margin-bottom: 10px;
+  }
 }
 .paper-div {
   background-color: white;
@@ -174,14 +187,37 @@
   .customerInfo {
     display: flex;
     flex-direction: column;
-    justify-content: space-between !important;
+    justify-content: space-around !important;
     align-items: center;
+    margin-bottom: 10px;
   }
   .text-field {
-    width: 400px !important;
-    margin: 10px;
+    width: 300px !important;
+    margin-bottom: 10px;
   }
   .text-div {
     margin: 5px;
+  }
+  .table-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .table-div {
+    display: flex;
+    flex-direction: column !important;
+  }
+  .newOrder_container {
+    margin-left: 0px;
+  }
+  .newOrder_paper {
+    margin-left: 1px;
+    margin-right: 1px;
+  }
+  .buttom_bar {
+    margin-left: 1px;
+    margin-right: 1px;
+  }
+  .title {
+    text-align: center;
   }
 }
