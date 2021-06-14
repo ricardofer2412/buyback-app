@@ -54,9 +54,9 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
       <div className="main">
-        <div className="title-div">
+        {/* <div className="title-div">
           <h3>Dashboard</h3>
-        </div>
+        </div> */}
         <div className="cards-divs">
           <VendorCount />
 

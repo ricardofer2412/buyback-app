@@ -25,7 +25,7 @@ import TextField from "@material-ui/core/TextField";
 import SearchPo from "./SearchBar";
 import Tooltip from "@material-ui/core/Tooltip";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 const styles = (theme) => ({
   root: {
@@ -37,7 +37,6 @@ const styles = (theme) => ({
     width: "100%",
   },
   paper: {
-    padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
@@ -51,7 +50,7 @@ const styles = (theme) => ({
   },
   fab: {
     marginBottom: 15,
-    backgroundColor: "#01579B",
+    backgroundColor: "#2196f3",
     color: "white",
   },
 });
@@ -133,119 +132,115 @@ class PurchaseOrders extends React.Component {
     const { classes } = this.props;
     return (
       <div className="main">
-        <div className="purchaseOrder_table">
-          <div className="iconsBar">
-            <Tooltip title="Create New Order">
-              <Fab
-                component={Link}
-                to="/neworder"
-                aria-label="Add"
-                className={classes.fab}
-              >
-                <AddIcon className={classes.extendedIcon} />
-              </Fab>
-            </Tooltip>
-         
-          </div>
+        <div>
+          <Tooltip title="Create New Order">
+            <Fab
+              component={Link}
+              to="/neworder"
+              aria-label="Add"
+              className={classes.fab}
+            >
+              <AddIcon className={classes.extendedIcon} />
+            </Fab>
+          </Tooltip>
+        </div>
 
-          <Paper>
-            <Table>
-              <TableHead>
+        <div className="paper-div">
+          <Table className="table-div">
+            <TableHead>
+              <TableRow className="table-tr">
+                <TableCell className="table-td">PO# </TableCell>
+                <TableCell className="table-td">Vendor </TableCell>
+
+                <TableCell className="table-td">Status</TableCell>
+                <TableCell className="table-td">Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.purchaseOrders.map((purchaseOrder) => (
                 <TableRow>
-                  <TableCell>PO# </TableCell>
-                  <TableCell>Vendor </TableCell>
-                  <TableCell>E.P.D</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {this.state.purchaseOrders.map((purchaseOrder) => (
-                  <TableRow>
-                    <TableCell>{purchaseOrder.poNumber}</TableCell>
-                    <TableCell>{purchaseOrder.vendorName}</TableCell>
-                    <TableCell>{purchaseOrder.expectPayDate}</TableCell>
+                  <TableCell>{purchaseOrder.poNumber}</TableCell>
+                  <TableCell>{purchaseOrder.vendorName}</TableCell>
 
-                    {purchaseOrder.status === "Paid" ? (
-                      <TableCell
-                        style={{ backgroundColor: "#e91e63", color: "white" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    ) : purchaseOrder.status === "Received" ? (
-                      <TableCell
-                        style={{ backgroundColor: "#FFD600", color: "black" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    ) : purchaseOrder.status === "Tested" ? (
-                      <TableCell
-                        style={{ backgroundColor: "#E65100", color: "white" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    ) : purchaseOrder.status === "Entered" ? (
-                      <TableCell
-                        style={{ backgroundColor: "#F50057", color: "white" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    ) : purchaseOrder.status === "Complete" ? (
-                      <TableCell
-                        style={{ backgroundColor: "#2E7D32", color: "white" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    ) : (
-                      <TableCell
-                        style={{ backgroundColor: "white", color: "gray" }}
-                      >
-                        {purchaseOrder.status}
-                      </TableCell>
-                    )}
-                    <TableCell>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "Are you sure you want to delete this PO"
-                              )
-                            ) {
-                              this.delete(purchaseOrder);
-                            }
-                          }}
-                        >
-                          <DeleteIcon
-                            className="delete-button"
-                            fontSize="small"
-                          />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Edit">
-                        <IconButton
-                          className="edit-button"
-                          component={Link}
-                          to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
-                        >
-                          <Create />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="View">
-                        <IconButton
-                          className="edit-button"
-                          component={Link}
-                          to={`/purchaseorder/view/${purchaseOrder.purchaseOrderId}`}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Tooltip>
+                  {purchaseOrder.status === "Paid" ? (
+                    <TableCell
+                      style={{ backgroundColor: "#e91e63", color: "white" }}
+                    >
+                      {purchaseOrder.status}
                     </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>
+                  ) : purchaseOrder.status === "Received" ? (
+                    <TableCell
+                      style={{ backgroundColor: "#FFD600", color: "black" }}
+                    >
+                      {purchaseOrder.status}
+                    </TableCell>
+                  ) : purchaseOrder.status === "Tested" ? (
+                    <TableCell
+                      style={{ backgroundColor: "#E65100", color: "white" }}
+                    >
+                      {purchaseOrder.status}
+                    </TableCell>
+                  ) : purchaseOrder.status === "Entered" ? (
+                    <TableCell
+                      style={{ backgroundColor: "#F50057", color: "white" }}
+                    >
+                      {purchaseOrder.status}
+                    </TableCell>
+                  ) : purchaseOrder.status === "Complete" ? (
+                    <TableCell
+                      style={{ backgroundColor: "#2E7D32", color: "white" }}
+                    >
+                      {purchaseOrder.status}
+                    </TableCell>
+                  ) : (
+                    <TableCell
+                      style={{ backgroundColor: "white", color: "gray" }}
+                    >
+                      {purchaseOrder.status}
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <Tooltip title="Delete">
+                      <IconButton
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this PO"
+                            )
+                          ) {
+                            this.delete(purchaseOrder);
+                          }
+                        }}
+                      >
+                        <DeleteIcon
+                          className="delete-button"
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        className="edit-button"
+                        component={Link}
+                        to={`/purchaseorder/edit/${purchaseOrder.purchaseOrderId}`}
+                      >
+                        <Create />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="View">
+                      <IconButton
+                        className="edit-button"
+                        component={Link}
+                        to={`/purchaseorder/view/${purchaseOrder.purchaseOrderId}`}
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     );

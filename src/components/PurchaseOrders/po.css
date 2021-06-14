@@ -103,11 +103,6 @@
   margin-right: 10px;
 }
 
-.main {
-  background-color: #eceff1;
-  height: 100vh;
-}
-
 .button__icon {
   margin-right: 10px;
 }
@@ -139,4 +134,39 @@
   color: gray !important;
   border: "1px solid #484850" !important;
   border-radius: "5px 5px 0 0" !important;
+}
+
+@media all and (max-width: 500px) {
+  .table-div {
+    width: 100%;
+    background-color: white;
+  }
+
+  .table-td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-tr {
+    display: block;
+    margin-bottom: 30px;
+  }
+
+  tr tr {
+    margin-bottom: 0;
+  }
+  .main {
+  }
+  .paper-div {
+    background-color: white;
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+.paper-div {
+  background-color: white;
+  color: whitesmoke;
+  padding: 5px;
+  border-radius: 5px;
 }

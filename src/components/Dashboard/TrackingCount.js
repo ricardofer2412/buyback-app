@@ -74,21 +74,6 @@ class VendorCount extends Component {
           <FlightIcon className="icon" />
         </div>
       </div>
-
-      // <Card>
-      //   <FlightIcon className={classes.iconStyle} />
-      //   <CardContent>
-      //     <Typography className={classes.titleText} variant="h5" component="h2">
-      //       Trackings
-      //           </Typography>
-      //   </CardContent>
-      //   <CardContent className={classes.countTextView}>
-
-      //     <Typography className={classes.countText} component="p">
-      //       {this.trackingCount}
-      //     </Typography>
-      //   </CardContent>
-      // </Card>
     );
   }
 }

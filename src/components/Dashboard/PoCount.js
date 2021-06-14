@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { ShoppingCart } from "@material-ui/icons";
 import firebase from "../firebase/Firebase.js";
-
+import { Link } from "react-router-dom";
 import "./app.css";
 
 const styles = (theme) => ({
@@ -67,7 +67,7 @@ class VendorCount extends Component {
     const { classes } = this.props;
 
     return (
-      <div className="card-div">
+      <div className="card-div" component={Link} to="/purchaseorders">
         <div className="title-div-card">
           <h3 className="title">Purchase Orders</h3>
           <h4 className="vendor-count">{this.poCount}</h4>

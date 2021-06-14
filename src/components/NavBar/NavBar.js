@@ -51,7 +51,7 @@ const styles = (theme) => ({
     marginLeft: 12,
     marginRight: 20,
     "&:hover": {
-      background: "#3b5998",
+      background: "whitenpm",
     },
   },
   hide: {
@@ -63,11 +63,11 @@ const styles = (theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    backgroundColor: "#263238",
+    backgroundColor: "#2196f3",
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: "#3b5998",
+    backgroundColor: "#2196f3",
   },
   drawerHeader: {
     display: "flex",
@@ -232,20 +232,20 @@ class PersistentDrawerLeft extends React.Component {
           >
             <ListItem button component={Link} to="/">
               <ListItemIcon className="menu-row">
-                <Home className="icon" />
+                <Home className="icons" />
                 <ListItemText primary="Home" className="ListItemText" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/vendors">
               <ListItemIcon className="menu-row">
-                <People className="icon" />
+                <People className="icons" />
                 <ListItemText primary="Vendors" className="ListItemText" />
               </ListItemIcon>
             </ListItem>
 
             <ListItem button component={Link} to="/purchaseorders">
               <ListItemIcon className="menu-row">
-                <ShoppingCart className="icon" />
+                <ShoppingCart className="icons" />
                 <ListItemText
                   primary="Purchase Orders"
                   className="ListItemText"
@@ -254,19 +254,19 @@ class PersistentDrawerLeft extends React.Component {
             </ListItem>
             <ListItem button component={Link} to="/tracking">
               <ListItemIcon className="menu-row">
-                <StayCurrentPortrait className="icon" />
+                <StayCurrentPortrait className="icons" />
                 <ListItemText primary="Tracking" className="ListItemText" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/tools">
               <ListItemIcon className="menu-row">
-                <BuildIcon className="icon" />
+                <BuildIcon className="icons" />
                 <ListItemText primary="Tools" className="ListItemText" />
               </ListItemIcon>
             </ListItem>
             <ListItem button component={Link} to="/BuybackiPhones">
               <ListItemIcon className="menu-row">
-                <MonetizationOnIcon className="icon" />
+                <MonetizationOnIcon className="icons" />
                 <ListItemText
                   primary="BuyBack Prices"
                   className="ListItemText"
