@@ -1,13 +1,13 @@
 .main {
   background-color: #eceff1;
   height: 100vh;
+  margin-left: 10px
 }
 
 .paper {
   background-color: white;
-  margin-top: 100px;
-  margin-left: 60px;
-  margin-bottom: 60px;
+ 
+
   height: 90vh;
   overflow: auto;
 }
@@ -20,6 +20,7 @@
 
 .actionCell {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+    flex-wrap: wrap;
 
 }

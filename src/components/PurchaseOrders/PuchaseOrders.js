@@ -58,11 +58,19 @@ class PurchaseOrders extends React.Component {
   constructor(props) {
     super(props);
     this.ref = firebase.firestore().collection("purchaseOrders");
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.unsubscribe = null;
     this.state = {
       purchaseOrders: [],
       poNumber: "15879",
+      currentIndex: -1,
+      page: 1,
+      count: 0,
+      pageSize: 3,
+
     };
+    this.pageSizes = [3, 6, 9];
   }
 
   onCollectionUpdate = (querySnapshot) => {
@@ -128,6 +136,29 @@ class PurchaseOrders extends React.Component {
 
   searchResults() {}
 
+  handlePageChange(event, value) {
+    this.setState(
+      {
+        page: value,
+      },
+      () => {
+        this.onCollectionUpdate();
+      }
+    );
+  }
+  
+
+  handlePageSizeChange(event) {
+    this.setState(
+      {
+        pageSize: event.target.value,
+        page: 1
+      },
+      () => {
+        this.onCollectionUpdate();
+      }
+    );
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -241,6 +272,7 @@ class PurchaseOrders extends React.Component {
               ))}
             </TableBody>
           </Table>
+         
         </div>
       </div>
     );
